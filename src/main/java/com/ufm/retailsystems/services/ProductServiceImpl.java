@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductServiceImpl implements IProductService {
@@ -16,4 +17,8 @@ public class ProductServiceImpl implements IProductService {
     public List<Product> getAllProducts() {
         return productRepository.findAllWithImages();
     }
+
+
+    @Override
+    public Optional<Product> findById(Long id) { return productRepository.findById(id);}
 }
