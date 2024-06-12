@@ -1,0 +1,160 @@
+body {
+    font-family: Roboto, sans-serif!important;
+    font-size: 13px;
+}
+
+.header {
+    display: flex;
+    justify-content: center;
+    /*align-items: center;*/
+    list-style-type: none;
+    font-weight: bold;
+    color: white;
+}
+.nav-logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /*margin-left: 10px;*/
+}
+.logo-cellphones {
+    width: 300px;
+    height: auto;
+    /*margin: 0 auto;*/
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+.logo-telephone {
+    width: 60px;
+    /*height: 80px;*/
+}
+.container-header {
+    background-color: #E0062D;
+    height: 140px;
+}
+
+.logo-call {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+.logo-location {
+    height: 55px;
+}
+.logo-truck {
+    height: 40px;
+    /*margin-left: 10px;*/
+}
+.logo-call:hover {
+    background-color: #cb6e7f;
+    /*border: 1px solid #cb6e7f;*/
+    border-radius: 10px;
+    transition: background-color 0.3s, border 0.3s;
+}
+.logo-call:hover img {
+    transform: translateY(0); /* Giữ ảnh ở vị trí ban đầu khi hover */
+}
+
+/*.custom-input {*/
+/*    border: 2px solid #007bff; !* Màu viền *!*/
+/*    border-radius: 10px; !* Bo tròn viền *!*/
+/*    height: 60%;*/
+/*    !*width: 300px;*!*/
+/*    margin: 10px;*/
+/*    font-size: 16px; !* Kích thước chữ *!*/
+/*}*/
+.search-container {
+    position: relative;
+    width: fit-content;
+    margin: 10px;
+}
+
+.custom-input {
+    padding-left: 30px; /* Adjust padding to make space for the icon */
+    width: 300px; /* Adjust the width as needed */
+    height: 40px; /* Adjust the height as needed */
+    font-size: 16px; /* Adjust the font size as needed */
+    border-radius: 10px ;
+    border: 1px solid #E0062D;
+}
+
+.search-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px; /* Adjust the size of the icon */
+    height: 20px; /* Adjust the size of the icon */
+    background: url('https://w7.pngwing.com/pngs/608/913/png-transparent-computer-icons-google-search-symbol-mobile-search-search-for-miscellaneous-logo-mobile-phones-thumbnail.png') no-repeat center center; /* Replace with the path to your icon */
+    background-size: contain;
+    pointer-events: none; /* Prevent the icon from capturing mouse events */
+}
+#bannerTopHead {
+    background-color: #e9efff;
+    /*height: 200px;*/
+    max-height: 40px;
+    overflow: hidden;
+    padding: 5px;
+}
+.cps-container {
+    box-sizing: border-box;
+    display: block;
+    height: 100%;
+    margin: 0 auto;
+    position: relative;
+    width: 1200px;
+}
+
+.swiper-container {
+    list-style: none;
+    margin-left: auto;
+    margin-right: auto;
+    overflow: hidden;
+    padding: 0;
+    position: relative;
+    z-index: 1;
+}
+.swiper-wrapper {
+    box-sizing: initial;
+    display: flex;
+    height: 100%;
+    position: relative;
+    transition-property: transform;
+    width: 100%;
+    z-index: 1;
+}
+
+#bannerTopHead .swiper-container .swiper-slide img {
+    border-radius: 50px;
+    display: block;
+    margin: auto;
+    min-height: 30px;
+}
+
+#bannerTopHead img {
+    height: auto;
+    max-width: 100%;
+}
+
+#bannerTopHead .swiper-container .swiper-slide {
+    max-width: 33.3333333333%;
+    text-align: center;
+}
+
+p {
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    unicode-bidi: isolate;
+}
+
+.header ul li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

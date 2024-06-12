@@ -1,0 +1,45 @@
+.form-floating-label {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+.form-floating-label input {
+    border: 1px solid #ccc;
+    padding: 1rem;
+    width: 100%;
+    outline: none;
+}
+.form-floating-label label {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    pointer-events: none;
+    transition: all 0.2s;
+    background: white;
+    padding: 0 0.25rem;
+}
+.form-floating-label input:focus + label,
+.form-floating-label input:not(:placeholder-shown) + label {
+    top: -0.5rem;
+    left: 0.75rem;
+    font-size: 0.85rem;
+    color: #007bff;
+}
+.container-form-login {
+    width: 35%;
+}
+.btn-custom {
+    background-color: #e0052b; /* Màu nền */
+    color: white; /* Màu chữ */
+    border: none; /* Bỏ viền */
+    border-radius: 5px; /* Bo tròn góc */
+    padding: 10px 20px; /* Khoảng đệm */
+    font-size: 16px; /* Kích thước chữ */
+    transition: background-color 0.3s; /* Hiệu ứng chuyển đổi */
+}
+
+.btn-custom:hover {
+    background-color: #d73f09; /* Màu nền khi hover */
+}
+.custom-text-register a{
+    color: #e0052b;
+}

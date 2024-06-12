@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/list-product.css}">
+    <link rel="stylesheet" th:href="@{/css/customer-login.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/static/css/nav-bar-banned.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body>
+<div th:replace="/layout/header :: header"></div>
+<!--<div th:replace="/layout/nav-bar-banned :: nav-banned "></div>-->
+<div class="container">
+    <div class="row product-list">
+        <div th:each="product : ${products}" class="col-md-2 product-item">
+            <div class="card mb-4">
+                <div class="image-container">
+                    <img th:each="image : ${product.productImages}"
+                         th:src="@{${image.imageUrl}}" alt="Product Image" class="card-img-top product-image"/>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${product.productName}">Product Name</h5>
+                    <p class="card-text" th:text="${#numbers.formatDecimal(product.unitPrice, 1, 2)}">Product Price</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

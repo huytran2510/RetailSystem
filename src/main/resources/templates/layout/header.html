@@ -1,0 +1,95 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <!--    <link rel="stylesheet" th:href="@{/css/common.css}">-->
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" href="/static/css/header.css">
+    <script th:src="@{/js/jquery-1.11.1.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+</head>
+<body>
+<div class="container-header" th:fragment="header">
+    <div id="bannerTopHead">
+        <div class="cps-container">
+            <div class="swiper-container swiper-container-initialized swiper-container-horizontal">
+                <div class="swiper-wrapper" style="transform: translate3d(0px, 0px, 0px);">
+                    <div class="swiper-slide swiper-slide-active" style="width: 393.333px; margin-right: 10px;"><a
+                            href="#"><img
+                            src="https://cdn2.cellphones.com.vn/x/https://dashboard.cellphones.com.vn/storage/207x30_TopBanner_Homepage_01.2024_Mb_2-01133.svg"
+                            alt="Top Banner Mobile dịch vụ bảo hành" loading="lazy"></a></div>
+                    <div class="swiper-slide swiper-slide-next" style="width: 393.333px; margin-right: 10px;"><a
+                            href="#"><img
+                            src="https://cdn2.cellphones.com.vn/x/https://dashboard.cellphones.com.vn/storage/207x30_TopBanner_Homepage_01.2024_Mb_2-02133.svg"
+                            alt="TOP banner mobile sản phẩm chính hãng đầy đủ VAT" loading="lazy"></a></div>
+                    <div class="swiper-slide" style="width: 393.333px; margin-right: 10px;"><a href="#"><img
+                            src="https://cdn2.cellphones.com.vn/x/https://dashboard.cellphones.com.vn/storage/207x30_TopBanner_Homepage_01.2024_Mb_2-03133.svg"
+                            alt="TOP banner mobile giao nhanh miễn phí" loading="lazy"></a></div>
+                </div>
+                <div class="swiper-button-prev swiper-button-disabled" tabindex="-1" role="button"
+                     aria-label="Previous slide" aria-disabled="true"></div>
+                <div class="swiper-button-next swiper-button-disabled" tabindex="-1" role="button"
+                     aria-label="Next slide" aria-disabled="true"></div>
+                <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span></div>
+        </div>
+    </div>
+    <div th:style="'height: 100%'">
+        <ul class="header">
+            <li class="nav-logo">
+                <a th:href="@{/}">
+                    <img th:src="@{/img/logo.png}" class="logo-cellphones">
+                </a>
+            </li>
+            <li class="nav-logo">
+                <div class="search-container">
+                    <input class="custom-input" type="text">
+                    <i class="search-icon"></i>
+                </div>
+            </li>
+            <li class="nav-logo">
+                <div class="logo-call">
+                    <img th:src="@{/img/telephone.svg}" class="logo-telephone">
+                    <div>
+                        <p>Gọi mua hàng </p>
+                        <p>1800.2097</p>
+                    </div>
+                </div>
+            </li>
+            <li class="nav-logo">
+                <div class="logo-call">
+                    <img th:src="@{/img/location.svg}" class="logo-location">
+                    <div>
+                        <p>Cửa hàng</p>
+                        <p>gần bạn</p>
+                    </div>
+                </div>
+            </li>
+            <li class="nav-logo">
+                <div class="logo-call">
+                    <img th:src="@{/img/truck.svg}" class="logo-truck">
+                    <div>
+                        <p>Tra cứu</p>
+                        <p>đơn hàng</p>
+                    </div>
+                </div>
+            </li>
+            <li class="nav-logo">
+                <div class="logo-call">
+                    <div>
+                        <img th:src="@{/img/cart.svg}" class="logo-truck">
+                        <span>0</span>
+                    </div>
+                    <div>
+                        <p>Giỏ</p>
+                        <p>hàng</p>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>
