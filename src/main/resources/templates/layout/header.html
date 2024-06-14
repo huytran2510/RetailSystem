@@ -36,20 +36,20 @@
                 <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span></div>
         </div>
     </div>
-    <div th:style="'height: 100%'">
-        <ul class="header">
-            <li class="nav-logo">
+    <div class="d-flex align-items-center justify-content-center" th:style="'height: 100px'">
+        <ul class="header align-self-center m-lg-0">
+            <li class="nav-logo m-lg-0">
                 <a th:href="@{/}">
                     <img th:src="@{/img/logo.png}" class="logo-cellphones">
                 </a>
             </li>
-            <li class="nav-logo">
+            <li class="nav-logo m-lg-0">
                 <div class="search-container">
                     <input class="custom-input" type="text">
                     <i class="search-icon"></i>
                 </div>
             </li>
-            <li class="nav-logo">
+            <li class="nav-logo m-lg-0">
                 <div class="logo-call">
                     <img th:src="@{/img/telephone.svg}" class="logo-telephone">
                     <div>
@@ -58,7 +58,7 @@
                     </div>
                 </div>
             </li>
-            <li class="nav-logo">
+            <li class="nav-logo m-lg-0">
                 <div class="logo-call">
                     <img th:src="@{/img/location.svg}" class="logo-location">
                     <div>
@@ -67,7 +67,7 @@
                     </div>
                 </div>
             </li>
-            <li class="nav-logo">
+            <li class="nav-logo m-lg-0">
                 <div class="logo-call">
                     <img th:src="@{/img/truck.svg}" class="logo-truck">
                     <div>
@@ -76,11 +76,11 @@
                     </div>
                 </div>
             </li>
-            <li class="nav-logo">
+            <li class="nav-logo m-lg-0">
                 <div class="logo-call">
-                    <div>
-                        <img th:src="@{/img/cart.svg}" class="logo-truck">
-                        <span>0</span>
+                    <div class="position-relative cart">
+                        <img th:src="@{/img/cart.svg}" class="logo-truck ">
+                        <span class="position-absolute" th:text="${quantity}">0</span>
                     </div>
                     <div>
                         <p>Giỏ</p>

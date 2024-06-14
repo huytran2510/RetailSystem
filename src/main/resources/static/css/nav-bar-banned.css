@@ -42,3 +42,7 @@
 .carousel-caption h5, .carousel-caption p {
     color: #fff; /* Màu của tiêu đề và mô tả */
 }
+
+.mySlides {
+    display:none;
+}

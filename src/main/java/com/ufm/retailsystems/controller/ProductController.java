@@ -61,6 +61,7 @@ public class ProductController {
         return decimalFormat.format(price) + " ₫";
     }
 
+
     @GetMapping("/slider")
     public String getSlider(Model model) {
         List<Slide> slides = new ArrayList<>();

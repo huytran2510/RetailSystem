@@ -1,14 +1,136 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <!--    <link href="/static/css/cart.css" type="text/css" rel="stylesheet">-->
+    <!--    <link href="/static/css/bootstrap.min.css" type="text/css" rel="stylesheet">-->
+    <link th:href="@{/css/cart.css}" type="text/css" rel="stylesheet">
+    <link th:href="@{/css/bootstrap.min.css}" type="text/css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
 </head>
 <body>
-    <div class="container">
-        <div>
-            <img th:src="@{/img/arrow-left.svg}">
-        </div>
-    </div>
+<div th:replace="/layout/header :: header"></div>
+<div class="container wrap-cart block-info mt-3">
+    <div id="listItemSuperCart container">
+        <div class="header-action d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="select-product-action custom-control custom-checkbox">
+                    <input type="checkbox" value="true"  class="custom-control-input"  id="__BVID__28">
+                    <label class="custom-control-label" for="__BVID__28"></label>
+                </div>
+                <p>Chọn tất cả</p>
+            </div>
+            <div></div>
+        </div> <!---->
+
+        <div class="block__product-item__outer " th:each="cart, iterStat : ${carts}"><!---->
+
+            <div class="block__product-item d-flex justify-content-between align-items-center">
+                <div class="checkbox-product">
+                    <div class="custom-control custom-checkbox"><input type="checkbox"
+                                                                       class="custom-control-input"
+                                                                       value="true"
+                                                                       id="__BVID__32"><label
+                            class="custom-control-label" for="__BVID__32"><img
+                            th:src="@{${cart.getImgUrl()}}"
+                            width="350" alt="" loading="lazy"
+                            class="product-img"></label></div>
+                </div>
+                <div class="product-info">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <a href="" class="product-name" th:text="${cart.getProductName()}"></a>
+                        <button class="remove-item">
+                            <svg width="60" height="60" viewBox="0 0 16 16" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path d="M13.9999 4H10.6666V2.88666C10.6509 2.45988 10.4667 2.0567 10.1543 1.76553C9.84188 1.47435 9.42675 1.31893 8.99992 1.33333H6.99992C6.57309 1.31893 6.15796 1.47435 5.84554 1.76553C5.53312 2.0567 5.34889 2.45988 5.33325 2.88666V4H1.99992C1.82311 4 1.65354 4.07024 1.52851 4.19526C1.40349 4.32028 1.33325 4.48985 1.33325 4.66666C1.33325 4.84348 1.40349 5.01305 1.52851 5.13807C1.65354 5.26309 1.82311 5.33333 1.99992 5.33333H2.66659V12.6667C2.66659 13.1971 2.8773 13.7058 3.25237 14.0809C3.62744 14.456 4.13615 14.6667 4.66659 14.6667H11.3333C11.8637 14.6667 12.3724 14.456 12.7475 14.0809C13.1225 13.7058 13.3333 13.1971 13.3333 12.6667V5.33333H13.9999C14.1767 5.33333 14.3463 5.26309 14.4713 5.13807C14.5963 5.01305 14.6666 4.84348 14.6666 4.66666C14.6666 4.48985 14.5963 4.32028 14.4713 4.19526C14.3463 4.07024 14.1767 4 13.9999 4ZM6.66659 2.88666C6.66659 2.78 6.80659 2.66666 6.99992 2.66666H8.99992C9.19325 2.66666 9.33325 2.78 9.33325 2.88666V4H6.66659V2.88666ZM11.9999 12.6667C11.9999 12.8435 11.9297 13.013 11.8047 13.1381C11.6796 13.2631 11.5101 13.3333 11.3333 13.3333H4.66659C4.48977 13.3333 4.32021 13.2631 4.19518 13.1381C4.07016 13.013 3.99992 12.8435 3.99992 12.6667V5.33333H11.9999V12.6667Z"
+                                      fill="#212B36"></path>
+                                <path d="M5.99992 11.3333C6.17673 11.3333 6.3463 11.2631 6.47132 11.1381C6.59635 11.013 6.66658 10.8435 6.66658 10.6667V8C6.66658 7.82319 6.59635 7.65362 6.47132 7.5286C6.3463 7.40357 6.17673 7.33334 5.99992 7.33334C5.82311 7.33334 5.65354 7.40357 5.52851 7.5286C5.40349 7.65362 5.33325 7.82319 5.33325 8V10.6667C5.33325 10.8435 5.40349 11.013 5.52851 11.1381C5.65354 11.2631 5.82311 11.3333 5.99992 11.3333Z"
+                                      fill="#212B36"></path>
+                                <path d="M9.99992 11.3333C10.1767 11.3333 10.3463 11.2631 10.4713 11.1381C10.5963 11.013 10.6666 10.8435 10.6666 10.6667V8C10.6666 7.82319 10.5963 7.65362 10.4713 7.5286C10.3463 7.40357 10.1767 7.33334 9.99992 7.33334C9.82311 7.33334 9.65354 7.40357 9.52851 7.5286C9.40349 7.65362 9.33325 7.82319 9.33325 8V10.6667C9.33325 10.8435 9.40349 11.013 9.52851 11.1381C9.65354 11.2631 9.82311 11.3333 9.99992 11.3333Z"
+                                      fill="#212B36"></path>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-end"><!---->
+                        <div class="block-box-price">
+                            <span class="title-price" style="display: none;">:</span>
+                            <div class="box-info__box-price">
+                                <p class="product__price--show m-0" th:text="${formattedPrices[iterStat.index]}"></p>
+                            </div>
+                        </div>
+                        <div class="action d-flex justify-content-between align-items-center">
+                            <span class="minus d-flex justify-content-center align-items-center">-</span>
+                            <input type="text"  readonly="readonly">
+                            <span class="plus d-flex justify-content-center align-items-center">+</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box_promo"><!---->
+                <div class="promotion-block">
+                    <div id="content-promotion-68892" class="promotion-pack-detail">
+                        <div class="pack-detail">
+                            <p class="promotion-pack-title">
+                                <svg class="m-2" width="30" height="30" viewBox="0 0 12 12" fill="none"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M2 6.00002V9.00002C2 10.1046 2.89543 11 4 11H8C9.10457 11 10 10.1046 10 9.00002V6.00002"
+                                          stroke="#444"></path>
+                                    <path d="M9 6.00002H3C2.17157 6.00002 1.5 5.32845 1.5 4.50002C1.5 3.67159 2.17157 3.00002 3 3.00002H6H9C9.82843 3.00002 10.5 3.67159 10.5 4.50002C10.5 5.32845 9.82843 6.00002 9 6.00002Z"
+                                          stroke="#444"></path>
+                                    <path d="M6 10.5V3.00002" stroke="#444" stroke-linecap="round"></path>
+                                    <path d="M8.5 2.00002C8.5 1.92825 8.4958 1.85766 8.48768 1.78858C8.34321 0.559823 6.79205 1.04956 6 2.00002C6.79205 2.95047 8.34321 3.44021 8.48768 2.21146C8.4958 2.14238 8.5 2.07179 8.5 2.00002Z"
+                                          stroke="#444"></path>
+                                    <path d="M3.5 2.00002C3.5 1.92825 3.5042 1.85766 3.51232 1.78858C3.65679 0.559823 5.20795 1.04956 6 2.00002C5.20795 2.95047 3.65679 3.44021 3.51232 2.21146C3.5042 2.14238 3.5 2.07179 3.5 2.00002Z"
+                                          stroke="#444"></path>
+                                </svg>
+                                <span>Chương trình khuyến mãi</span></p>
+                            <ul class="el-promotion-pack">
+                                <li><p>Giảm ngay 500K khi thanh toán qua VNPAY</p></li>
+                            </ul>
+                        </div>
+                    </div> <!----></div>
+                <div id="extendedWarranty">
+                    <button class="btn"><span class="d-flex align-items-center title"><svg width="20" height="20"
+                                                                                           viewBox="0 0 12 12"
+                                                                                           fill="none"
+                                                                                           xmlns="http://www.w3.org/2000/svg"><path
+                            d="M10.5393 3C10.5797 3.74567 10.5952 5.25039 10.25 7C9.89414 8.80379 7.8391 10.087 6.7221 10.6618C6.26626 10.8964 5.73292 10.8964 5.27708 10.6618C4.16019 10.0869 2.10544 8.80375 1.7496 7C1.40441 5.2502 1.42015 3.74534 1.46069 2.99975C1.47785 2.68408 1.66168 2.40754 1.94333 2.26397C2.77208 1.84155 4.59885 0.999999 5.99928 1C7.39968 1 9.22724 1.84153 10.0564 2.26396C10.3382 2.40752 10.5221 2.68419 10.5393 3Z"
+                            stroke="#121219"></path> <path
+                            d="M4.5 5.83203L5.26968 6.71167C5.47592 6.94737 5.84563 6.9376 6.03913 6.69132L7.5 4.83203"
+                            stroke="#121219" stroke-linecap="round" stroke-linejoin="round"></path></svg> <span>Bảo vệ toàn diện với Bảo hành mở rộng</span></span>
+                        <span class="d-flex align-items-center action"><span>chọn gói</span> <svg width="20" height="20"
+                                                                                                  viewBox="0 0 12 12"
+                                                                                                  fill="none"
+                                                                                                  xmlns="http://www.w3.org/2000/svg"><path
+                                d="M7.49966 6.01108C7.49989 6.12791 7.4592 6.24113 7.38466 6.33108L4.88466 9.33108C4.70793 9.54371 4.39229 9.57281 4.17966 9.39608C3.96703 9.21935 3.93793 8.90371 4.11466 8.69108L6.35466 6.01108L4.19466 3.33108C4.11078 3.22778 4.07153 3.09531 4.0856 2.96299C4.09968 2.83067 4.16592 2.70942 4.26966 2.62608C4.37359 2.53351 4.5114 2.48845 4.64994 2.50174C4.78848 2.51502 4.91522 2.58545 4.99966 2.69608L7.41466 5.69608C7.47742 5.78862 7.50735 5.89953 7.49966 6.01108Z"
+                                fill="#121219"></path></svg></span></button> <!----></div> <!----></div>
+
+            <div class="block-combo-promotion d-block">
+                <div class="combo-promotion__title d-flex align-center">
+                    <svg width="17" height="18" viewBox="0 0 17 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5.1665 6.89474L5.1665 4.33334C5.1665 2.49239 6.65889 1 8.49984 1V1C10.3408 1 11.8332 2.49239 11.8332 4.33333L11.8332 6.89474"
+                              stroke="#3a3a3a" stroke-width="1.5" stroke-linecap="round"></path>
+                        <path d="M15.7656 14.7891L14.9397 6.99965C14.8318 5.98242 13.9738 5.21053 12.9508 5.21053H4.04916C3.02622 5.21053 2.16816 5.98242 2.06031 6.99965L1.23441 14.7891C1.10915 15.9705 2.03526 17 3.22326 17H13.7767C14.9647 17 15.8908 15.9705 15.7656 14.7891Z"
+                              stroke="#3a3a3a" stroke-width="1.5"></path>
+                    </svg>
+                    Mua kèm tiết kiệm hơn
+                </div>
+                <div id="crossSellBlock">
+                    <div class="swiper-container list-combo swiper-container-initialized swiper-container-horizontal">
+                        <div class="swiper-wrapper" style="transform: translate3d(0px, 0px, 0px);">
+
+
+                        </div>
+                        <div class="swiper-button-prev swiper-button-disabled" tabindex="-1" role="button"
+                             aria-label="Previous slide" aria-disabled="true"></div>
+                        <div class="swiper-button-next swiper-button-disabled" tabindex="-1" role="button"
+                             aria-label="Next slide" aria-disabled="true"></div>
+                        <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span></div> <!---->
+                    <!----></div>
+            </div> <!----></div> <!----></div>
+</div>
 </body>
 </html>

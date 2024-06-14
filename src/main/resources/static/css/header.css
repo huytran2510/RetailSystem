@@ -1,3 +1,4 @@
+
 body {
     font-family: Roboto, sans-serif!important;
     font-size: 13px;
@@ -10,6 +11,15 @@ body {
     list-style-type: none;
     font-weight: bold;
     color: white;
+}
+.header .nav-logo p{
+    margin: 0 auto;
+    padding-left: 5px;
+}
+.header .nav-logo .cart span{
+    top: 66%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 .nav-logo {
     display: flex;

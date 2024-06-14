@@ -15,14 +15,19 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 public class CartController {
     @Autowired
     private IProductService productService;
+
 
     @PostMapping("/add-to-cart")
     public String addToCart(@RequestParam("productId") Long productId, HttpSession session, RedirectAttributes redirectAttributes) {
@@ -50,6 +55,7 @@ public class CartController {
                 cartItem.setPrice(product.getUnitPrice());
                 cartItem.setProductName(product.getProductName());
                 cartItem.setQuantity(1);
+                cartItem.setImgUrl(product.getSingleImgUrl());
                 cart.add(cartItem);
             }
             return "redirect:/cart";
@@ -59,10 +65,33 @@ public class CartController {
         }
     }
 
-    @GetMapping("cart")
+    @GetMapping("/cart")
     public String cart(Model model, HttpSession session) {
         List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
-        model.addAttribute("cart", cart);
+        model.addAttribute("carts", cart);
+        List<String> formattedPrices = cart.stream()
+                .map(product -> formatPriceToVND(product.getPrice()))
+                .collect(Collectors.toList());
+        model.addAttribute("formattedPrices", formattedPrices);
         return "cart";
     }
+
+    public String formatPriceToVND(double price) {
+        NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
+        DecimalFormat decimalFormat = (DecimalFormat) formatter;
+        decimalFormat.applyPattern("#,###");
+        return decimalFormat.format(price) + " ₫";
+    }
+
+//    @GetMapping("/quantity-product")
+//    public String cartQuantity(Model model, HttpSession session) {
+//        List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
+//        if (cart == null) {
+//            cart = new ArrayList<>(); // Initialize if null
+//        }
+//        int n = cart.size();
+//        model.addAttribute("quantity", n);
+//        System.out.println("Cart size: " + n); // Debugging line
+//        return "layout/header";
+//    }
 }

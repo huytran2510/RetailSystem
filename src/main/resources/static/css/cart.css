@@ -1,0 +1,194 @@
+.block__product-item__outer {
+    background-color: #fff;
+    border: 1px solid rgba(145, 158, 171, .239);
+    border-radius: 8px;
+    margin-bottom: 20px;
+    padding: 10px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 800px;
+}
+.block__product-item__outer .block__product-item {
+    align-items: flex-start;
+    display: flex;
+    justify-content: space-between;
+    min-height: 110px;
+    padding: 10px 0;
+}
+
+.block__product-item__outer .block__product-item .checkbox-product {
+    align-items: center;
+    position: relative;
+    /*width: 25%;*/
+}
+.block__product-item__outer .block__product-item .checkbox-product .select-product-action {
+    cursor: pointer;
+    position: absolute;
+}
+.custom-control {
+    display: block;
+    min-height: 1.5rem;
+    padding-left: 1.5rem;
+    position: relative;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    z-index: 1;
+}
+.custom-control-input {
+    height: 1.25rem;
+    left: 0;
+    opacity: 0;
+    position: absolute;
+    width: 1rem;
+    z-index: -1;
+}
+.custom-control-label {
+    margin-bottom: 0;
+    /*position: relative;*/
+    /*vertical-align: top;*/
+}
+.product-img{
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+}
+.block__product-item__outer .block__product-item .product-info {
+    /*width: 75%;*/
+    flex: 1;
+    align-self: flex-start;
+    justify-self: flex-start;
+    font-size: 22px;
+}
+
+
+/*.block__product-item__outer .block__product-item .product-info>div {*/
+/*    margin-bottom: 8px;*/
+/*}*/
+.block__product-item__outer .block__product-item .product-info .product-name {
+    color: #3a3a3a;
+    width: 70%;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    overflow: hidden;
+}
+.block__product-item__outer .block__product-item .product-info .remove-item {
+    background-color: transparent;
+    border: 0;
+    cursor: pointer;
+    padding: 0;
+    z-index: 10;
+}
+.block__product-item__outer .block__product-item .product-info .remove-item svg {
+    color: #7e8686;
+    font-size: 20px;
+    width: 30px;
+}
+
+.block-box-price .box-info__box-price .product__price--show {
+    color: #d70018;
+    display: inline-block;
+    font-size: 22px;
+    font-weight: 500;
+    line-height: 1;
+    top: 2px;
+}
+.block-box-price .box-info__box-price .product__price--through {
+    color: #d70018;
+    display: inline-block;
+    font-size: 17px;
+    font-weight: 500;
+    position: relative;
+    /*-webkit-text-decoration: line-through;*/
+    /*text-decoration: line-through;*/
+    line-height: 1;
+    top: 2px;
+}
+.box-info__box-price .product__price--show , .product-info .product-name {
+    font-size: 22px;
+}
+
+.product-info {
+    margin-left: 5%;
+}
+.block__product-item__outer .block__product-item .product-info .action .minus,
+.block__product-item__outer .block__product-item .product-info .action .plus {
+    background-color: #f3f3f3;
+    border-radius: 4px;
+    cursor: pointer;
+    height: 35px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    width: 35px;
+}
+
+.block__product-item__outer .block__product-item .product-info .action input {
+    background-color: transparent;
+    border: 0;
+    font-size: 14px;
+    text-align: center;
+    width: 30px;
+}
+
+.block__product-item__outer .block__product-item .product-info .action .minus, .block__product-item__outer .block__product-item .product-info .action .plus {
+    background-color: #f3f3f3;
+    border-radius: 4px;
+    cursor: pointer;
+    height: 30px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    width: 30px;
+}
+#indexSuperCart .block-info {
+    border-radius: 10px;
+    margin: auto auto 20px;
+    max-width: 600px;
+    padding: 0;
+}
+.wrap-cart{
+    display: flex;
+    justify-content: center;
+}
+#listItemSuperCart {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 100px;
+}
+.header-action{
+    align-self: flex-start;
+}
+
+.block__product-item__outer .box_promo {
+    margin-bottom: 15px;
+    margin-top: 20px;
+    padding-left: 25px;
+    font-size: 16px;
+}
+.promotion-pack-title{
+    display: flex;
+    align-items: center;
+}
+.promotion-pack-title svg{
+    margin-left: 4px;
+
+}
+#extendedWarranty button {
+    align-items: center;
+    border-top: 1px solid rgba(145, 158, 171, .239);
+    display: flex;
+    font-size: 15px;
+    justify-content: space-between;
+    margin-top: 15px;
+    padding: 20px 0 5px;
+    width: 100%;
+}
+
+#extendedWarranty button span.title {
+    text-align: left;
+    width: 80%;
+}

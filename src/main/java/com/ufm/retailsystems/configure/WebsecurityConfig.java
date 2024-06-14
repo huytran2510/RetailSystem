@@ -1,5 +1,6 @@
 package com.ufm.retailsystems.configure;
 
+import com.ufm.retailsystems.configure.handle.CartQuantityInterceptor;
 import com.ufm.retailsystems.configure.handle.LoginSuccessHandler;
 import com.ufm.retailsystems.entities.enums.ERole;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 
 @Configuration
 @EnableWebSecurity
@@ -38,10 +40,10 @@ public class WebsecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/add-to-cart").permitAll()
+                .antMatchers("/add-to-cart","/quantity-product").permitAll()
                 .antMatchers("/blog/create").hasAnyAuthority(ERole.USER.toString(), ERole.ADMIN.toString())
                 .antMatchers("/blog/**").hasAuthority(ERole.ADMIN.toString())
-                .antMatchers("/resources/**", "/register","/customer/login",("/products"),"/slider","/add-to-cart").permitAll().anyRequest().authenticated()
+                .antMatchers("/resources/**", "/register","/customer/login",("/products"),"/slider","/add-to-cart","/quantity-product","/cart").permitAll().anyRequest().authenticated()
                 .and().formLogin().loginPage("/login").permitAll()
                 .successHandler(new LoginSuccessHandler()).and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).permitAll();
     }
