@@ -1,0 +1,50 @@
+.container {
+    max-width: 1200px; /* Optional: Adjust max-width to your preference */
+    margin: 0 auto; /* Center the container */
+    padding: 0 15px; /* Optional: Add padding to the sides */
+}
+.product-detail {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+.product-image {
+    max-width: 100%;
+    height: auto;
+}
+.product-info {
+    flex: 1;
+    padding-left: 30px; /* Optional: Adjust spacing between image and text */
+}
+.product-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+.product-price {
+    font-size: 1.5rem;
+    color: #6c757d; /* Bootstrap secondary color */
+    margin-top: 10px;
+}
+.product-description {
+    font-size: 1.25rem;
+    line-height: 1.8;
+    margin-top: 20px;
+}
+.quantity-add {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+}
+.form-control {
+    max-width: 3rem;
+    text-align: center;
+    margin-right: 10px; /* Optional: Adjust spacing between input and button */
+}
+.btn-add-to-cart .shopping-cart {
+    width: 30px;
+}
+
+.btn-add-to-cart:hover {
+    border: 1px solid #cf2020;
+    scale: inherit;
+}

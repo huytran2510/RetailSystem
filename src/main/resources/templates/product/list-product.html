@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/list-product.css}">
+    <link rel="stylesheet" th:href="@{/css/customer-login.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/nav-bar-banned.css}">
+    <link th:href="@{/css/slide.css}" type="text/css" rel="stylesheet">
+</head>
+<body>
+<div th:replace="/layout/header :: header"></div>
+<div class="container custom-slide d-flex flex-row align-items-center justify-content-center">
+<!--    <div th:replace="/layout/nav-bar-banned :: nav-banned "></div>-->
+    <div th:replace="/layout/slide :: slide "></div>
+
+</div>
+<div class="container">
+    <div class="row mt-2">
+        <div th:each="product, iterStat : ${products}"  class="col col-3 product-wrapper position-relative">
+            <div class="product__price--percent position-absolute">
+                <p class="product__price--percent-detail" th:text="${product.getDiscount().getDiscountDescription()}">
+                </p>
+            </div>
+            <div class="install-0-tag">
+                Trả góp 0%
+            </div>
+            <div class="card mb-4">
+                <div class="image-container">
+                    <img th:each="image : ${product.productImages} " th:style="'width: 180px' "
+                         th:src="@{${image.imageUrl}}" alt="Product Image" class="card-img-top product-image"/>
+                    <form th:action="@{/add-to-cart}" class="add-to-cart-form" method="post">
+                        <input type="hidden" name="productId" th:value="${product.productId}"/>
+                    </form>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${product.productName}">Product Name</h5>
+                    <div class="product-price">
+                        <p class="card-text" th:text="${formatPriceDiscount[iterStat.index]}">
+                        </p>
+                        <span class="card-text price-old" th:text="${formattedPrices[iterStat.index]}"></span>
+                    </div>
+                    <form th:action="@{/add-to-cart}" class="add-to-cart-form" method="post">
+                        <input type="hidden" name="productId" th:value="${product.productId}"/>
+                        <button type="submit" class="btn-add-to-cart">
+                            <img class="shopping-cart" th:src="@{/img/shopping-cart.svg}" alt="Product Image">
+                            Thêm vào giỏ hàng
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.btn-add-to-cart').click(function(e) {
+            e.preventDefault(); // Ngăn chặn hành động mặc định của sự kiện click
+
+            var form = $(this).closest('.add-to-cart-form'); // Tìm form bên trong nút được click
+            var formData = form.serialize(); // Chuyển đổi form thành dữ liệu chuỗi
+
+            // Perform AJAX request to add product to cart
+            $.ajax({
+                type: "POST",
+                url: form.attr('action'),
+                data: formData,
+                success: function(response) {
+                    console.log('Sản phẩm đã được thêm vào giỏ hàng.', response);
+                    // Redirect to the cart page after successful addition
+                    window.location.href = '/cart';
+                },
+                error: function(xhr, status, error) {
+                    console.error('Lỗi khi thêm sản phẩm vào giỏ hàng.', error);
+                    // Handle error case if needed
+                }
+            });
+        });
+        $('.image-container').click(function(e) {
+            e.preventDefault(); // Ngăn chặn hành động mặc định của sự kiện click
+
+            var productId = $(this).closest('.product-wrapper').find('input[name="productId"]').val();
+            window.location.href = '/products/' + productId;
+        });
+    });
+    document.addEventListener('DOMContentLoaded', function () {
+        const slides = document.querySelectorAll('.custom-content-slide .content-slide');
+
+        slides.forEach(slide => {
+            slide.addEventListener('click', function () {
+                slides.forEach(s => s.classList.remove('active')); // Loại bỏ lớp active từ tất cả các slide
+                this.classList.add('active'); // Thêm lớp active vào slide được click
+            });
+        });
+    });
+</script>
+</body>
+</html>

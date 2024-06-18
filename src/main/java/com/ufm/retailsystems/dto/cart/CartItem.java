@@ -14,5 +14,7 @@ public class CartItem {
     private String productName;
     private int quantity;
     private double price;
+
+    private String imgUrl;
     // Các getters và setters
 }

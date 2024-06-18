@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @AllArgsConstructor
@@ -44,4 +45,21 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "product_description_id")
     private ProductDescription productDescription ;
+
+    public String getSingleImgUrl() {
+        if (productImages != null && !productImages.isEmpty()) {
+            return productImages.iterator().next().getImageUrl(); // get the first image URL
+        }
+        return null; // or return a default image URL
+    }
+
+    // Alternatively, you can get all image URLs concatenated into a single string
+    public String getAllImgUrls() {
+        if (productImages != null && !productImages.isEmpty()) {
+            return productImages.stream()
+                    .map(ProductImages::getImageUrl)
+                    .collect(Collectors.joining(", "));
+        }
+        return null; // or return a default image URL
+    }
 }

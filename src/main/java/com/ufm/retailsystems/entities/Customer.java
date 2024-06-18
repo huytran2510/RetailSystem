@@ -1,5 +1,6 @@
 package com.ufm.retailsystems.entities;
 
+import com.ufm.retailsystems.entities.enums.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,6 +24,9 @@ public class Customer {
 
     @Column(name = "username", unique = true)
     private String username;
+
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
 
     @Column(name = "password")
     private String password;

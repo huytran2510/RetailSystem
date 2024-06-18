@@ -1,5 +1,6 @@
 package com.ufm.retailsystems.configure;
 
+import com.ufm.retailsystems.configure.handle.CartQuantityInterceptor;
 import com.ufm.retailsystems.configure.handle.LoginSuccessHandler;
 import com.ufm.retailsystems.entities.enums.ERole;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,17 +17,32 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 
 @Configuration
 @EnableWebSecurity
 public class WebsecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
-    private UserDetailsService userDetailsService;
+    @Qualifier("myUserDetailsService")
+    private UserDetailsService myUserDetailsService;
 
-    @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
+    @Autowired
+    @Qualifier("myCustomerDetailsService")
+    private UserDetailsService myCustomerDetailsService;
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(myUserDetailsService).passwordEncoder(passwordEncoder);
+        auth.userDetailsService(myCustomerDetailsService).passwordEncoder(passwordEncoder);
     }
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+//    @Bean
+//    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+//        return new BCryptPasswordEncoder();
+//    }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
@@ -38,21 +54,43 @@ public class WebsecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/add-to-cart").permitAll()
+                .antMatchers("/add-to-cart","/quantity-product").permitAll()
                 .antMatchers("/blog/create").hasAnyAuthority(ERole.USER.toString(), ERole.ADMIN.toString())
                 .antMatchers("/blog/**").hasAuthority(ERole.ADMIN.toString())
-                .antMatchers("/resources/**", "/register","/customer/login",("/products"),"/slider","/add-to-cart").permitAll().anyRequest().authenticated()
-                .and().formLogin().loginPage("/login").permitAll()
+                .antMatchers("/resources/**", "/register","/customer/login",("/products/**"),"/slider","/add-to-cart","/quantity-product","/cart").permitAll().anyRequest().authenticated()
+//                .and().formLogin().loginPage("/login").permitAll()
+                .and()
+                .formLogin()
+                .loginPage("/login")
+                .defaultSuccessUrl("/products")
+                .loginProcessingUrl("/user/process-login")
+                .permitAll()
+                .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).permitAll()
+                .and()
+                .formLogin()
+                .loginPage("/customer/login")
+                .defaultSuccessUrl("/products")
+                .loginProcessingUrl("/customer/process-login")
+                .permitAll()
                 .successHandler(new LoginSuccessHandler()).and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).permitAll();
+
     }
+
+
+//    @Bean
+//    public AuthenticationManager customAuthenticationManager() throws Exception {
+//        return authenticationManager();
+//    }
 
     @Bean
-    public AuthenticationManager customAuthenticationManager() throws Exception {
-        return authenticationManager();
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
     }
 
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
-    }
+//    @Autowired
+//    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.userDetailsService(myUserDetailsService).passwordEncoder(bCryptPasswordEncoder());
+//        auth.userDetailsService(myUserDetailsService).passwordEncoder(bCryptPasswordEncoder());
+//    }
 }

@@ -1,0 +1,130 @@
+.mySlides {display:none;}
+.slideshow-container {
+    position: relative;
+    width: 100%;
+}
+
+.w3-display-left, .w3-display-right {
+    position: absolute;
+    top: 48%;
+    /*width: 40px; !* Chiều rộng của nút *!*/
+    /*height: 40px; !* Chiều cao của nút *!*/
+    /*width: auto;*/
+    /*padding: 10px;*/
+    /*margin-top: -22px;*/
+    color: white;
+    font-weight: bold;
+    /*font-size: 18px;*/
+    transition: 0.6s ease;
+    /*border-radius: 0 3px 3px 0;*/
+    user-select: none;
+    cursor: pointer;
+    display: none; /* Ẩn nút mặc định */
+    align-items: center;
+    font-size: 14px;
+    height: 60px;
+    width: 30px;
+    justify-content: center;
+    outline: none;
+    background: rgba(0, 0, 0, .3);
+}
+.w3-display-left:hover, .w3-display-right:hover {
+    background-color: rgba(0, 0, 0, 0.8); /* Nền đậm hơn khi hover */
+}
+.w3-display-left {
+    left: 0;
+    border-radius: 0 50% 50% 0; /* Hình dạng nửa hình tròn */
+}
+.w3-display-right {
+    right: 0;
+    border-radius: 50% 0 0 50%; /* Hình dạng nửa hình tròn */
+}
+.slideshow-container:hover .w3-display-left,
+.slideshow-container:hover .w3-display-right {
+    display: block; /* Hiển thị nút khi hover qua container */
+}
+.custom-slide .horizontal-banner {
+    width: 100%;
+    border: 1px solid white;
+    border-radius: 10px;
+}
+.custom-slide .custom-content-slide {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    /*background-color: #fff;*/
+    background-clip: border-box;
+    border: 1px solid rgba(0, 0, 0, .125);
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    /*background: linear-gradient(135deg, #fff, #f8f9fa);*/
+}
+
+.custom-slide {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+    margin-top: 5px;
+}
+
+/*.content-slide .custom-content-slide {*/
+/*    background-color: #fff;*/
+/*    background-clip: border-box;*/
+/*    border: 1px solid rgba(0, 0, 0, .125);*/
+/*    border-radius: .25rem;*/
+/*}*/
+
+.custom-slide .custom-content-slide .content-slide {
+    width: 20%;
+    text-align: center;
+    align-items: center;
+    background: #fff;
+    border-radius: 0;
+    color: #343a40;
+    cursor: pointer;
+    display: flex;
+    font-size: 12px;
+    min-height:  55px;
+    justify-content: center;
+    line-height: 20px;
+    margin: 0;
+    overflow: hidden;
+    border-bottom: 2.5px solid transparent;
+    box-shadow: 0 0 0px rgba(0, 0, 0, 0.1);
+    padding: 2px;
+}
+.custom-slide .custom-content-slide .swiper-slide-active:hover,
+.custom-slide .custom-content-slide .swiper-slide-active.active{
+    background-color: #f3f4f6;
+    border-bottom: 2.5px solid #d70018;
+    color: #343a40;
+    font-weight: 700;
+    height: 100%;
+}
+
+
+.w3-display-right {
+    right: 0;
+    border-radius: 100px 0 0 100px;
+    background: rgba(0, 0, 0, .3);
+}
+
+.w3-display-left {
+    right: 0;
+    border-radius: 0 100px 100px 0;
+    background: rgba(0, 0, 0, .3);
+}
+
+.swiper-container {
+    box-sizing: border-box;
+    height: 22%;
+    padding: 0 0 2.4px;
+}
+
+.horizontal-banner {
+    margin-bottom: 15px;
+    margin-top: 10px ;
+}
