@@ -51,7 +51,7 @@
 .product-img{
     width: 150px;
     height: 150px;
-    object-fit: cover;
+    object-fit: contain;
 }
 .block__product-item__outer .block__product-item .product-info {
     /*width: 75%;*/

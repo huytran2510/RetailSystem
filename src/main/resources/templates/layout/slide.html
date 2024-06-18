@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<title>Spring Slideshow</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link th:href="@{/css/slide.css}" type="text/css" rel="stylesheet">
+<link th:href="@{/css/bootstrap.min.css}" type="text/css" rel="stylesheet">
+<body th:fragment="slide">
+<div class="container custom-slide d-flex flex-column align-items-center">
+    <div class="slideshow-container w3-content w3-display-container">
+        <img class="mySlides" th:src="@{/img/slide1.png}" style="width:100%">
+        <img class="mySlides" th:src="@{/img/slide2.png}" style="width:100%">
+        <img class="mySlides" th:src="@{/img/slide3.png}" style="width:100%">
+        <img class="mySlides" th:src="@{https://cdn2.cellphones.com.vn/insecure/rs:fill:690:300/q:90/plain/https://dashboard.cellphones.com.vn/storage/samsung-s24-ultra-sliding-15-6-2024.png}" style="width:100%">
+        <img class="mySlides" th:src="@{https://cdn2.cellphones.com.vn/insecure/rs:fill:690:300/q:90/plain/https://dashboard.cellphones.com.vn/storage/o-ro-o-re-giam-60-slide.png}" style="width:100%">
+        <button class="w3-button w3-black w3-display-left " onclick="plusDivs(-1)">&#10094;</button>
+        <button class="w3-button w3-black w3-display-right" onclick="plusDivs(1)">&#10095;</button>
+    </div>
+    <div class="custom-content-slide swiper-container">
+        <div class="content-slide swiper-slide-active">MỪNG KHAI TRƯƠNG <br> Ưu đãi hấp dẫn hơn</div>
+        <div  class="content-slide swiper-slide-active">GALAXY S24 ULTRA <br> Giá tốt chốt ngay</div>
+        <div  class="content-slide swiper-slide-active">Ô CƠ RẺ <br> Ô cơ rẻ giảm đến 60%</div>
+        <div  class="content-slide swiper-slide-active">IPHONE 15 PROMAX <br> Ưu đãi tốt mua ngay</div>
+        <div  class="content-slide swiper-slide-active">Xiaomi Redmi Note 11 <br> Giá ưu đãi mua ngay</div>
+    </div>
+    <img class="horizontal-banner" th:src="@{https://cdn2.cellphones.com.vn/insecure/rs:fill:1200:75/q:90/plain/https://dashboard.cellphones.com.vn/storage/b2s-2024-1200x75_Special-Banner_B2S_06.gif}"/>
+</div>
+
+<script>
+    var slideIndex = 1;
+    showDivs(slideIndex);
+
+    function plusDivs(n) {
+        showDivs(slideIndex += n);
+    }
+
+    function showDivs(n) {
+        var i;
+        var x = document.getElementsByClassName("mySlides");
+        if (n > x.length) {
+            slideIndex = 1
+        }
+        if (n < 1) {
+            slideIndex = x.length
+        }
+        for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";
+        }
+        x[slideIndex - 1].style.display = "block";
+    }
+</script>
+
+</body>
+</html>

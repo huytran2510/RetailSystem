@@ -1,6 +1,10 @@
 package com.ufm.retailsystems.configure.handle;
 
+
 import com.ufm.retailsystems.dto.cart.CartItem;
+import net.bytebuddy.implementation.bind.MethodDelegationBinder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -20,5 +24,12 @@ public class CartQuantityInterceptor implements HandlerInterceptor {
             int quantity = (cart != null) ? cart.size() : 0;
             modelAndView.addObject("quantity", quantity);
         }
+        if (modelAndView != null) {
+            Authentication userDetails = SecurityContextHolder.getContext().getAuthentication();
+            String username = (!"anonymousUser".equals(userDetails.getName())) ? userDetails.getName() : "Đăng nhập";
+            modelAndView.addObject("username", username);
+        }
+
     }
+
 }

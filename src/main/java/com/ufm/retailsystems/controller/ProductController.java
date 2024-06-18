@@ -8,6 +8,7 @@ import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.servlet.http.HttpSession;
 import java.text.DecimalFormat;
@@ -15,27 +16,14 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
 public class ProductController {
     @Autowired
     private HttpSession httpSession;
-    //    @GetMapping("/products")
-//    public String productList(Model model) {
-//        List<Product> products = getProducts(); // You would typically retrieve products from a database
-//        model.addAttribute("products", products);
-//        return "product-list";
-//    }
-//
-//    private List<Product> getProducts() {
-//        // Dummy data for demonstration purposes
-//        List<Product> products = new ArrayList<>();
-//        products.add(new Product(1L, "iPhone 12", "Apple iPhone 12", 999.99));
-//        products.add(new Product(2L, "Samsung Galaxy S21", "Samsung Galaxy S21", 899.99));
-//        products.add(new Product(3L, "Google Pixel 5", "Google Pixel 5", 699.99));
-//        return products;
-//    }
+
     @Autowired
     private IProductService iProductService;
 
@@ -47,19 +35,23 @@ public class ProductController {
                 .map(product -> formatPriceToVND(product.getUnitPrice()))
                 .collect(Collectors.toList());
         model.addAttribute("formattedPrices", formattedPrices);
+        List<String> formatPriceDiscount = products.stream()
+                .map(product -> formatPriceToVND(product.getUnitPrice()-product.getUnitPrice()*product.getDiscount().getDiscountPercent()))
+                .collect(Collectors.toList());
+        model.addAttribute("formatPriceDiscount", formatPriceDiscount);
         List<Slide> slides = new ArrayList<>();
         slides.add(new Slide("/img/slide1.png", "Title 1", "Description 1"));
         slides.add(new Slide("/img/slide2.png", "Title 2", "Description 2"));
         slides.add(new Slide("/img/slide3.png", "Title 3", "Description 3"));
         model.addAttribute("slides", slides);
-        return "list-product";
+        return "/product/list-product";
     }
 
     public String formatPriceToVND(double price) {
         NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
         DecimalFormat decimalFormat = (DecimalFormat) formatter;
         decimalFormat.applyPattern("#,###");
-        return decimalFormat.format(price) + " ₫";
+        return decimalFormat.format(price) + "đ";
     }
 
 
@@ -73,9 +65,19 @@ public class ProductController {
         return "/layout/nav-bar-banned";
     }
 
-    @GetMapping("/test")
-    public String test() {
-        return "test";
+    @GetMapping("/products/{productId}")
+    public String getProductDetail(@PathVariable Long productId, Model model) {
+        Optional<Product> optionalProduct = iProductService.findById(productId);
+        if (optionalProduct.isPresent()) {
+            Product product = optionalProduct.get();
+            model.addAttribute("product", product);
+            String formattedPrices = formatPriceToVND(product.getUnitPrice()) ;
+            model.addAttribute("formattedPrices", formattedPrices);
+            return "/product/product-detail";
+        } else {
+            // Xử lý khi không tìm thấy sản phẩm
+            return "error"; // Trang lỗi hoặc trang thông báo không tìm thấy sản phẩm
+        }
     }
 
     @GetMapping("/management-product")

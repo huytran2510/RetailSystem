@@ -1,12 +1,14 @@
 package com.ufm.retailsystems.entities;
 
 import com.ufm.retailsystems.dto.forcreate.CCustomer;
+import com.ufm.retailsystems.entities.enums.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -28,6 +30,10 @@ public class User {
 
     @ManyToOne
     private Role roles;
+
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
+
 
     private String firstName;
     private String lastName;

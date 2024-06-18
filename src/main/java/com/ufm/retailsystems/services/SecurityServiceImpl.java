@@ -20,6 +20,7 @@ public class SecurityServiceImpl implements ISecurityService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Qualifier("myUserDetailsService")
     @Autowired
     private UserDetailsService userDetailsService;
 
@@ -28,6 +29,7 @@ public class SecurityServiceImpl implements ISecurityService {
     @Override
     public String findLoggedInUsername() {
         Authentication userDetails = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println(userDetails.getName());
         return userDetails.getName();
     }
 

@@ -12,9 +12,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
-//        System.out.println(authentication.getName());
         System.out.println(authentication.getName());
-        response.sendRedirect("/login");
-
+        response.sendRedirect("/products");
     }
 }

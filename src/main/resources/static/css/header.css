@@ -17,7 +17,7 @@ body {
     padding-left: 5px;
 }
 .header .nav-logo .cart span{
-    top: 66%;
+    top: 63%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
@@ -50,17 +50,19 @@ body {
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    margin: 10px;
 }
 .logo-location {
-    height: 55px;
+    height: 40px;
 }
 .logo-truck {
-    height: 40px;
+    height: 30px;
     /*margin-left: 10px;*/
 }
 .logo-call:hover {
     background-color: #cb6e7f;
     /*border: 1px solid #cb6e7f;*/
+    min-height: 80px;
     border-radius: 10px;
     transition: background-color 0.3s, border 0.3s;
 }
@@ -167,4 +169,12 @@ p {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+.nav-logo a {
+    color: white;
+    text-decoration: none;
+}
+.nav-logo a:hover {
+    text-decoration: none;
+    color: white;
 }
