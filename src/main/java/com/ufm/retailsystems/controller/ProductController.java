@@ -4,6 +4,7 @@ import com.ufm.retailsystems.dto.slider.Slide;
 import com.ufm.retailsystems.entities.Product;
 import com.ufm.retailsystems.services.templates.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -75,5 +76,16 @@ public class ProductController {
     @GetMapping("/test")
     public String test() {
         return "test";
+    }
+
+    @GetMapping("/management-product")
+    public String managementProduct(Model model) {
+        List<Product> products = iProductService.findAll();
+        List<String> formattedPrices = products.stream()
+                .map(product -> formatPriceToVND(product.getUnitPrice()))
+                .collect(Collectors.toList());
+        model.addAttribute("formattedPrices", formattedPrices);
+        model.addAttribute("products" , products);
+        return "management-product";
     }
 }

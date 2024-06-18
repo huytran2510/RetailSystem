@@ -43,7 +43,7 @@ public class WebsecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/add-to-cart","/quantity-product").permitAll()
                 .antMatchers("/blog/create").hasAnyAuthority(ERole.USER.toString(), ERole.ADMIN.toString())
                 .antMatchers("/blog/**").hasAuthority(ERole.ADMIN.toString())
-                .antMatchers("/resources/**", "/register","/customer/login",("/products"),"/slider","/add-to-cart","/quantity-product","/cart").permitAll().anyRequest().authenticated()
+                .antMatchers("/resources/**", "/register","/customer/login",("/products"),"/slider","/add-to-cart","/quantity-product","/cart","/management-product").permitAll().anyRequest().authenticated()
                 .and().formLogin().loginPage("/login").permitAll()
                 .successHandler(new LoginSuccessHandler()).and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).permitAll();
     }
