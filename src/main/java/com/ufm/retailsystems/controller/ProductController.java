@@ -4,7 +4,6 @@ import com.ufm.retailsystems.dto.slider.Slide;
 import com.ufm.retailsystems.entities.Product;
 import com.ufm.retailsystems.services.templates.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,10 +34,10 @@ public class ProductController {
                 .map(product -> formatPriceToVND(product.getUnitPrice()))
                 .collect(Collectors.toList());
         model.addAttribute("formattedPrices", formattedPrices);
-        List<String> formatPriceDiscount = products.stream()
-                .map(product -> formatPriceToVND(product.getUnitPrice()-product.getUnitPrice()*product.getDiscount().getDiscountPercent()))
-                .collect(Collectors.toList());
-        model.addAttribute("formatPriceDiscount", formatPriceDiscount);
+//        List<String> formatPriceDiscount = products.stream()
+//                .map(product -> formatPriceToVND(product.getUnitPrice()-product.getUnitPrice()*product.getDiscount().getDiscountPercent()))
+//                .collect(Collectors.toList());
+//        model.addAttribute("formatPriceDiscount", formatPriceDiscount);
         List<Slide> slides = new ArrayList<>();
         slides.add(new Slide("/img/slide1.png", "Title 1", "Description 1"));
         slides.add(new Slide("/img/slide2.png", "Title 2", "Description 2"));
@@ -89,5 +88,10 @@ public class ProductController {
         model.addAttribute("formattedPrices", formattedPrices);
         model.addAttribute("products" , products);
         return "management-product";
+    }
+
+    @GetMapping("/payment")
+    public String payment(Model model) {
+        return "order-page";
     }
 }

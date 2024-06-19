@@ -9,6 +9,8 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/css/nav-bar-banned.css}">
     <link th:href="@{/css/slide.css}" type="text/css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/all.min.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
 </head>
 <body>
 <div th:replace="/layout/header :: header"></div>
@@ -21,7 +23,8 @@
     <div class="row mt-2">
         <div th:each="product, iterStat : ${products}"  class="col col-3 product-wrapper position-relative">
             <div class="product__price--percent position-absolute">
-                <p class="product__price--percent-detail" th:text="${product.getDiscount().getDiscountDescription()}">
+<!--                <p class="product__price&#45;&#45;percent-detail" th:text="${product.getDiscount().getDiscountDescription()}">-->
+                <p> giảm giá 27%
                 </p>
             </div>
             <div class="install-0-tag">
@@ -38,7 +41,7 @@
                 <div class="card-body">
                     <h5 class="card-title" th:text="${product.productName}">Product Name</h5>
                     <div class="product-price">
-                        <p class="card-text" th:text="${formatPriceDiscount[iterStat.index]}">
+<!--                        <p class="card-text" th:text="${formatPriceDiscount[iterStat.index]}">-->
                         </p>
                         <span class="card-text price-old" th:text="${formattedPrices[iterStat.index]}"></span>
                     </div>
@@ -55,6 +58,7 @@
         </div>
     </div>
 </div>
+<div th:replace="/layout/footer :: footer"></div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function() {

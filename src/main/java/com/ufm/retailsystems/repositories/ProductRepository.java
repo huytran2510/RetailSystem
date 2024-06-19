@@ -11,4 +11,5 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product,Long> {
     @Query("SELECT p FROM Product p JOIN FETCH p.productImages")
     List<Product> findAllWithImages();
+
 }
