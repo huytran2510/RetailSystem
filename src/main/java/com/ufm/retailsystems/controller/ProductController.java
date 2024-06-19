@@ -34,10 +34,10 @@ public class ProductController {
                 .map(product -> formatPriceToVND(product.getUnitPrice()))
                 .collect(Collectors.toList());
         model.addAttribute("formattedPrices", formattedPrices);
-//        List<String> formatPriceDiscount = products.stream()
-//                .map(product -> formatPriceToVND(product.getUnitPrice()-product.getUnitPrice()*product.getDiscount().getDiscountPercent()))
-//                .collect(Collectors.toList());
-//        model.addAttribute("formatPriceDiscount", formatPriceDiscount);
+        List<String> formatPriceDiscount = products.stream()
+                .map(product -> formatPriceToVND(product.getUnitPrice()-product.getUnitPrice()*product.getDiscount().getDiscountPercent()))
+                .collect(Collectors.toList());
+        model.addAttribute("formatPriceDiscount", formatPriceDiscount);
         List<Slide> slides = new ArrayList<>();
         slides.add(new Slide("/img/slide1.png", "Title 1", "Description 1"));
         slides.add(new Slide("/img/slide2.png", "Title 2", "Description 2"));

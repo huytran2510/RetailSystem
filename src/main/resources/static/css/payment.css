@@ -102,3 +102,20 @@ span.price {
         margin-bottom: 20px;
     }
 }
+
+#orderSuccessMessage {
+    width: 300px;
+    position: fixed;
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #dff0d8;
+    color: #3c763d;
+    padding: 20px;
+    border: 1px solid #d6e9c6;
+    border-radius: 5px;
+    z-index: 1000;
+}

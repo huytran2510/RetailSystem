@@ -167,9 +167,12 @@
                 <div class="bmsm-info__text" style="color: #637381">Chưa gồm chiết khấu SMember</div>
             </div>
         </div>
-        <button class="btn-action">
+        <button class="btn-action" onclick="location.href='/payment-page'">
             Mua ngay (<span th:text="${quantity}"></span>)
         </button>
+    </div>
+    <div id="orderSuccessMessage" style="display:none; color:green;">
+        Đặt hàng thành công!
     </div>
 </div>
 </body>

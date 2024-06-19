@@ -31,17 +31,17 @@
             <h3>Payment</h3>
             <label for="fname">Accepted Cards</label>
             <div class="icon-container">
-              <i class="fa fa-cc-visa" style="color:navy;"></i>
-              <i class="fa fa-cc-amex" style="color:blue;"></i>
-              <i class="fa fa-cc-mastercard" style="color:red;"></i>
-              <i class="fa fa-cc-discover" style="color:orange;"></i>
+              <i class="fa-brands fa-cc-visa" style="color:navy;"></i>
+              <i class="fa-brands fa-cc-amex" style="color:blue;"></i>
+              <i class="fa-brands fa-cc-mastercard" style="color:red;"></i>
+              <i class="fa-brands fa-cc-discover" style="color:orange;"></i>
             </div>
             <label for="cname">Name on Card</label>
             <input type="text" id="cname" name="cardname" placeholder="John More Doe">
             <label for="ccnum">Credit card number</label>
             <input type="text" id="ccnum" name="cardnumber" placeholder="1111-2222-3333-4444">
-            <label for="expmonth">Exp Month</label>
-            <input type="text" id="expmonth" name="expmonth" placeholder="September">
+            <label for="expmonth"><i class="fa-solid fa-phone"></i> Phone</label>
+            <input type="text" id="expmonth" name="shipPhone" placeholder="September">
           </div>
         </div>
         <label>
@@ -53,13 +53,34 @@
   </div>
   <div class="col-25">
     <div class="container">
-      <h4 class="font-weight-bold">Giỏ hàng <span class="price" style="color:black" ><i class="fa fa-shopping-cart"></i> <b>4</b></span></h4>
-      <p th:each="cart, iterStat : ${carts}"><a href="#" th:text="${cart.productName}">Product 1</a> <span th:text="${formattedPrices[iterStat.index]}" class="price">$15</span></p>
+      <h4 class="font-weight-bold">Giỏ hàng <span class="price" style="color:black" ><i class="fa fa-shopping-cart"></i> <b th:text="${quantity}">4</b></span></h4>
+      <p th:each="cart, iterStat : ${carts}"> <span class=""  th:text="${cart.quantity}"></span> x
+        <a href="#" th:text="${cart.productName}">Product 1</a>
+        <span th:text="${formattedPrices[iterStat.index]}" class="price"
+        ></span>
+      </p>
       <hr>
-      <p>Total <span class="price" style="color:black"><b>$30</b></span></p>
+      <p>Total <span class="price" style="color:black"><b th:text="${payment}"></b></span></p>
     </div>
+  </div>
+  <div id="orderSuccessMessage" th:if="${orderSuccess}" style="color:green;">
+    Đặt hàng thành công!
   </div>
 </div>
 <script th:src="@{/fontawesome-free-6.5.2-web/js/all.min.js}"></script>
+<script>
+  // Hàm để ẩn thông báo sau một khoảng thời gian
+  function hideSuccessMessage() {
+    var successMessage = document.getElementById("orderSuccessMessage");
+    if (successMessage) {
+      setTimeout(function() {
+        successMessage.style.display = "none";
+      }, 3000); // 3000ms = 3 giây
+    }
+  }
+
+  // Gọi hàm hideSuccessMessage khi trang được tải
+  window.onload = hideSuccessMessage;
+</script>
 </body>
 </html>

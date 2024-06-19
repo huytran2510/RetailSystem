@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.text.DecimalFormat;
@@ -26,7 +27,7 @@ public class OrderController {
     @Autowired
     private IOrderService orderService;
     @GetMapping("/payment-page")
-    public String cart(Model model, HttpSession session) {
+    public String orderPage(Model model, HttpSession session) {
         List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
         double payment = 0;
         if (cart != null && !cart.isEmpty()) {
@@ -55,16 +56,16 @@ public class OrderController {
     }
 
     @PostMapping("/save-order")
-    public String saveOrder(@ModelAttribute("order") COrder cOrder, BindingResult bindingResult) {
+    public String saveOrder(@ModelAttribute("order") COrder cOrder, BindingResult bindingResult, HttpSession session, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
-
             return "order-page";
         }
-
-        Order order = orderService.saveOrder(cOrder);
+        List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
+        Order order = orderService.saveOrder(cOrder, cart);
         if (order != null) {
-            return "order-page";
+            redirectAttributes.addFlashAttribute("orderSuccess", true);
+            return "redirect:/payment-page";
         }
-        return "order-page";
+        return "redirect:/payment-page";
     }
 }

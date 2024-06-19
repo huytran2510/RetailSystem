@@ -1,8 +1,10 @@
 package com.ufm.retailsystems.services;
 
+import com.ufm.retailsystems.dto.cart.CartItem;
 import com.ufm.retailsystems.dto.forcreate.COrder;
 import com.ufm.retailsystems.entities.*;
 import com.ufm.retailsystems.repositories.*;
+import com.ufm.retailsystems.services.templates.IOrderDetailService;
 import com.ufm.retailsystems.services.templates.IOrderService;
 import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class OrderServiceImpl implements IOrderService {
@@ -30,9 +33,12 @@ public class OrderServiceImpl implements IOrderService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private IOrderDetailService orderDetailService;
+
 
     @Override
-    public Order saveOrder(COrder cOrder) {
+    public Order saveOrder(COrder cOrder, List<CartItem> itemList) {
         Order order = new Order();
         order.setOrderId(generateOrderId());
         order.setOrderDate(LocalDate.now());
@@ -43,7 +49,7 @@ public class OrderServiceImpl implements IOrderService {
         order.setShippedDate(cOrder.getShippedDate());
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
-        if (username != null) {
+        if (!username.equals("anonymousUser")) {
             Customer customer = customerRepository.findByUsername(username);
             order.setCustomer(customer);
         }
@@ -55,9 +61,13 @@ public class OrderServiceImpl implements IOrderService {
         Shipper shipper = shipperRepository.findById(1L)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid shipper ID"));
         order.setShipper(shipper);
-
         // Save the entity to the database
-        return orderRepository.save(order);
+        orderRepository.save(order);
+
+        for (CartItem item : itemList) {
+            orderDetailService.save(item,order);
+        }
+        return order;
     }
 
     public String generateOrderId(){

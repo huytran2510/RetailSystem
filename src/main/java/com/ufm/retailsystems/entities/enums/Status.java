@@ -1,7 +1,7 @@
 package com.ufm.retailsystems.entities.enums;
 
 public enum Status {
-    PENDING("PENDING"), DISPATCHED("DISPATCHED"), IN_TRANSIT("IN_TRANSIT"), DELIVERED("DELIVERED"), RETURNED("RETURNED");
+    PENDING("PENDING"), DELIVERED("DELIVERED"), SHIPPED("SHIPPED");
     private final String text;
 
     private Status(final String text) {
