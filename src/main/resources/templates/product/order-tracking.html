@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link th:href="@{/css/bootstrap.min.css}" type="text/css" rel="stylesheet">
+    <link href="/static/css/bootstrap.min.css" type="text/css" rel="stylesheet">
+    <link href="/static/css/order-tracking.css" type="text/css" rel="stylesheet">
+    <link th:href="@{/css/order-tracking.css}" type="text/css" rel="stylesheet">
+    \
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+</head>
+<body>
+<div th:replace="/layout/header :: header"></div>
+<div id="breadcrumbs">
+    <div class="block-breadcrumbs affix">
+        <div class="cps-container ">
+            <ul class="d-flex flex-row align-items-center ">
+                <li>
+                    <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="10.633"
+                             viewBox="0 0 12 10.633">
+                            <path id="home"
+                                  d="M13.2,9.061H12.1v3.965a.6.6,0,0,1-.661.661H8.793V9.721H6.15v3.965H3.507a.6.6,0,0,1-.661-.661V9.061h-1.1c-.4,0-.311-.214-.04-.494L7,3.259a.634.634,0,0,1,.936,0l5.3,5.307c.272.281.356.495-.039.495Z"
+                                  transform="translate(-1.471 -3.053)" fill="#d70018"></path>
+                        </svg>
+                    </div>
+                    <a href="/" class="button__home nuxt-link-active">Trang chủ</a></li>
+                <li>
+                    <div class="d-flex flex-row align-items-center text-center">
+                        <div>
+                            <svg height="15" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                                <path d="M96 480c-8.188 0-16.38-3.125-22.62-9.375c-12.5-12.5-12.5-32.75 0-45.25L242.8 256L73.38 86.63c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0l192 192c12.5 12.5 12.5 32.75 0 45.25l-192 192C112.4 476.9 104.2 480 96 480z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <p>
+                                TRA CỨU TÌNH TRẠNG ĐƠN HÀNG ONLINE
+                            </p>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="cps-container cps-body">
+    <div style="display:none;">
+        <div id="page_loader">
+            <div class="logo"></div>
+            <div class="loader"></div>
+        </div>
+    </div>
+    <div id="tra-cuu-don-hang">
+
+        <div class="box-tra-cuu py-2 px-2"><p class="box-search-title">Kiểm tra thông tin đơn hàng <span><br> &amp; tình trạng vận chuyển</span>
+        </p>
+            <form class="box-search-info is-flex is-flex-direction-column is-justify-content-center is-align-items-center">
+                <div class="field">
+                    <div class="box-search-item">
+                        <input id="inputPhone" name="phone" type="text" maxlength="10" required="required"
+                               class="box-search-item input-field">
+                        <label for="inputPhone" title="Số điện thoại (bắt buộc)" data-title="Số điện thoại" class="placeholder-label"></label>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="box-search-item input-field">
+                        <label
+                                for="name" title="Mã đơn hàng (bắt buộc)" data-title="Mã đơn hàng" class="placeholder-label"></label>
+                        <input id="name" name="name" type="text" required="required" class="box-search-item">
+
+                    </div>
+                </div>
+                <button type="submit" class="button button__check-order">Kiểm tra</button>
+            </form>
+            <div class="bg-order-check"></div>
+            <div class="bg-image"><img
+                    src="https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/wysiwyg/Shipper2.png"
+                    alt="cps-icon"></div>
+            <div id="order-info" class="cps-order-container"><!----></div>
+        </div>
+    </div>
+    <!--    <div style="">-->
+    <!--        <button id="backToTop" title="Back to top" class="btn-back-to-top button__back-to-top">-->
+    <!--            <div class="icon-up">-->
+    <!--                <svg height="15" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">-->
+    <!--                    <path d="M416 352c-8.188 0-16.38-3.125-22.62-9.375L224 173.3l-169.4 169.4c-12.5 12.5-32.75 12.5-45.25 0s-12.5-32.75 0-45.25l192-192c12.5-12.5 32.75-12.5 45.25 0l192 192c12.5 12.5 12.5 32.75 0 45.25C432.4 348.9 424.2 352 416 352z"></path>-->
+    <!--                </svg>-->
+    <!--            </div>-->
+    <!--            <strong>Lên đầu</strong></button>-->
+    <!--        <a id="btnZaloChat" target="_blank" rel="noopener nofollow" href="https://zalo.me/3894196696036261863"-->
+    <!--           class="btn-zalo-chat button__zalo"><img-->
+    <!--                src="https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/icons/icon-zalo.png"-->
+    <!--                alt="Zalo Button"></a></div>-->
+</div>
+</body>
+</html>

@@ -56,6 +56,32 @@ public class OrderController {
         return "order-page";
     }
 
+    @GetMapping("/order-tracking")
+    public String orderTracking(Model model, HttpSession session) {
+//        List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
+//        double payment = 0;
+//        if (cart != null && !cart.isEmpty()) {
+//            List<String> formattedPrices = cart.stream()
+//                    .map(product -> formatPriceToVND(product.getPrice()))
+//                    .collect(Collectors.toList());
+//            for(CartItem cartItem : cart) {
+//                payment += (cartItem.getPriceDiscount() * cartItem.getQuantity());
+//            }
+//            List<String> formatPriceDiscount = cart.stream()
+//                    .map(product -> formatPriceToVND(product.getPriceDiscount()))
+//                    .collect(Collectors.toList());
+//            model.addAttribute("formatPriceDiscount", formatPriceDiscount);
+//            model.addAttribute("payment", formatPriceToVND(payment));
+//            model.addAttribute("carts", cart);
+//            model.addAttribute("order", new COrder());
+//            model.addAttribute("formattedPrices", formattedPrices);
+//            model.addAttribute("isCartEmpty", false); // Cart is not empty
+//        } else {
+//            model.addAttribute("isCartEmpty", true); // Cart is empty
+//        }
+        return "/product/order-tracking";
+    }
+
     @GetMapping("/order-page/{orderId}")
     public String paymentPage(@PathVariable String orderId , Model model) {
         List<OrderDetail> orderDetails = orderDetailService.findAllByOrderId(orderId);

@@ -9,9 +9,11 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/css/nav-bar-banned.css}">
     <link th:href="@{/css/slide.css}" type="text/css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.css" rel="stylesheet"
+          type="text/css"/>
     <link rel="stylesheet" th:href="@{/css/all.min.css}">
     <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <link rel="preload" href="/Content/web/fonts/icon/fonts/hoangha.woff" as="font" type="font/woff" crossorigin="">
     <style>
         .container {
             max-width: 1440px;
@@ -21,14 +23,24 @@
 <body>
 <div th:replace="/layout/header :: header"></div>
 <div class="container custom-slide d-flex flex-row align-items-center justify-content-center mt-2">
-<!--    <div th:replace="/layout/nav-bar-banned :: nav-banned "></div>-->
+    <!--    <div th:replace="/layout/nav-bar-banned :: nav-banned "></div>-->
     <div th:replace="/layout/slide :: slide "></div>
 
 </div>
 <div class="container">
-    <div class="product-list-title d-flex flex-row " style=""><a href="https://cellphones.com.vn/mobile.html" class="title button__link"><h2>ĐIỆN THOẠI NỔI BẬT NHẤT</h2></a> <div class="list-related-tag"><a href="/mobile/1" class="related-tag button__link">Apple</a><a href="/mobile/2" class="related-tag button__link">Samsung</a><a href="/mobile/3" class="related-tag button__link">Xiaomi</a><a href="/mobile" class="related-tag button__link">Xem tất cả</a></div></div>
+    <div class="product-list-title d-flex flex-row " style="">
+        <a href="https://cellphones.com.vn/mobile.html"
+           class="title button__link"><h2>ĐIỆN THOẠI NỔI BẬT NHẤT</h2>
+        </a>
+        <div class="list-related-tag">
+            <a href="/mobile/1" class="related-tag button__link">Apple</a>
+            <a href="/mobile/2" class="related-tag button__link">Samsung</a>
+            <a href="/mobile/3" class="related-tag button__link">Xiaomi</a>
+            <a href="/mobile" class="related-tag button__link">Xem tất cả</a>
+        </div>
+    </div>
     <div class="row mt-2">
-        <div th:each="product, iterStat : ${products}"  class="col col-3 product-wrapper position-relative">
+        <div th:each="product, iterStat : ${products}" class="col col-3 product-wrapper position-relative">
             <div class="product__price--percent position-absolute">
                 <p class="product__price--percent-detail" th:text="${product.getDiscount().getDiscountDescription()}">
                 </p>
@@ -59,16 +71,86 @@
                         </button>
                     </form>
                 </div>
-
             </div>
         </div>
+    </div>
+</div>
+<div id="targetdock">
+    <div class="ddv-dock dock1">
+        <a target="_blank" href="https://didongviet.vn/2-ngay-deal-he.html">
+            <img src="https://didongviet.vn/landingpage/files/Untitled-1.png">
+        </a>
+    </div>
+    <div class="ddv-dock dock2" style="padding-bottom:10px;">
+        <a href="/kho-san-pham-cu">
+            <img src="https://hoanghamobile.com/Content/web/img/maycugiatot.png">
+        </a>
+    </div>
+    <div class="ddv-dock dock3" style="padding-bottom:10px;">
+        <a href="/kho-san-pham-cu">
+            <img src="https://hoanghamobile.com/Content/web/img/thucugiacao.png">
+        </a>
+    </div>
+    <style>
+        .ddv-dock {
+            position: fixed;
+            z-index: 99;
+        }
+
+        .ddv-dock img {
+            width: 140px;
+            margin-right: 50px;
+        }
+
+        @media screen and (min-width: 1024px) {
+            .ddv-dock.dock1 {
+                bottom: 50%;
+                right: 10px;
+            }
+
+            .ddv-dock.dock2 {
+                bottom: 35%;
+                right: 10px;
+            }
+            .ddv-dock.dock3 {
+                bottom: 20%;
+                right: 10px;
+            }
+        }
+
+        @media screen and (max-width: 991px) {
+            .ddv-dock.dock1 {
+                bottom: 140px;
+                left: 10px;
+            }
+
+            .ddv-dock.dock2 {
+                top: 70px;
+                left: 10px;
+            }
+
+            .ddv-dock.dock3 {
+                top: 30px;
+                left: 10px;
+            }
+        }
+    </style>
+</div>
+<div id="navSocial">
+    <div class="social">
+        <ul>
+            <li><a href="#" title="Facebook Hoàng Hà Mobile" target="_blank" class="blue"><span><i class="fa-brands fa-facebook"></i></span></a></li>
+            <li><a href="#" title="Youtube Hoàng Hà Mobile Channel" target="_blank" class="red"><span><i class="fa-brands fa-youtube"></i></span></a></li>
+            <li><a href="#" title="Hoàng Hà Mobile Instagram" target="_blank" class="rainbow"><span><i class="fa-brands fa-instagram"></i></span></a></li>
+            <li><a href="#" title="Tiktok" target="_blank" class="black"><span><i class="fa-brands fa-tiktok"></i></span></a></li>
+        </ul>
     </div>
 </div>
 <div th:replace="/layout/footer :: footer"></div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    $(document).ready(function() {
-        $('.btn-add-to-cart').click(function(e) {
+    $(document).ready(function () {
+        $('.btn-add-to-cart').click(function (e) {
             e.preventDefault(); // Ngăn chặn hành động mặc định của sự kiện click
 
             var form = $(this).closest('.add-to-cart-form'); // Tìm form bên trong nút được click
@@ -79,18 +161,18 @@
                 type: "POST",
                 url: form.attr('action'),
                 data: formData,
-                success: function(response) {
+                success: function (response) {
                     console.log('Sản phẩm đã được thêm vào giỏ hàng.', response);
                     // Redirect to the cart page after successful addition
                     window.location.href = '/cart';
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     console.error('Lỗi khi thêm sản phẩm vào giỏ hàng.', error);
                     // Handle error case if needed
                 }
             });
         });
-        $('.image-container').click(function(e) {
+        $('.image-container').click(function (e) {
             e.preventDefault(); // Ngăn chặn hành động mặc định của sự kiện click
 
             var productId = $(this).closest('.product-wrapper').find('input[name="productId"]').val();

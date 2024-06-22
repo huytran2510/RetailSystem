@@ -40,7 +40,7 @@
         <ul class="header align-self-center m-lg-0">
             <li class="nav-logo m-lg-0">
                 <a th:href="@{/mobile}">
-                    <img th:src="@{https://t4.ftcdn.net/jpg/05/08/58/03/360_F_508580355_2XbYC9mx4PqJmzrqzIN52DdQK2PAw5AI.jpg}" class="logo-cellphones">
+                    <img th:src="@{/img/svg.svg}" class="logo-cellphones">
                 </a>
             </li>
             <li class="nav-logo m-lg-0">
@@ -68,13 +68,15 @@
                 </div>
             </li>
             <li class="nav-logo m-lg-0">
-                <div class="logo-call">
-                    <img th:src="@{/img/truck.svg}" class="logo-truck">
-                    <div>
-                        <p>Tra cứu</p>
-                        <p>đơn hàng</p>
+                <a href="/order-tracking">
+                    <div class="logo-call">
+                        <img th:src="@{/img/truck.svg}" class="logo-truck">
+                        <div>
+                            <p>Tra cứu</p>
+                            <p>đơn hàng</p>
+                        </div>
                     </div>
-                </div>
+                </a>
             </li>
             <li class="nav-logo m-lg-0">
                 <a href="/cart">

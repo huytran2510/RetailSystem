@@ -33,6 +33,9 @@ public class Product {
     @JoinColumn(name = "category_id")
     private Category category;
 
+    @Column(length = 400)
+    private String description;
+
 
     @OneToMany(mappedBy = "product")
     private Set<OrderDetail> orderDetailSet;
@@ -46,9 +49,6 @@ public class Product {
     @ManyToMany(mappedBy = "product")
     private Set<ProductImages> productImages;
 
-    @ManyToOne
-    @JoinColumn(name = "product_description_id")
-    private ProductDescription productDescription ;
 
     public String getSingleImgUrl() {
         if (productImages != null && !productImages.isEmpty()) {

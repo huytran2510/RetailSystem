@@ -27,7 +27,7 @@
                 <input class="form-control" id="inputQuantity" type="number" value="1">
                 <form th:action="@{/add-to-cart}" class="add-to-cart-form" method="post">
                     <input type="hidden" name="productId" th:value="${product.productId}"/>
-                    <button class="btn btn-add-to-cart" type="button">
+                    <button class="btn btn-add-to-cart" type="submit">
                         <img class="shopping-cart" th:src="@{/img/shopping-cart.svg}" alt="Product Image">
                         Add to cart
                     </button>
@@ -36,5 +36,42 @@
         </div>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.btn-add-to-cart').click(function (e) {
+            e.preventDefault(); // Ngăn chặn hành động mặc định của sự kiện click
+
+            var form = $(this).closest('.add-to-cart-form'); // Tìm form bên trong nút được click
+            var formData = form.serialize(); // Chuyển đổi form thành dữ liệu chuỗi
+
+            // Perform AJAX request to add product to cart
+            $.ajax({
+                type: "POST",
+                url: form.attr('action'),
+                data: formData,
+                success: function (response) {
+                    console.log('Sản phẩm đã được thêm vào giỏ hàng.', response);
+                    // Redirect to the cart page after successful addition
+                    window.location.href = '/cart';
+                },
+                error: function (xhr, status, error) {
+                    console.error('Lỗi khi thêm sản phẩm vào giỏ hàng.', error);
+                    // Handle error case if needed
+                }
+            });
+        });
+    });
+    document.addEventListener('DOMContentLoaded', function () {
+        const slides = document.querySelectorAll('.custom-content-slide .content-slide');
+
+        slides.forEach(slide => {
+            slide.addEventListener('click', function () {
+                slides.forEach(s => s.classList.remove('active')); // Loại bỏ lớp active từ tất cả các slide
+                this.classList.add('active'); // Thêm lớp active vào slide được click
+            });
+        });
+    });
+</script>
 </body>
 </html>
