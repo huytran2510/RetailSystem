@@ -22,7 +22,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "username", unique = true)
+    @Column(name = "username", unique = true,nullable = false)
     private String username;
 
     @Column(name = "password")
@@ -34,10 +34,13 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-
+    @Column(nullable = false)
     private String firstName;
+    @Column(nullable = false)
     private String lastName;
+    @Column(nullable = false)
     private String email;
+    @Column(nullable = false)
     private String phone;
     private LocalDate birthday;
 

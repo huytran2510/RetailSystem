@@ -5,6 +5,9 @@ body {
     font-family: Roboto, sans-serif!important;
     font-size: 13px;
 }
+b{
+
+}
 .row {
     display: -ms-flexbox; /* IE10 */
     display: flex;
@@ -88,9 +91,10 @@ hr {
     border: 1px solid lightgrey;
 }
 
-span.price {
+.price {
     float: right;
     color: grey;
+    font-size: 20px;
 }
 
 /* Responsive layout - when the screen is less than 800px wide, make the two columns stack on top of each other instead of next to each other (also change the direction - make the "cart" column go on top) */
@@ -118,4 +122,15 @@ span.price {
     border: 1px solid #d6e9c6;
     border-radius: 5px;
     z-index: 1000;
+}
+
+.price-old{
+    color: #707070;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 600;
+    position: relative;
+    -webkit-text-decoration: line-through;
+    text-decoration: line-through;
+
 }

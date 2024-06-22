@@ -3,43 +3,118 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link th:href="@{/css/login.css}" type="text/css" rel="stylesheet">
-    <link href="/static/css/login.css" type="text/css" rel="stylesheet">
-    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <!--    <link th:href="@{/css/login.css}" type="text/css" rel="stylesheet">-->
+    <!--    <link href="/static/css/login.css" type="text/css" rel="stylesheet">-->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script th:src="@{/js/jquery-1.11.1.min.js}"></script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f2f2f2;
+            font-family: Arial, sans-serif;
+        }
+        .content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+        .content h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #333;
+        }
+        .content i {
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+        .form {
+            display: flex;
+            flex-direction: column;
+        }
+        .input-container {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        .input-container i {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+        }
+        .input-container input {
+            width: 100%;
+            padding: 10px 10px 10px 35px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .input-container input:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+        button {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .forgot-password {
+            margin-top: 20px;
+        }
+        .forgot-password a {
+            color: #007bff;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .forgot-password a:hover {
+            color: #0056b3;
+        }
+    </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
-<div th:replace="/layout/header :: header"></div>
-<div class="container">
-    <div class="content">
-        <h1>Member Login</h1>
-        <i class='fas fa-phone-volume' style='font-size:48px;color:#ffffff'></i>
-        <form class="form" id="form" th:action="@{/login}" method="POST">
-            <div class="input-container">
-                <i class="fas fa-user"></i>
-                <input
-                        id="username"
-                        name="username"
-                        type="text"
-                        placeholder="User Name"
-                />
-            </div>
-            <div class="input-container">
-                <i class="fas fa-lock"></i>
-                <input
-                        id="password"
-                        name="password"
-                        type="password"
-                        placeholder="Password"
-                />
-            </div>
-            <br />
-            <button id="submit" type="submit" >Submit</button>
-            <br />
-            <div class="forgot-password">
-                <a href="/register">Click here to register?</a>
-            </div>
-        </form>
-    </div>
+<!--<div th:replace="/layout/header :: header"></div>-->
+<div class="content">
+    <h1>Member Login</h1>
+    <i class="fa fa-sign-in" aria-hidden="true" style='font-size:48px;color:#007bff'></i>
+    <form class="form" id="form" th:action="@{/login}" method="POST">
+        <div class="input-container">
+            <i class="fas fa-user"></i>
+            <input
+                    id="username"
+                    name="username"
+                    type="text"
+                    placeholder="User Name"
+            />
+        </div>
+        <div class="input-container">
+            <i class="fas fa-lock"></i>
+            <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    placeholder="Password"
+            />
+        </div>
+        <br />
+        <button id="submit" type="submit">Submit</button>
+        <br />
+    </form>
 </div>
 </body>
 </html>

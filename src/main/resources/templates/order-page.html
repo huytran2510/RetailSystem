@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -54,11 +54,11 @@
   <div class="col-25">
     <div class="container">
       <h4 class="font-weight-bold">Giỏ hàng <span class="price" style="color:black" ><i class="fa fa-shopping-cart"></i> <b th:text="${quantity}">4</b></span></h4>
-      <p th:each="cart, iterStat : ${carts}"> <span class=""  th:text="${cart.quantity}"></span> x
+      <div th:each="cart, iterStat : ${carts}"> <span class=""  th:text="${cart.quantity}"></span> x
         <a href="#" th:text="${cart.productName}">Product 1</a>
-        <span th:text="${formattedPrices[iterStat.index]}" class="price"
-        ></span>
-      </p>
+        <p th:text="${formatPriceDiscount[iterStat.index]}" class="price"></p></br>
+        <p class="price-old price" th:text="${formattedPrices[iterStat.index]}"></p>
+      </div>
       <hr>
       <p>Total <span class="price" style="color:black"><b th:text="${payment}"></b></span></p>
     </div>

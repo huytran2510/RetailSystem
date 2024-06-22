@@ -28,9 +28,11 @@ body {
     /*margin-left: 10px;*/
 }
 .logo-cellphones {
-    width: 300px;
-    height: auto;
+    width: fit-content;
+    height: 80px;
+
     /*margin: 0 auto;*/
+    border-radius: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -43,6 +45,13 @@ body {
 .container-header {
     background-color: #E0062D;
     height: 140px;
+    /*position: fixed;*/
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    width: 100%;
+    /*margin-bottom: 50px;*/
+    position: sticky;
+
 }
 
 .logo-call {

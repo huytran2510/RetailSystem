@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -20,11 +21,14 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productId;
 
+    @Column(nullable = false)
     private String productName;
+    @Column(nullable = false)
     private Double unitPrice;
+    @Column(nullable = false)
     private Integer unitsInStock;
+    @Column(nullable = false)
     private Boolean discontinued;
-
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;

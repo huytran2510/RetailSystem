@@ -8,4 +8,7 @@ import java.util.List;
 
 public interface IOrderService {
     Order saveOrder(COrder cOrder, List<CartItem> itemList);
+    Order findByOrderId(String orderId);
+
+    List<Order> findAll();
 }

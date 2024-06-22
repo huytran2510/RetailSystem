@@ -45,7 +45,7 @@
                 </div>
                 <div class="product-info">
                     <div class="d-flex justify-content-between align-items-center">
-                        <a th:href="@{'/products/' + ${cart.productId}}" class="product-name"
+                        <a th:href="@{'/mobile/detail/' + ${cart.productId}}" class="product-name"
                            th:text="${cart.getProductName()}"></a>
                         <form th:action="@{/remove-item}" method="post">
                             <input type="hidden" name="productId" th:value="${cart.productId}">
@@ -67,7 +67,8 @@
                         <div class="block-box-price">
                             <span class="title-price" style="display: none;">:</span>
                             <div class="box-info__box-price">
-                                <p class="product__price--show m-0" th:text="${formattedPrices[iterStat.index]}"></p>
+                                <p class="product__price--show m-0" th:text="${formattedPricesDiscount[iterStat.index]}"></p>
+                                <p class=" price-old m-0" th:text="${formattedPrices[iterStat.index]}" ></p>
                             </div>
                         </div>
                         <div class="action d-flex justify-content-between align-items-center">
@@ -167,7 +168,7 @@
                 <div class="bmsm-info__text" style="color: #637381">Chưa gồm chiết khấu SMember</div>
             </div>
         </div>
-        <button class="btn-action" onclick="location.href='/payment-page'">
+        <button class="btn-action" onclick="location.href='/order-page'">
             Mua ngay (<span th:text="${quantity}"></span>)
         </button>
     </div>

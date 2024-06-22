@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="/static/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="/static/css/sb-admin-2.min.css" rel="stylesheet" type="text/css">
+    <link href="/static/css/dataTables.boostrap4.min.css" rel="stylesheet" type="text/css">
+    <link th:href="@{https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i}"
+          rel="stylesheet">
+    <link th:href="@{/css/all.min.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{/css/dataTables.boostrap4.min.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{/css/sb-admin-2.min.css}" rel="stylesheet" type="text/css">
+    <style>
+        .status-images img {
+            /*border-radius: 50%;*/
+            width: 50px; /* Đặt kích thước hình ảnh theo yêu cầu của bạn */
+            height: 50px; /* Đặt kích thước hình ảnh theo yêu cầu của bạn */
+            object-fit: cover; /* Đảm bảo hình ảnh vừa với khung tròn */
+        }
+    </style>
+</head>
+<body>
+<div class="d-flex flex-row ">
+    <div th:replace="/layout/blank :: blank">
+    </div>
+    <div class=" d-flex flex-column w-100">
+        <!-- DataTales Example -->
+        <div th:replace="/layout/top-bar :: top-bar"> </div>
+        <div class="ml-3 card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">MANAGEMENT PRODUCT</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive custom-table">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th>OrderId</th>
+                            <th>Tên Khách Hàng</th>
+                            <th>Số điện thoại</th>
+                            <th>Địa chỉ</th>
+                            <th>Tổng giá tiền thanh toán</th>
+                            <th>Ngày đặt hàng</th>
+                            <th>Ngày giao hàng</th>
+                            <th>Trạng thái</th>
+                        </tr>
+                        </thead>
+                        <tfoot>
+                        <tr>
+                            <th>OrderId</th>
+                            <th>Tên Khách Hàng</th>
+                            <th>Số điện thoại</th>
+                            <th>Địa chỉ</th>
+                            <th>Tổng giá tiền thanh toán</th>
+                            <th>Ngày đặt hàng</th>
+                            <th>Ngày giao hàng</th>
+                            <th>Trạng thái</th>
+                        </tr>
+                        </tfoot>
+                        <tbody>
+                        <tr th:each="order, iterStat : ${orders}">
+                            <td th:text="${order.orderId}">Shad Decker</td>
+                            <td th:text="${order.shipName}">Regional Director</td>
+                            <td th:text="${order.shipPhone}">Regional Director</td>
+                            <td th:text="${order.shipAddress}">Regional Director</td>
+                            <td th:text="${formattedPrices[iterStat.index]}">Edinburgh</td>
+                            <td th:text="${order.getRequiredDate()}"></td>
+                            <td th:text="${order.shippedDate}"></td>
+                            <td>
+                                <div th:switch="${order.getDeliveryStatus().getStatus().toString()}">
+                                    <div class="d-flex flex-column align-items-center justify-content-center status-images" th:case="'DELIVERED'">
+                                        <img
+                                             th:src="'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJs6mcj1AUoIOjQYtB2QRHbePE_cBrGFQjjA&s'"
+                                             alt="DELIVERED Product"/>
+                                        <span th:text="${order.getDeliveryStatus().getStatus().toString()} "></span>
+                                    </div>
+                                    <div class="d-flex flex-column align-items-center justify-content-center status-images" th:case="'PENDING'">
+                                        <img
+                                             th:src="'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_DFMAppSX_esl4sg0ywRxDplhFunmoCjgXg&s'"
+                                             alt="Pending Product"/>
+                                        <span th:text="${order.getDeliveryStatus().getStatus().toString()}"></span>
+                                    </div>
+
+                                    <div class="d-flex flex-column align-items-center justify-content-center status-images" th:case="'SHIPPING'">
+                                        <img
+                                             th:src="'https://cdn-icons-png.flaticon.com/512/9422/9422848.png'"
+                                             alt="Shipping Product"/>
+                                        <span th:text="${order.getDeliveryStatus().getStatus().toString()}"></span>
+                                    </div>
+
+                                    <img class="icon icon-circle" th:case="*"
+                                         th:src="'https://via.placeholder.com/150/ff0000/FFFFFF?text=UNKNOWN'"
+                                         alt="Unknown Status"/>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Bootstrap core JavaScript-->
+<script th:src="@{/css/jquery/jquery.min.js}"></script>
+<script th:src="@{/css/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+<!-- Core plugin JavaScript-->
+<script th:src="@{/css/jquery-easing/jquery.easing.min.js}"></script>
+
+<!-- Custom scripts for all pages-->
+<script th:src="@{/js/sb-admin-2.min.js}"></script>
+
+<!-- Page level plugins -->
+<script th:src="@{/css/datatables/jquery.dataTables.min.js}"></script>
+<script th:src="@{/css/datatables/dataTables.bootstrap4.min.js}"></script>
+
+<!-- Page level custom scripts -->
+<script th:src="@{/js/demo/datatables-demo.js}"></script>
+</body>
+</html>

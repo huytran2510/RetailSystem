@@ -12,15 +12,21 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" th:href="@{/css/all.min.css}">
     <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <style>
+        .container {
+            max-width: 1440px;
+        }
+    </style>
 </head>
 <body>
 <div th:replace="/layout/header :: header"></div>
-<div class="container custom-slide d-flex flex-row align-items-center justify-content-center">
+<div class="container custom-slide d-flex flex-row align-items-center justify-content-center mt-2">
 <!--    <div th:replace="/layout/nav-bar-banned :: nav-banned "></div>-->
     <div th:replace="/layout/slide :: slide "></div>
 
 </div>
 <div class="container">
+    <div class="product-list-title d-flex flex-row " style=""><a href="https://cellphones.com.vn/mobile.html" class="title button__link"><h2>ĐIỆN THOẠI NỔI BẬT NHẤT</h2></a> <div class="list-related-tag"><a href="/mobile/1" class="related-tag button__link">Apple</a><a href="/mobile/2" class="related-tag button__link">Samsung</a><a href="/mobile/3" class="related-tag button__link">Xiaomi</a><a href="/mobile" class="related-tag button__link">Xem tất cả</a></div></div>
     <div class="row mt-2">
         <div th:each="product, iterStat : ${products}"  class="col col-3 product-wrapper position-relative">
             <div class="product__price--percent position-absolute">
@@ -39,7 +45,7 @@
                     </form>
                 </div>
                 <div class="card-body">
-<!--                    <h5 class="card-title" th:text="${product.productName}">Product Name</h5>-->
+                    <h5 class="card-title" th:text="${product.productName}">Product Name</h5>
                     <div class="product-price">
                         <p class="card-text" th:text="${formatPriceDiscount[iterStat.index]}">
                         </p>
@@ -88,7 +94,7 @@
             e.preventDefault(); // Ngăn chặn hành động mặc định của sự kiện click
 
             var productId = $(this).closest('.product-wrapper').find('input[name="productId"]').val();
-            window.location.href = '/products/' + productId;
+            window.location.href = '/mobile/detail/' + productId;
         });
     });
     document.addEventListener('DOMContentLoaded', function () {

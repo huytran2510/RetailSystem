@@ -60,7 +60,7 @@ public class UserController {
             Authentication userDetails = SecurityContextHolder.getContext().getAuthentication();
             System.out.println(userDetails.getName());
             System.out.println("success login");
-            return "redirect:/products";
+            return "redirect:/management-product";
         } catch (AuthenticationException e) {
             // Handle authentication failure
             model.addAttribute("error", "Invalid username or password.");

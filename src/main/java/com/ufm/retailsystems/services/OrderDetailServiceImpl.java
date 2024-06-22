@@ -11,6 +11,8 @@ import com.ufm.retailsystems.services.templates.IOrderDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 public class OrderDetailServiceImpl implements IOrderDetailService {
@@ -30,7 +32,12 @@ public class OrderDetailServiceImpl implements IOrderDetailService {
         orderDetail.setProduct(product);
         orderDetail.setDiscount(product.getDiscount().getDiscountPercent());
         orderDetail.setQuantity(item.getQuantity());
-        orderDetail.setUnitPrice(item.getPrice());
+        orderDetail.setCost(item.getPrice());
+        orderDetail.setUnitPrice(item.getPriceDiscount());
         orderDetailRepository.save(orderDetail);
+    }
+
+    public List<OrderDetail> findAllByOrderId(String orderId){
+        return orderDetailRepository.findAllByOrderId(orderId);
     }
 }

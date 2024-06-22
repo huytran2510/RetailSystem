@@ -43,14 +43,14 @@
     font-weight: bold;
     margin: 0 0 7px 0;
 }
-.receipt-right p {
-    font-size: 12px;
-    margin: 0px;
-}
-.receipt-right p i {
-    text-align: center;
-    width: 18px;
-}
+/*.receipt-right p {*/
+/*    font-size: 12px;*/
+/*    margin: 0px;*/
+/*}*/
+/*.receipt-right p i {*/
+/*    text-align: center;*/
+/*    width: 18px;*/
+/*}*/
 .receipt-main td {
     padding: 9px 20px !important;
 }
@@ -78,7 +78,7 @@
     text-transform: uppercase;
 }
 .receipt-header-mid {
-    margin: 24px 0;
+    /*margin: 24px 0;*/
     overflow: hidden;
 }
 
@@ -86,3 +86,7 @@
     background-color: #dcdcdc;
 }
 
+.receipt-right {
+    width: 200px;
+    text-align: left;
+}

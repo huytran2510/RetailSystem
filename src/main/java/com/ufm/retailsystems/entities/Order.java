@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
@@ -31,12 +32,23 @@ public class Order {
     @JoinColumn(name = "employee_id")
     private User user;
 
+    @Column(nullable = false)
     private LocalDate orderDate;
+    @Column(nullable = false)
     private LocalDate requiredDate;
+    @Column(nullable = false)
     private LocalDate shippedDate;
+    @Column(nullable = false)
     private String shipName;
+    @Column(nullable = false)
     private String shipAddress;
+    @Column(nullable = false)
     private String shipPhone;
+    @Column(nullable = false)
+    private String email;
+
+    @Column(nullable = false)
+    private double totalPayment;
 
     @OneToMany(mappedBy = "order")
     private Set<OrderDetail> orderDetails;

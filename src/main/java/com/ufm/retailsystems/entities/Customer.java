@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -30,10 +31,15 @@ public class Customer {
 
     @Column(name = "password")
     private String password;
+    @Column(nullable = false)
     private String firstName;
+    @Column(nullable = false)
     private String lastName;
+    @Column(unique = true)
     private String email;
+    @Column(nullable = false)
     private String phone;
+    @Column(nullable = false)
     private String address;
     private LocalDate birthday;
 

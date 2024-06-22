@@ -55,9 +55,12 @@ public class CartController {
                 cartItem.setPrice(product.getUnitPrice());
                 cartItem.setProductName(product.getProductName());
                 cartItem.setQuantity(1);
+                cartItem.setDiscount(product.getDiscount().getDiscountPercent());
+                cartItem.setPriceDiscount(product.getUnitPrice()-product.getDiscount().getDiscountPercent()*product.getUnitPrice());
                 cartItem.setImgUrl(product.getSingleImgUrl());
                 cart.add(cartItem);
             }
+
 
             session.setAttribute("cart", cart);
 
@@ -81,10 +84,14 @@ public class CartController {
             List<String> formattedPrices = cart.stream()
                     .map(product -> formatPriceToVND(product.getPrice()))
                     .collect(Collectors.toList());
+            List<String> formattedPricesDiscount = cart.stream()
+                    .map(product -> formatPriceToVND(product.getPriceDiscount()))
+                    .collect(Collectors.toList());
             for(CartItem cartItem : cart) {
-                payment += (cartItem.getPrice() * cartItem.getQuantity());
+                payment += (cartItem.getPriceDiscount() * cartItem.getQuantity());
             }
             model.addAttribute("payment", formatPriceToVND(payment));
+            model.addAttribute("formattedPricesDiscount", formattedPricesDiscount);
             model.addAttribute("carts", cart);
             model.addAttribute("formattedPrices", formattedPrices);
             model.addAttribute("isCartEmpty", false); // Cart is not empty

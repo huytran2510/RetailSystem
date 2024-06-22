@@ -40,16 +40,15 @@
         <ul class="navbar-nav ml-auto">
 
 
-
             <div class="topbar-divider d-none d-sm-block"></div>
 
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
+                    <span class="mr-2 d-none d-lg-inline text-gray-600 small" th:text="${username}">Douglas McGee</span>
                     <img class="img-profile rounded-circle"
-                         src="img/undraw_profile.svg">
+                         src="https://t3.ftcdn.net/jpg/02/03/40/20/360_F_203402061_1nSZ5lt348w8E0suHMggk5pEQ4LGhePZ.jpg">
                 </a>
                 <!-- Dropdown - User Information -->
                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -67,10 +66,15 @@
                         Activity Log
                     </a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+
+                    <a class="dropdown-item" href="#" data-toggle="modal" onclick="logout()" data-target="#logoutModal">
                         <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                        Logout
+                        <form id="logoutForm" th:action="@{/logout}" method="post">
+                            <button type="submit">Logout</button>
+                        </form>
+
                     </a>
+
                 </div>
             </li>
 
