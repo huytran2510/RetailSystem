@@ -63,5 +63,16 @@ public class Order {
     @ManyToOne
     private Shipper shipper;
 
+    @Transient
+    private String totalPaymentFormatted;
+
     // Getters and Setters
+
+    public String getTotalPaymentFormatted() {
+        return totalPaymentFormatted;
+    }
+
+    public void setTotalPaymentFormatted(String totalPaymentFormatted) {
+        this.totalPaymentFormatted = totalPaymentFormatted;
+    }
 }

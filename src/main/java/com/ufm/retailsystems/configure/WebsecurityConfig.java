@@ -57,7 +57,7 @@ public class WebsecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/add-to-cart","/quantity-product", "/add-quantity","/payment").permitAll()
                 .antMatchers("/management-order","/management-product").hasAnyAuthority(ERole.USER.toString(), ERole.ADMIN.toString())
                 .antMatchers("/resources/**", "/register","/customer/login","/login",("/mobile/**"),"/slider","/add-to-cart","/quantity-product","/cart",
-                        "/remove-item", "/order-page/**", "/save-order","/order-tracking").permitAll().anyRequest().authenticated().and()
+                        "/remove-item", "/order-page/**", "/save-order","/order-tracking","/dashboard/**").permitAll().anyRequest().authenticated().and()
                 .exceptionHandling().accessDeniedPage("/login?error=access-denied")
                 .and()
                 .formLogin()

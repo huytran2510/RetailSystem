@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+    <link th:href="@{https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i}"
+          rel="stylesheet">
+    <link th:href="@{/css/all.min.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{/css/dataTables.boostrap4.min.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{/css/sb-admin-2.min.css}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"> <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+</head>
+<body>
+<div class="d-flex flex-row ">
+    <div th:replace="/layout/blank :: blank">
+    </div>
+    <div class=" d-flex flex-column w-100">
+        <!-- DataTales Example -->
+        <div th:replace="/layout/top-bar :: top-bar"> </div>
+        <h1 class="m-4">Báo cáo doanh thu</h1>
+        <div class="container">
+            <div class="form-container">
+                <form th:action="@{/dashboard}" method="get">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="month">Tháng</label>
+                            <select id="month" name="month" class="form-control" >
+                                <option th:each="m : ${#numbers.sequence(1,12)}"
+                                        th:value="${m}"
+                                        th:text="${m}"
+                                        th:selected="${m == selectedMonth}">Month</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="year">Năm</label>
+                            <select id="year" name="year" class="form-control">
+                                <option th:each="y : ${#numbers.sequence(2020, 2030)}"
+                                        th:value="${y}"
+                                        th:text="${y}"
+                                        th:selected="${y == selectedYear}">Year</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-custom btn-lg">Xem</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="custom-button">
+            <button class="btn" onclick="showOrdersToday()">Đặt hàng hôm nay</button>
+            <button class="btn" onclick="showOrdersThisMonth()">Đặt hàng tháng này</button>
+            <button  class="btn" onclick="showOrdersThisYear()">Đặt hàng trong năm</button>
+        </div>
+
+
+        <div id="ordersTodayTable">
+            <div>
+                <h2>Đặt hàng hôm nay</h2>
+                <h5>Số lượng đặt hàng: <span th:text="${#lists.size(ordersToday)}"></span> đơn hàng</h5>
+                <h5>Tổng tiền: <span th:text="${paymentToday}"></span></h5>
+            </div>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Mã đặt hàng</th>
+                    <th scope="col">Ngày đặt hàng</th>
+                    <th scope="col">Tổng tiền</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="order, iterStat : ${ordersToday}">
+                    <th scope="row" th:text="${iterStat.count}"></th>
+                    <td th:text="${order.orderId}"></td>
+                    <td th:text="${order.orderDate}"></td>
+                    <td th:text="${order.totalPaymentFormatted}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div id="ordersThisMonthTable" class="hidden">
+            <h2>Đặt hàng tháng này</h2>
+            <h5>Số lượng đặt hàng: <span th:text="${#lists.size(ordersThisMonth)}"></span> đơn hàng</h5>
+            <h5>Tổng tiền: <span th:text="${paymentThisMonth}"></span></h5>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Mã đặt hàng</th>
+                    <th scope="col">Ngày đặt hàng</th>
+                    <th scope="col">Tổng tiền</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="order, iterStat : ${ordersThisMonth}">
+                    <th scope="row" th:text="${iterStat.count}"></th>
+                    <td th:text="${order.orderId}"></td>
+                    <td th:text="${order.orderDate}"></td>
+                    <td th:text="${order.totalPaymentFormatted}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div id="ordersThisYearTable" class="hidden">
+            <h2>Đặt hàng trong năm</h2>
+            <h5>Số lượng đặt hàng: <span th:text="${#lists.size(ordersThisYear)}"></span> đơn hàng</h5>
+            <h5>Tổng tiền: <span th:text="${paymentThisYear}"></span></h5>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Mã đặt hàng</th>
+                    <th scope="col">Ngày đặt hàng</th>
+                    <th scope="col">Tổng tiền</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="order, iterStat : ${ordersThisYear}">
+                    <th scope="row" th:text="${iterStat.count}"></th>
+                    <td th:text="${order.orderId}"></td>
+                    <td th:text="${order.orderDate}"></td>
+                    <td th:text="${order.totalPaymentFormatted}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="ordersByDayInMonthChart">
+            <h2>Số đơn hàng trong ngày theo tháng</h2>
+            <canvas id="ordersByDayInMonthChart"></canvas>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    var ctx = document.getElementById('ordersByDayInMonthChart').getContext('2d');
+    var ordersByDayInMonth = [[${ordersByDayInMonth}]];
+    var daysWithOrders = [[${daysWithOrders}]];
+
+    var chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: daysWithOrders,
+            datasets: [{
+                label: 'Số đơn hàng trong ngày',
+                data: ordersByDayInMonth,
+                borderColor: 'rgba(75, 192, 192, 1)',
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            }]
+        },
+        options: {
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Ngày trong tháng'
+                    },
+                    beginAtZero: true
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Số lượng đặt hàng'
+                    },
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    function showOrdersToday() {
+        document.getElementById('ordersTodayTable').classList.remove('hidden');
+        document.getElementById('ordersThisMonthTable').classList.add('hidden');
+        document.getElementById('ordersThisYearTable').classList.add('hidden');
+        document.getElementById('dateForm').classList.add('hidden');
+    }
+
+    function showOrdersThisMonth() {
+        document.getElementById('ordersTodayTable').classList.add('hidden');
+        document.getElementById('ordersThisMonthTable').classList.remove('hidden');
+        document.getElementById('ordersThisYearTable').classList.add('hidden');
+        document.getElementById('dateForm').classList.remove('hidden');
+    }
+
+    function showOrdersThisYear() {
+        document.getElementById('ordersTodayTable').classList.add('hidden');
+        document.getElementById('ordersThisMonthTable').classList.add('hidden');
+        document.getElementById('ordersThisYearTable').classList.remove('hidden');
+        document.getElementById('dateForm').classList.add('hidden');
+    }
+</script>
+</body>
+</html>

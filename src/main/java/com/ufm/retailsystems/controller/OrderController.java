@@ -9,6 +9,9 @@ import com.ufm.retailsystems.entities.Product;
 import com.ufm.retailsystems.services.templates.IOrderDetailService;
 import com.ufm.retailsystems.services.templates.IOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,9 +21,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpSession;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.time.LocalDate;
+import java.time.Year;
+import java.time.YearMonth;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Controller
 public class OrderController {
@@ -126,7 +134,8 @@ public class OrderController {
         Order order = orderService.saveOrder(cOrder, cart);
         if (order != null) {
             redirectAttributes.addFlashAttribute("orderSuccess", true);
-            return "redirect:/order-page";
+            session.removeAttribute("cart");
+            return "redirect:/order-page/"+order.getOrderId();
         }
         return "redirect:/order-page";
     }
@@ -140,5 +149,62 @@ public class OrderController {
         model.addAttribute("formattedPrices", formattedPrices);
         model.addAttribute("orders" , orders);
         return "management-order";
+    }
+
+    @GetMapping("/dashboard")
+    public String getDashboard(@RequestParam(value = "month", required = false) Integer month,
+                               @RequestParam(value = "year", required = false) Integer year,
+                               Model model) {
+        LocalDate today = LocalDate.now();
+        int currentYear = year != null ? year : Year.now().getValue();
+        int currentMonth = month != null ? month : YearMonth.now().getMonthValue();
+
+        Map<Integer, Long> ordersByDayInMonth = orderService.getOrderCountByDayInMonth(currentMonth, currentYear);
+        List<Integer> daysWithOrders = ordersByDayInMonth.keySet().stream().sorted().collect(Collectors.toList());
+        List<Long> orderCounts = daysWithOrders.stream().map(ordersByDayInMonth::get).collect(Collectors.toList());
+        double paymentToday = 0;
+        double paymentThisYear= 0;
+        double paymentThisMonth = 0;
+        List<Order> ordersToday = orderService.getOrdersByDate(today);
+        for(Order item : ordersToday) {
+            paymentToday += (item.getTotalPayment());
+        }
+        List<Order> ordersThisYear = orderService.getOrdersByYear(currentYear);
+        for(Order item : ordersThisYear) {
+            paymentThisYear += (item.getTotalPayment());
+        }
+        List<Order> ordersThisMonth = orderService.getOrdersByMonth(currentMonth, currentYear);
+        for(Order item : ordersThisMonth) {
+            paymentThisMonth += (item.getTotalPayment());
+        }
+
+        model.addAttribute("paymentToday",formatPriceToVND(paymentToday));
+        model.addAttribute("paymentThisYear",formatPriceToVND(paymentThisYear));
+        model.addAttribute("paymentThisMonth",formatPriceToVND(paymentThisMonth));
+
+        model.addAttribute("ordersByDayInMonth", orderCounts);
+        model.addAttribute("daysWithOrders", daysWithOrders);
+        model.addAttribute("ordersToday", formatOrders(ordersToday));
+        model.addAttribute("ordersThisYear", formatOrders(ordersThisYear));
+        model.addAttribute("ordersThisMonth", formatOrders(ordersThisMonth));
+        model.addAttribute("selectedYear", currentYear);
+        model.addAttribute("selectedMonth", currentMonth);
+
+        return "dashboard";
+    }
+//    @GetMapping("/dashboard/orders")
+//    public String showOrdersToday(@RequestParam(defaultValue = "0") int page,
+//                                  @RequestParam(defaultValue = "10") int size,
+//                                  Model model) {
+//        Pageable pageable = PageRequest.of(page, size);
+//        Page<Order> ordersToday = orderService.getOrdersToday(pageable);
+//        model.addAttribute("ordersToday", ordersToday);
+//        return "dashboard";
+//    }
+    private List<Order> formatOrders(List<Order> orders) {
+        return orders.stream().map(order -> {
+            order.setTotalPaymentFormatted(orderService.formatCurrency(order.getTotalPayment()));
+            return order;
+        }).collect(Collectors.toList());
     }
 }

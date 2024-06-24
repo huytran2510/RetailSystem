@@ -9,14 +9,20 @@ import com.ufm.retailsystems.services.templates.IOrderDetailService;
 import com.ufm.retailsystems.services.templates.IOrderService;
 import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderServiceImpl implements IOrderService {
@@ -97,5 +103,51 @@ public class OrderServiceImpl implements IOrderService {
 
     public Order findByOrderId(String orderId) {
         return orderRepository.findByOrderId(orderId);
+    }
+
+
+    private NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+
+    public List<Order> getOrdersByDate(LocalDate date) {
+        return orderRepository.findAllByOrderDate(date);
+    }
+
+
+    public List<Order> getOrdersByYear(int year) {
+        return orderRepository.findAllByOrderYear(year)
+                .stream()
+                .sorted((o1, o2) -> o1.getOrderDate().compareTo(o2.getOrderDate()))
+                .collect(Collectors.toList());
+    }
+
+    public List<Order> getOrdersByMonth(int month, int year) {
+        return orderRepository.findAllByOrderMonth(month, year)
+                .stream()
+                .sorted((o1, o2) -> o1.getOrderDate().compareTo(o2.getOrderDate()))
+                .collect(Collectors.toList());
+    }
+
+    public Map<Integer, Long> getOrderCountByDayInMonth(int month, int year) {
+        return orderRepository.findAllByOrderMonth(month, year).stream()
+                .collect(Collectors.groupingBy(order -> order.getOrderDate().getDayOfMonth(), Collectors.counting()));
+    }
+
+    public String formatCurrency(double amount) {
+        return currencyFormat.format(amount);
+    }
+
+    public Page<Order> getOrdersToday(Pageable pageable) {
+        LocalDate today = LocalDate.now();
+        return orderRepository.findByOrderDate(today, pageable);
+    }
+
+    public Page<Order> getOrdersThisMonth(int month, int year, Pageable pageable) {
+        LocalDate startDate = LocalDate.of(year, month, 1);
+        LocalDate endDate = startDate.plusMonths(1).minusDays(1);
+        return orderRepository.findByOrderDateBetween(startDate, endDate, pageable);
+    }
+
+    public Page<Order> getOrdersThisYear(int year, Pageable pageable) {
+        return orderRepository.findByOrderDateYear(year, pageable);
     }
 }
