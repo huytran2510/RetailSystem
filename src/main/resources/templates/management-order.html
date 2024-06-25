@@ -73,20 +73,20 @@
                                         <img
                                              th:src="'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJs6mcj1AUoIOjQYtB2QRHbePE_cBrGFQjjA&s'"
                                              alt="DELIVERED Product"/>
-                                        <span th:text="Đã giao hàng"></span>
+                                        <span>Đã giao hàng</span>
                                     </div>
                                     <div class="d-flex flex-column align-items-center justify-content-center status-images" th:case="'PENDING'">
                                         <img
                                              th:src="'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_DFMAppSX_esl4sg0ywRxDplhFunmoCjgXg&s'"
                                              alt="Pending Product"/>
-                                        <span th:text="Chờ xử lý"></span>
+                                        <span>Chờ xử lý</span>
                                     </div>
 
                                     <div class="d-flex flex-column align-items-center justify-content-center status-images" th:case="'SHIPPING'">
                                         <img
                                              th:src="'https://cdn-icons-png.flaticon.com/512/9422/9422848.png'"
                                              alt="Shipping Product"/>
-                                        <span th:text="Đang giao hàng"></span>
+                                        <span>Đang giao hàng</span>
                                     </div>
 
                                     <img class="icon icon-circle" th:case="*"
