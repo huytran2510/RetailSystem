@@ -105,6 +105,7 @@
                 </configuration>
             </plugin>
         </plugins>
+        <finalName>retail_system</finalName>
     </build>
 
 </project>
