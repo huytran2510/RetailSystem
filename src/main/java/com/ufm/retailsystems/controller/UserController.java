@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.validation.Valid;
-
 @Controller
 @RequestMapping
 public class UserController {
@@ -45,14 +43,14 @@ public class UserController {
         if (logout != null)
             model.addAttribute("message", "You have been logged out successfully.");
 
-        return "login-form";
+        return "/admin/login-form";
     }
 
     @PostMapping("/login")
     public String login(@ModelAttribute("customer") UserLoginDTO userLoginDTO, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             // Return to login page with errors
-            return "login-form";
+            return "/admin/login-form";
         }
 
         try {
@@ -64,7 +62,7 @@ public class UserController {
         } catch (AuthenticationException e) {
             // Handle authentication failure
             model.addAttribute("error", "Invalid username or password.");
-            return "login-form";
+            return "/admin/login-form";
         }
     }
 

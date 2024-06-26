@@ -1,18 +1,13 @@
 package com.ufm.retailsystems.controller;
 
 import com.ufm.retailsystems.dto.cart.CartItem;
-import com.ufm.retailsystems.dto.login.UserLoginDTO;
 import com.ufm.retailsystems.entities.Product;
 import com.ufm.retailsystems.services.templates.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -98,7 +93,7 @@ public class CartController {
         } else {
             model.addAttribute("isCartEmpty", true); // Cart is empty
         }
-        return "cart";
+        return "/order/cart";
     }
 
 

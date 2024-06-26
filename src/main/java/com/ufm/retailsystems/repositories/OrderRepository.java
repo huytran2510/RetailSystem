@@ -32,4 +32,6 @@ public interface OrderRepository extends JpaRepository<Order,Long> {
     Page<Order> findByOrderDateBetween(LocalDate startDate, LocalDate endDate, Pageable pageable);
 
     Page<Order> findByOrderDateYear(int year, Pageable pageable);
+
+    Order findByOrderIdAndShipPhone(String orderId, String shipPhone);
 }

@@ -2,16 +2,11 @@ package com.ufm.retailsystems.controller;
 
 import com.ufm.retailsystems.dto.cart.CartItem;
 import com.ufm.retailsystems.dto.forcreate.COrder;
-import com.ufm.retailsystems.dto.login.UserLoginDTO;
 import com.ufm.retailsystems.entities.Order;
 import com.ufm.retailsystems.entities.OrderDetail;
-import com.ufm.retailsystems.entities.Product;
 import com.ufm.retailsystems.services.templates.IOrderDetailService;
 import com.ufm.retailsystems.services.templates.IOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,8 +22,8 @@ import java.time.YearMonth;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Controller
 public class OrderController {
@@ -65,30 +60,39 @@ public class OrderController {
     }
 
     @GetMapping("/order-tracking")
-    public String orderTracking(Model model, HttpSession session) {
-//        List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
-//        double payment = 0;
-//        if (cart != null && !cart.isEmpty()) {
-//            List<String> formattedPrices = cart.stream()
-//                    .map(product -> formatPriceToVND(product.getPrice()))
-//                    .collect(Collectors.toList());
-//            for(CartItem cartItem : cart) {
-//                payment += (cartItem.getPriceDiscount() * cartItem.getQuantity());
-//            }
-//            List<String> formatPriceDiscount = cart.stream()
-//                    .map(product -> formatPriceToVND(product.getPriceDiscount()))
-//                    .collect(Collectors.toList());
-//            model.addAttribute("formatPriceDiscount", formatPriceDiscount);
-//            model.addAttribute("payment", formatPriceToVND(payment));
-//            model.addAttribute("carts", cart);
-//            model.addAttribute("order", new COrder());
-//            model.addAttribute("formattedPrices", formattedPrices);
-//            model.addAttribute("isCartEmpty", false); // Cart is not empty
-//        } else {
-//            model.addAttribute("isCartEmpty", true); // Cart is empty
-//        }
-        return "/product/order-tracking";
+    public String orderTracking(Model model) {
+        return "product/order-tracking"; // Trang tra cứu đơn hàng
     }
+
+    @GetMapping("/order-tracking/load")
+    public String loadOrderTracking(Model model,
+                                    @RequestParam("orderId") String orderId,
+                                    @RequestParam("phone") String phone) {
+        if (orderId == null || phone == null) {
+            model.addAttribute("error", "Thiếu thông tin mã đơn hàng hoặc số điện thoại đặt hàng");
+            return "order/order-tracking";
+        }
+
+        Order order = orderService.findByIdAndPhone(orderId, phone);
+        if (order == null) {
+            model.addAttribute("error", "Không tìm thấy đơn hàng phù hợp");
+        } else {
+            int progressPercentage =0;
+            if(Objects.equals(order.getDeliveryStatus().getStatus().toString(), "SHIPPING")) {
+                progressPercentage = 60;
+            } else if (Objects.equals(order.getDeliveryStatus().getStatus().toString(), "PENDING")) {
+                progressPercentage = 30;
+            } else {
+                progressPercentage = 100;
+            }
+            model.addAttribute("progressPercentage", progressPercentage);
+            model.addAttribute("order", order);
+        }
+        return "order/order-tracking";
+    }
+
+
+
 
     @GetMapping("/order-page/{orderId}")
     public String paymentPage(@PathVariable String orderId , Model model) {
@@ -115,7 +119,7 @@ public class OrderController {
         model.addAttribute("payment",formatPriceToVND(payment));
         model.addAttribute("totalPayment",formatPriceToVND(totalPayment));
         model.addAttribute("priceDiscount",formatPriceToVND(priceDiscount));
-        return "order-payment";
+        return "/order/order-payment";
     }
 
     public String formatPriceToVND(double price) {
@@ -128,7 +132,7 @@ public class OrderController {
     @PostMapping("/save-order")
     public String saveOrder(@ModelAttribute("order") COrder cOrder, BindingResult bindingResult, HttpSession session, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
-            return "order-page";
+            return "/order/order-page";
         }
         List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
         Order order = orderService.saveOrder(cOrder, cart);
@@ -148,7 +152,7 @@ public class OrderController {
                 .collect(Collectors.toList());
         model.addAttribute("formattedPrices", formattedPrices);
         model.addAttribute("orders" , orders);
-        return "management-order";
+        return "/admin/management-order";
     }
 
     @GetMapping("/dashboard")
@@ -190,7 +194,7 @@ public class OrderController {
         model.addAttribute("selectedYear", currentYear);
         model.addAttribute("selectedMonth", currentMonth);
 
-        return "dashboard";
+        return "/admin/dashboard";
     }
 //    @GetMapping("/dashboard/orders")
 //    public String showOrdersToday(@RequestParam(defaultValue = "0") int page,

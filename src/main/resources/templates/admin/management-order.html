@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link href="/static/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="/static/css/sb-admin-2.min.css" rel="stylesheet" type="text/css">
-    <link href="/static/css/dataTables.boostrap4.min.css" rel="stylesheet" type="text/css">
+    <link href="/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="/css/sb-admin-2.min.css" rel="stylesheet" type="text/css">
+    <link href="/css/dataTables.boostrap4.min.css" rel="stylesheet" type="text/css">
     <link th:href="@{https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i}"
           rel="stylesheet">
     <link th:href="@{/css/all.min.css}" rel="stylesheet" type="text/css">
@@ -73,20 +73,20 @@
                                         <img
                                              th:src="'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJs6mcj1AUoIOjQYtB2QRHbePE_cBrGFQjjA&s'"
                                              alt="DELIVERED Product"/>
-                                        <span th:text="Đã giao hàng"></span>
+                                        <span>Đã giao hàng</span>
                                     </div>
                                     <div class="d-flex flex-column align-items-center justify-content-center status-images" th:case="'PENDING'">
                                         <img
                                              th:src="'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_DFMAppSX_esl4sg0ywRxDplhFunmoCjgXg&s'"
                                              alt="Pending Product"/>
-                                        <span th:text="Chờ xử lý"></span>
+                                        <span>Chờ xử lý</span>
                                     </div>
 
                                     <div class="d-flex flex-column align-items-center justify-content-center status-images" th:case="'SHIPPING'">
                                         <img
                                              th:src="'https://cdn-icons-png.flaticon.com/512/9422/9422848.png'"
                                              alt="Shipping Product"/>
-                                        <span th:text="Đang giao hàng"></span>
+                                        <span>Đang giao hàng</span>
                                     </div>
 
                                     <img class="icon icon-circle" th:case="*"

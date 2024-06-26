@@ -165,7 +165,7 @@ body {
     text-align: center;
 }
 
-p {
+.container-header p {
     display: block;
     margin-block-start: 1em;
     margin-block-end: 1em;

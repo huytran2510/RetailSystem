@@ -25,4 +25,6 @@ public interface IOrderService {
     String formatCurrency(double amount);
 
     Page<Order> getOrdersToday(Pageable pageable);
+
+    Order findByIdAndPhone(String orderId, String phone);
 }

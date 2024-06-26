@@ -50,7 +50,7 @@ public class CustomerController {
         System.out.println(authentication.getName());
         System.out.println("Successful login");
 
-        return "redirect:/products";
+        return "redirect:/mobile";
     }
 
     @PostMapping("/register")

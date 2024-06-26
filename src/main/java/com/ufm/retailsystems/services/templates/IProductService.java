@@ -1,5 +1,6 @@
 package com.ufm.retailsystems.services.templates;
 
+import com.ufm.retailsystems.dto.forcreate.CProduct;
 import com.ufm.retailsystems.entities.Product;
 import com.ufm.retailsystems.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,4 +16,8 @@ public interface IProductService {
 
     List<Product> getProductByCategoryId(Long categoryId);
     List<Product> findAll();
+
+    void save(CProduct productDTO);
+
+    List<CProduct> findAllProduct();
 }
