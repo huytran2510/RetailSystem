@@ -55,9 +55,9 @@ public class WebsecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/add-to-cart","/quantity-product", "/add-quantity","/payment").permitAll()
-                .antMatchers("/management-order","/management-product").hasAnyAuthority(ERole.USER.toString(), ERole.ADMIN.toString())
+                .antMatchers("/management-order","/management-product","/add-product","/dashboard").hasAnyAuthority(ERole.USER.toString(), ERole.ADMIN.toString())
                 .antMatchers("/resources/**", "/register","/customer/login","/login",("/mobile/**"),"/slider","/add-to-cart","/quantity-product","/cart",
-                        "/remove-item", "/order-page/**", "/save-order","/order-tracking","/dashboard/**","/product/**","/product/add").permitAll().anyRequest().authenticated().and()
+                        "/remove-item", "/order-page/**", "/save-order","/order-tracking/**","/dashboard/**","/product/**","/product/add").permitAll().anyRequest().authenticated().and()
                 .exceptionHandling().accessDeniedPage("/login?error=access-denied")
                 .and()
                 .formLogin()

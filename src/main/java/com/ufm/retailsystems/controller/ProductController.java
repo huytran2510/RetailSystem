@@ -7,17 +7,16 @@ import com.ufm.retailsystems.services.templates.ICategoryService;
 import com.ufm.retailsystems.services.templates.IFileService;
 import com.ufm.retailsystems.services.templates.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.*;
@@ -110,7 +109,7 @@ public class ProductController {
                 .collect(Collectors.toList());
         model.addAttribute("formattedPrices", formattedPrices);
         model.addAttribute("products" , products);
-        return "management-product";
+        return "/admin/management-product";
     }
 
     @GetMapping("/payment")
@@ -125,31 +124,36 @@ public class ProductController {
         return "/product/add-product";
     }
 
-    @PostMapping("/product/add")
-    public String addProduct(@ModelAttribute("productDTO") CProduct productDTO,
-                             @RequestPart("imageFile") MultipartFile imageFile,
-                             RedirectAttributes redirectAttributes) {
-       if (!imageFile.isEmpty()) {
+    @PostMapping(value = "/add", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> addProduct(@RequestParam("productName") String productName,
+                                             @RequestParam("unitPrice") double unitPrice,
+                                             @RequestParam("unitsInStock") int unitsInStock,
+                                             @RequestParam("discontinued") boolean discontinued,
+                                             @RequestParam("categoryId") Long categoryId,
+                                             @RequestParam("description") String description,
+                                             @RequestParam("imageFile") MultipartFile imageFile) {
+        CProduct productDTO = new CProduct();
+        productDTO.setProductName(productName);
+        productDTO.setUnitPrice(unitPrice);
+        productDTO.setUnitsInStock(unitsInStock);
+        productDTO.setDiscontinued(discontinued);
+        productDTO.setCategoryId(categoryId);
+        productDTO.setDescription(description);
+
+        if (imageFile != null && !imageFile.isEmpty()) {
             try {
                 // Upload the file
                 fileService.uploadFile(imageFile);
 
-                // Set the file name or path in the productDTO if needed
-                // productDTO.setImageFileName(imageFile.getOriginalFilename());
-                // Alternatively, store the file path in a database or associate it with the product
-//                "4x=16" ""
-
                 // Save the product with the updated DTO
                 iProductService.save(productDTO);
 
-                redirectAttributes.addFlashAttribute("message", "Product added successfully with image: " + imageFile.getOriginalFilename());
+                return ResponseEntity.ok("Product added successfully with image: " + imageFile.getOriginalFilename());
             } catch (IOException e) {
-                redirectAttributes.addFlashAttribute("error", "Failed to upload file: " + e.getMessage());
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload file: " + e.getMessage());
             }
         } else {
-            // Handle case where no file was uploaded
-            redirectAttributes.addFlashAttribute("error", "Please select a file to upload");
+            return ResponseEntity.badRequest().body("Please select a file to upload");
         }
-        return "redirect:/products";
     }
 }

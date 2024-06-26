@@ -8,7 +8,7 @@
 <body>
 <div class="container">
     <h1 class="mt-5">Add Product</h1>
-    <form th:action="@{/product/add}" th:object="${productDTO}" method="post" enctype="multipart/form-data" class="mt-3">
+    <form action="/product/add" th:object="${productDTO}" method="post" class="mt-3">
         <div class="form-group">
             <label for="productName">Product Name</label>
             <input type="text" id="productName" th:field="*{productName}" class="form-control" required />
@@ -47,5 +47,38 @@
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $(document).ready(function() {
+            $('#productForm').on('submit', function(event) {
+                event.preventDefault(); // Prevent the default form submission
+
+                var formData = new FormData();
+                formData.append('productName', $('#productName').val());
+                formData.append('unitPrice', $('#unitPrice').val());
+                formData.append('unitsInStock', $('#unitsInStock').val());
+                formData.append('discontinued', $('#discontinued').is(':checked'));
+                formData.append('categoryId', $('#category').val());
+                formData.append('description', $('#description').val());
+                formData.append('imageFile', $('#imageFile')[0].files[0]);
+
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        alert(response); // Display success message
+                        $('#productForm')[0].reset(); // Optionally, clear the form fields
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        alert('Error: ' + jqXHR.responseText); // Display error message
+                    }
+                });
+            });
+        });
+</script>
 </body>
 </html>

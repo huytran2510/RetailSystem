@@ -7,6 +7,8 @@ body {
 }
 b{
 
+
+
 }
 .row {
     display: -ms-flexbox; /* IE10 */
@@ -85,16 +87,20 @@ label {
 
 a {
     color: #2196F3;
+    font-size: 18px;
 }
 
 hr {
     border: 1px solid lightgrey;
 }
-
+.d-flex {
+    font-size: 16px;
+}
 .price {
     float: right;
-    color: grey;
-    font-size: 20px;
+    /*color: red;*/
+    font-weight: 600;
+    font-size: 18px;
 }
 
 /* Responsive layout - when the screen is less than 800px wide, make the two columns stack on top of each other instead of next to each other (also change the direction - make the "cart" column go on top) */

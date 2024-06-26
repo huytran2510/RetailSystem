@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
     <link th:href="@{/css/bootstrap.min.css}" type="text/css" rel="stylesheet">
-    <link href="/static/css/bootstrap.min.css" type="text/css" rel="stylesheet">
-    <link href="/static/css/order-tracking.css" type="text/css" rel="stylesheet">
+    <link href="/css/bootstrap.min.css" type="text/css" rel="stylesheet">
+    <link href="/css/order-tracking.css" type="text/css" rel="stylesheet">
     <link th:href="@{/css/order-tracking.css}" type="text/css" rel="stylesheet">
-    \
+
     <link rel="stylesheet" th:href="@{/css/header.css}">
 </head>
 <body>
@@ -25,7 +25,7 @@
                                   transform="translate(-1.471 -3.053)" fill="#d70018"></path>
                         </svg>
                     </div>
-                    <a href="/" class="button__home nuxt-link-active">Trang chủ</a></li>
+                    <a href="/static" class="button__home nuxt-link-active">Trang chủ</a></li>
                 <li>
                     <div class="d-flex flex-row align-items-center text-center">
                         <div>
@@ -53,10 +53,9 @@
         </div>
     </div>
     <div id="tra-cuu-don-hang">
-
         <div class="box-tra-cuu py-2 px-2"><p class="box-search-title">Kiểm tra thông tin đơn hàng <span><br> &amp; tình trạng vận chuyển</span>
         </p>
-            <form class="box-search-info is-flex is-flex-direction-column is-justify-content-center is-align-items-center">
+            <form th:action="@{/order-tracking/load/}" method="get" class="box-search-info is-flex is-flex-direction-column is-justify-content-center is-align-items-center">
                 <div class="field">
                     <div class="box-search-item">
                         <input id="inputPhone" name="phone" type="text" maxlength="10" required="required"
@@ -68,10 +67,11 @@
                     <div class="box-search-item input-field">
                         <label
                                 for="name" title="Mã đơn hàng (bắt buộc)" data-title="Mã đơn hàng" class="placeholder-label"></label>
-                        <input id="name" name="name" type="text" required="required" class="box-search-item">
+                        <input id="name" name="orderId" type="text" required="required" class="box-search-item">
 
                     </div>
                 </div>
+                <p class="text-danger" th:if="${error!= null}" th:text="${error}"></p>
                 <button type="submit" class="button button__check-order">Kiểm tra</button>
             </form>
             <div class="bg-order-check"></div>
@@ -81,18 +81,65 @@
             <div id="order-info" class="cps-order-container"><!----></div>
         </div>
     </div>
-    <!--    <div style="">-->
-    <!--        <button id="backToTop" title="Back to top" class="btn-back-to-top button__back-to-top">-->
-    <!--            <div class="icon-up">-->
-    <!--                <svg height="15" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">-->
-    <!--                    <path d="M416 352c-8.188 0-16.38-3.125-22.62-9.375L224 173.3l-169.4 169.4c-12.5 12.5-32.75 12.5-45.25 0s-12.5-32.75 0-45.25l192-192c12.5-12.5 32.75-12.5 45.25 0l192 192c12.5 12.5 12.5 32.75 0 45.25C432.4 348.9 424.2 352 416 352z"></path>-->
-    <!--                </svg>-->
-    <!--            </div>-->
-    <!--            <strong>Lên đầu</strong></button>-->
-    <!--        <a id="btnZaloChat" target="_blank" rel="noopener nofollow" href="https://zalo.me/3894196696036261863"-->
-    <!--           class="btn-zalo-chat button__zalo"><img-->
-    <!--                src="https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/icons/icon-zalo.png"-->
-    <!--                alt="Zalo Button"></a></div>-->
+    <div class="order-details" th:if="${order != null}">
+
+
+        <div class="status-indicator">
+            <div class="icons-container">
+                <img class="icon icon1" th:src="@{/img/delivery-svgrepo-com.svg}"></img>
+                <img class="icon icon2" th:src="@{/img/delivery-truck-ui-svgrepo-com.svg}"></img>
+                <img class="icon icon3" th:src="@{/img/delivery-fast-svgrepo-com.svg}"></img>
+                <img class="icon icon4" th:src="@{/img/delivery-success.svg}"></img>
+            </div>
+            <div class="status-progress" th:style="'width: ' + ${progressPercentage} + '%'">
+                <span th:text="${progressPercentage}">10</span>%
+            </div>
+        </div>
+
+        <p><strong>Mã hóa đơn:</strong> <span th:text="${order.getOrderId()}">123456</span></p>
+        <p> <strong>Trạng thái hiện tại:</strong>
+            <span th:if="${order.getDeliveryStatus().getStatus().toString() == 'PENDING'}" >Đang xử lý</span>
+            <span th:if="${order.getDeliveryStatus().getStatus().toString() == 'SHIPPED'}" >Đã giao hàng</span>
+            <span th:if="${order.getDeliveryStatus().getStatus().toString() == 'SHIPPING'}" >Đang giao hàng</span>
+        </p>
+        <p><strong>Ngày đặt hàng:</strong> <span th:text="${order.getOrderDate().toString()}">2024-06-26</span></p>
+        <p><strong>Tổng số tiền:</strong> <span th:text="${order.getTotalPaymentFormatted()}">2024-06-26</span></p>
+
+        <table class="order-items table">
+            <thead>
+            <tr>
+                <th>Số lượng</th>
+                <th>Tên sản phẩm</th>
+                <th>Giá tiền</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${order.getOrderDetails()}" class="order-item">
+                <td><span th:text="${item.getQuantity()}">1</span></td>
+                <td><span th:text="${item.getProduct().getProductName()}">Product Name</span></td>
+                <td><span class="price" th:attr="data-value=${item.getUnitPrice()}">$99.99</span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
+<script>
+    // Hàm định dạng số sử dụng toLocaleString
+    function formatNumber(number) {
+        return Number(number).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+    }
+
+    // Hàm để định dạng tất cả các số trong bảng
+    function formatPrices() {
+        const prices = document.querySelectorAll('.price');
+        prices.forEach(price => {
+            const value = price.getAttribute('data-value');
+            price.textContent = formatNumber(value);
+        });
+    }
+
+    // Định dạng số sau khi trang được tải
+    window.onload = formatPrices;
+</script>
 </body>
 </html>

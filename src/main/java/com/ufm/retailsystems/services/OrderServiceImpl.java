@@ -150,4 +150,8 @@ public class OrderServiceImpl implements IOrderService {
     public Page<Order> getOrdersThisYear(int year, Pageable pageable) {
         return orderRepository.findByOrderDateYear(year, pageable);
     }
+
+    public Order findByIdAndPhone(String orderId, String phone) {
+        return orderRepository.findByOrderIdAndShipPhone(orderId,phone);
+    }
 }

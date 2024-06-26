@@ -18,13 +18,13 @@
         <div class="row">
           <div class="col-50">
             <h3>Billing Address</h3>
-            <label for="fname"><i class="fa fa-user"></i> First Name</label>
+            <label for="fname"><i class="fa fa-user"></i> Họ</label>
             <input type="text" id="fname" name="firstName" th:field="*{firstName}"  placeholder="John M. Doe">
-            <label for="lname"><i class="fa fa-user"></i> Last Name</label>
+            <label for="lname"><i class="fa fa-user"></i> Tên</label>
             <input type="text" id="lname" name="lastName" th:field="*{lastName}" placeholder="John M. Doe">
             <label for="email"><i class="fa fa-envelope"></i> Email</label>
             <input type="text" id="email" name="email" th:field="*{email}" placeholder="john@example.com">
-            <label for="adr"><i class="fa fa-institution"></i> Address</label>
+            <label for="adr"><i class="fa fa-institution"></i> Địa chỉ</label>
             <input type="text" id="adr" name="shipAddress" th:field="*{shipAddress}" placeholder="542 W. 15th Street">
           </div>
           <div class="col-50">
@@ -40,7 +40,7 @@
             <input type="text" id="cname" name="cardname" placeholder="John More Doe">
             <label for="ccnum">Credit card number</label>
             <input type="text" id="ccnum" name="cardnumber" placeholder="1111-2222-3333-4444">
-            <label for="expmonth"><i class="fa-solid fa-phone"></i> Phone</label>
+            <label for="expmonth"><i class="fa-solid fa-phone"></i> Số điện thoại</label>
             <input type="text" id="expmonth" name="shipPhone" placeholder="September">
           </div>
         </div>
@@ -54,13 +54,16 @@
   <div class="col-25">
     <div class="container">
       <h4 class="font-weight-bold">Giỏ hàng <span class="price" style="color:black" ><i class="fa fa-shopping-cart"></i> <b th:text="${quantity}">4</b></span></h4>
-      <div th:each="cart, iterStat : ${carts}"> <span class=""  th:text="${cart.quantity}"></span> x
+      <div th:each="cart, iterStat : ${carts}" class="d-flex flex-row justify-content-between">
+        <span th:text="${cart.quantity}"></span> <span>&nbsp; X &nbsp;</span>
         <a href="#" th:text="${cart.productName}">Product 1</a>
-        <p th:text="${formatPriceDiscount[iterStat.index]}" class="price"></p></br>
-        <p class="price-old price" th:text="${formattedPrices[iterStat.index]}"></p>
+        <div class="d-flex flex-column align-items-end justify-content-end ml-auto">
+          <p th:text="${formatPriceDiscount[iterStat.index]}" class="price"></p>
+          <p class="price-old" th:text="${formattedPrices[iterStat.index]}"></p>
+        </div>
       </div>
       <hr>
-      <p>Total <span class="price" style="color:black"><b th:text="${payment}"></b></span></p>
+      <p>Total <span class="price" style="color:black"><b class="font-weight-bold" th:text="${payment}"></b></span></p>
     </div>
   </div>
   <div id="orderSuccessMessage" th:if="${orderSuccess}" style="color:green;">
