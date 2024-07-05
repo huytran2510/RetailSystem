@@ -25,6 +25,7 @@ public class DeliveryStatus {
     private Set<Order> orders;
 
     @Enumerated(EnumType.STRING)
+    @Column(unique = true)
     private Status status;
 
     @Column(name = "updated_at")

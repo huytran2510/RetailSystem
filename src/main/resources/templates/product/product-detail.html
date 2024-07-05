@@ -6,9 +6,54 @@
     <link th:href="@{/css/product-detail.css}" type="text/css" rel="stylesheet">
     <link th:href="@{/css/bootstrap.min.css}" type="text/css" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.css" rel="stylesheet" type="text/css" />
+    <link th:href="@{/css/order-tracking.css}" type="text/css" rel="stylesheet">
 </head>
 <body>
 <div th:replace="/layout/header :: header"></div>
+<div id="breadcrumbs">
+    <div class="block-breadcrumbs affix">
+        <div class="cps-container " style="top: 20%;">
+            <ul class="d-flex flex-row align-items-center ">
+                <li>
+                    <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="10.633"
+                             viewBox="0 0 12 10.633">
+                            <path id="home"
+                                  d="M13.2,9.061H12.1v3.965a.6.6,0,0,1-.661.661H8.793V9.721H6.15v3.965H3.507a.6.6,0,0,1-.661-.661V9.061h-1.1c-.4,0-.311-.214-.04-.494L7,3.259a.634.634,0,0,1,.936,0l5.3,5.307c.272.281.356.495-.039.495Z"
+                                  transform="translate(-1.471 -3.053)" fill="#d70018"></path>
+                        </svg>
+                    </div>
+                    <a href="/mobile" class="button__home nuxt-link-active">Trang chủ</a></li>
+                <li>
+                    <div class="d-flex flex-row align-items-center text-center">
+                        <div>
+                            <svg height="15" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                                <path d="M96 480c-8.188 0-16.38-3.125-22.62-9.375c-12.5-12.5-12.5-32.75 0-45.25L242.8 256L73.38 86.63c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0l192 192c12.5 12.5 12.5 32.75 0 45.25l-192 192C112.4 476.9 104.2 480 96 480z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="ml-1">
+                                <span th:text="${product.getCategory().getCategoryName()}"></span>
+                            </p>
+                        </div>
+                        <div>
+                            <svg height="15" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                                <path d="M96 480c-8.188 0-16.38-3.125-22.62-9.375c-12.5-12.5-12.5-32.75 0-45.25L242.8 256L73.38 86.63c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0l192 192c12.5 12.5 12.5 32.75 0 45.25l-192 192C112.4 476.9 104.2 480 96 480z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="ml-1">
+                                <span th:text="${product.getProductName()}"></span>
+                            </p>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="clear"></div>
+</div>
 <div class="container">
     <div class="product-detail mt-2">
         <div class="product-image">
@@ -16,20 +61,21 @@
                  th:src="@{${image.imageUrl}}" alt="Product Image" class="card-img-top product-image"/>
         </div>
         <div class="product-info">
-            <h1 class="h1 mb-1" th:text="${product.productName}"></h1>
+            <h2 class="mb-1" th:text="${product.productName}"></h2>
             <div class="fs-5 mb-5">
                 <span class=" h4 text-decoration-line-through" th:text="${formattedPrices}"></span>
             </div>
-            <p class="lead product-description">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium at dolorem quidem modi. Nam sequi consequatur obcaecati excepturi alias magni, accusamus eius blanditiis delectus ipsam minima ea iste laborum vero?
+            <p class="display-6 product-description" th:utext="${product.getDescription()}">
+
             </p>
+
             <div class="quantity-add">
                 <input class="form-control" id="inputQuantity" type="number" value="1">
                 <form th:action="@{/add-to-cart}" class="add-to-cart-form" method="post">
                     <input type="hidden" name="productId" th:value="${product.productId}"/>
                     <button class="btn btn-add-to-cart" type="submit">
                         <img class="shopping-cart" th:src="@{/img/shopping-cart.svg}" alt="Product Image">
-                        Add to cart
+                        Thêm vào giỏ hàng
                     </button>
                 </form>
             </div>
@@ -67,8 +113,8 @@
 
         slides.forEach(slide => {
             slide.addEventListener('click', function () {
-                slides.forEach(s => s.classList.remove('active')); // Loại bỏ lớp active từ tất cả các slide
-                this.classList.add('active'); // Thêm lớp active vào slide được click
+                slides.forEach(s => s.classList.remove('active'));
+                this.classList.add('active');
             });
         });
     });

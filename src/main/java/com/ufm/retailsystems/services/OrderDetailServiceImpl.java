@@ -27,6 +27,11 @@ public class OrderDetailServiceImpl implements IOrderDetailService {
 
     public void save(CartItem item, Order order) {
         Product product = productRepository.findProductByProductId(item.getProductId());
+        // Trừ quantity từ unitsInStock của product
+        int newUnitsInStock = product.getUnitsInStock() - item.getQuantity();
+        product.setUnitsInStock(newUnitsInStock);
+        // Lưu product với số lượng mới
+        productRepository.save(product);
         OrderDetail orderDetail = new OrderDetail();
         orderDetail.setOrder(order);
         orderDetail.setProduct(product);

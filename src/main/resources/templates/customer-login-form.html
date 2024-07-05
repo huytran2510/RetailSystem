@@ -14,34 +14,35 @@
 <div th:replace="/layout/header :: header"></div>
 <div class="d-flex flex-column align-items-center justify-content-center">
     <div class="text-center my-4 d-flex flex-column align-items-center justify-content-center">
-        <img src="/img/logo_login.png" class="img-fluid" alt="Logo" style="max-width: 200px;">
+        <img src="/img/logo_login.png" class="img-fluid" alt="Logo" style="max-width: 150px;">
     </div>
     <div class="content d-flex flex-column align-items-center justify-content-center container-form-login">
         <h1 class="font-weight-bold ">Đăng nhập</h1>
         <i class='fas fa-phone-volume' style='font-size:48px;color:#000'></i>
-        <div class="container mt-5 ">
+        <div class="container ">
             <form class="form" id="form" th:object="${customer}" th:action="@{/customer/login}" method="POST">
                 <div class="form-floating-label input-container">
                     <i class="fas fa-user"></i>
                     <input type="text" id="username" name="username" class="form-control w-100 " placeholder=" " required>
-                    <label for="username">Username</label>
+                    <label for="username">Tài khoản</label>
                 </div>
                 <div class="form-floating-label input-container">
                     <i class="fas fa-lock"></i>
                     <input type="password" id="password" name="password" class="form-control w-100" placeholder=" " required>
-                    <label for="password">Password</label>
+                    <label for="password">Mật khẩu</label>
                     <br/>
                 </div>
-                <div class="container mt-5 w-100">
+                <div class="text-center">
+                    <span style="color: red; font-weight: bold" th:text="${loginError}"></span>
+                </div>
+                <div class="container w-100">
                     <button id="submit" class="btn btn-custom w-100 font-weight-bold" type="submit">Đăng nhập</button>
                 </div>
                 <br/>
                 <div class="forgot-password">
                     <p class="font-weight-bold h4 text-center custom-text-register">Bạn chưa có tài khoản? <a href="/register">Đăng ký ngay</a></p>
                 </div>
-                <div>
-                    <span style="color: red;" th:text="${loginError}"></span>
-                </div>
+
             </form>
         </div>
     </div>

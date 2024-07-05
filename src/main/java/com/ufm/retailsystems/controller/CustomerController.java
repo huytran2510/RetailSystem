@@ -2,7 +2,9 @@ package com.ufm.retailsystems.controller;
 
 
 import com.ufm.retailsystems.dto.forcreate.CCustomer;
+import com.ufm.retailsystems.dto.forupdate.UCustomer;
 import com.ufm.retailsystems.dto.login.UserLoginDTO;
+import com.ufm.retailsystems.entities.Customer;
 import com.ufm.retailsystems.services.templates.ICustomerService;
 import com.ufm.retailsystems.services.templates.ISecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
@@ -42,7 +45,7 @@ public class CustomerController {
         boolean loginSuccess = customerService.login(userLoginDTO.getUsername(), userLoginDTO.getPassword());
 
         if (!loginSuccess) {
-            model.addAttribute("loginError", "Invalid username or password");
+            model.addAttribute("loginError", "Sai mật khẩu hoặc tài khoản");
             return "customer-login-form";
         }
 
@@ -53,17 +56,45 @@ public class CustomerController {
         return "redirect:/mobile";
     }
 
-    @PostMapping("/register")
-    @ResponseBody
-    public ResponseEntity<?> register(@Valid @ModelAttribute("customer") CCustomer cCustomer, BindingResult result, RedirectAttributes redirectAttributes) {
+    @PostMapping("/customer/register")
+    public String register(@Valid @ModelAttribute("customer") CCustomer cCustomer, BindingResult result, RedirectAttributes redirectAttributes, Model model) {
         if (result.hasErrors()) {
             Map<String, String> errors = new HashMap<>();
             result.getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
-            return ResponseEntity.badRequest().body(Map.of("success", false, "errors", errors));
+            model.addAttribute("errors", errors);
+            return "register"; // Return to the registration form with errors
         }
-        customerService.add(cCustomer);
-        customerService.login(cCustomer.getUsername(),cCustomer.getPassword());
-        // Process the registration logic here
-        return ResponseEntity.ok(Map.of("success", true));
+
+        try {
+            customerService.add(cCustomer);
+            customerService.login(cCustomer.getUsername(), cCustomer.getPassword());
+            model.addAttribute("result", true);
+            return "redirect:/mobile"; // Redirect to a success page
+        } catch (Exception e) {
+            model.addAttribute("result", "Username hoặc email đã tồn tại");
+            return "register"; // Return to the registration form with error message
+        }
+    }
+
+    @GetMapping("/profile")
+    public String showForm(Model model, HttpServletRequest request) {
+        Authentication userDetails = SecurityContextHolder.getContext().getAuthentication();
+        String username = userDetails.getName();
+        Customer customer = customerService.findByUsername(username);
+        if (customer != null) {
+            model.addAttribute("profile", customer);
+            return "/user/personal-profile";
+        }
+        else {
+            String currentUrl = request.getRequestURL().toString();
+            return "redirect:" + currentUrl;
+        }
+    }
+
+    @PostMapping("/profile")
+    public String submitForm(UCustomer profile, Model model) {
+        // Handle the submitted form data
+        model.addAttribute("profile", profile);
+        return "profileResult";
     }
 }

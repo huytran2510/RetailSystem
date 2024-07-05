@@ -21,17 +21,22 @@ public class EmailServiceImpl implements IEmailService {
     private UserRepository userRepository;
 
     @Override
-    public void sendPasswordResetEmail(String toEmail, String newPassword) {
+    public void sendSuccessRegister(String toEmail, String newPassword) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("huy251003@gmail.com");
         message.setTo(toEmail);
-        message.setSubject("Password Reset");
-        message.setText("Your new password is: " + newPassword);
+        String htmlContent = ""
+                + "Đăng ký thành công. "
+                + "Xin chúc mừng! Bạn đã đăng ký thành công. "
+                + "Mật khẩu mới của bạn là: " + newPassword + " "
+                + "Cảm ơn bạn!";
+        message.setSubject("Đăng ký tài khoản thành công");
+        message.setText(htmlContent);
         try {
             emailSender.send(message);
-            System.out.println("Password reset email sent successfully.");
+            System.out.println("Email sent successfully.");
         } catch (Exception e) {
-            System.err.println("Error sending password reset email: " + e.getMessage());
+            System.err.println("Error sending email: " + e.getMessage());
         }
     }
 

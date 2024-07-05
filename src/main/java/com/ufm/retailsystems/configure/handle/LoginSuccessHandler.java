@@ -13,6 +13,6 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
         System.out.println(authentication.getName());
-        response.sendRedirect("/products");
+        response.sendRedirect("/mobile");
     }
 }

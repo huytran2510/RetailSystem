@@ -2,7 +2,10 @@ package com.ufm.retailsystems.services.templates;
 
 import com.ufm.retailsystems.dto.cart.CartItem;
 import com.ufm.retailsystems.dto.forcreate.COrder;
+import com.ufm.retailsystems.dto.forlist.DailyReportDTO;
+import com.ufm.retailsystems.dto.forlist.DailyRevenueDTO;
 import com.ufm.retailsystems.entities.Order;
+import com.ufm.retailsystems.entities.enums.Status;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -27,4 +30,12 @@ public interface IOrderService {
     Page<Order> getOrdersToday(Pageable pageable);
 
     Order findByIdAndPhone(String orderId, String phone);
+
+    List<Object[]> generateRevenueReportData(int month, int year);
+
+    List<DailyReportDTO> getDailyReportForCurrentWeek();
+
+    List<DailyRevenueDTO> getMonthlyRevenue(int year, int month);
+
+    void update(String orderId , Status status);
 }

@@ -11,12 +11,20 @@
     <link th:href="@{/css/all.min.css}" rel="stylesheet" type="text/css">
     <link th:href="@{/css/dataTables.boostrap4.min.css}" rel="stylesheet" type="text/css">
     <link th:href="@{/css/sb-admin-2.min.css}" rel="stylesheet" type="text/css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.css" rel="stylesheet"
+          type="text/css"/>
     <style>
         .status-images img {
             /*border-radius: 50%;*/
             width: 50px; /* Đặt kích thước hình ảnh theo yêu cầu của bạn */
             height: 50px; /* Đặt kích thước hình ảnh theo yêu cầu của bạn */
             object-fit: cover; /* Đảm bảo hình ảnh vừa với khung tròn */
+        }
+
+        body table {
+            color: black !important;
+            font-size: 16px;
+            font-family: Roboto, sans-serif !important;
         }
     </style>
 </head>
@@ -26,10 +34,10 @@
     </div>
     <div class=" d-flex flex-column w-100">
         <!-- DataTales Example -->
-        <div th:replace="/layout/top-bar :: top-bar"> </div>
+        <div th:replace="/layout/top-bar :: top-bar"></div>
         <div class="ml-3 card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">MANAGEMENT PRODUCT</h6>
+                <h6 class="m-0 font-weight-bold text-primary">QUẢN LÝ HÓA ĐƠN</h6>
             </div>
             <div class="card-body">
                 <div class="table-responsive custom-table">
@@ -44,6 +52,7 @@
                             <th>Ngày đặt hàng</th>
                             <th>Ngày giao hàng</th>
                             <th>Trạng thái</th>
+                            <th></th>
                         </tr>
                         </thead>
                         <tfoot>
@@ -56,6 +65,7 @@
                             <th>Ngày đặt hàng</th>
                             <th>Ngày giao hàng</th>
                             <th>Trạng thái</th>
+                            <th></th>
                         </tr>
                         </tfoot>
                         <tbody>
@@ -69,29 +79,92 @@
                             <td th:text="${order.shippedDate}"></td>
                             <td>
                                 <div th:switch="${order.getDeliveryStatus().getStatus().toString()}">
-                                    <div class="d-flex flex-column align-items-center justify-content-center status-images" th:case="'DELIVERED'">
+                                    <div class="d-flex flex-column align-items-center justify-content-center status-images"
+                                         th:case="'DELIVERED'">
                                         <img
-                                             th:src="'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJs6mcj1AUoIOjQYtB2QRHbePE_cBrGFQjjA&s'"
-                                             alt="DELIVERED Product"/>
+                                                th:src="'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJs6mcj1AUoIOjQYtB2QRHbePE_cBrGFQjjA&s'"
+                                                alt="DELIVERED Product"/>
                                         <span>Đã giao hàng</span>
                                     </div>
-                                    <div class="d-flex flex-column align-items-center justify-content-center status-images" th:case="'PENDING'">
+                                    <div class="d-flex flex-column align-items-center justify-content-center status-images"
+                                         th:case="'PENDING'">
                                         <img
-                                             th:src="'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_DFMAppSX_esl4sg0ywRxDplhFunmoCjgXg&s'"
-                                             alt="Pending Product"/>
+                                                th:src="'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_DFMAppSX_esl4sg0ywRxDplhFunmoCjgXg&s'"
+                                                alt="Pending Product"/>
                                         <span>Chờ xử lý</span>
                                     </div>
 
-                                    <div class="d-flex flex-column align-items-center justify-content-center status-images" th:case="'SHIPPING'">
+                                    <div class="d-flex flex-column align-items-center justify-content-center status-images"
+                                         th:case="'SHIPPING'">
                                         <img
-                                             th:src="'https://cdn-icons-png.flaticon.com/512/9422/9422848.png'"
-                                             alt="Shipping Product"/>
+                                                th:src="'https://cdn-icons-png.flaticon.com/512/9422/9422848.png'"
+                                                alt="Shipping Product"/>
                                         <span>Đang giao hàng</span>
                                     </div>
 
                                     <img class="icon icon-circle" th:case="*"
                                          th:src="'https://via.placeholder.com/150/ff0000/FFFFFF?text=UNKNOWN'"
                                          alt="Unknown Status"/>
+                                </div>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-primary" data-toggle="modal"
+                                        th:attr="data-target='#exampleModal' + ${order.getOrderId()}"
+                                        th:disabled="${order.getDeliveryStatus().getStatus().toString()} == 'DELIVERED'">
+                                    <i class="fa-solid fa-pen-to-square m-2"></i>
+                                </button>
+                                <div class="modal fade" th:id="'exampleModal' + ${order.getOrderId()}" tabindex="-1"
+                                     role="dialog"
+                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Cập nhật trạng thái</h5>
+<!--                                                <div id="result" class="font-weight-bold text-danger"-->
+<!--                                                     th:text="${result}"></div>-->
+                                                <input type="hidden" id="resultMessage" th:value="${result}" />
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <form method="post" id="updateOrderForm" th:action="@{/update-order}">
+                                                <div class="modal-body">
+                                                    <p>Mã hóa đơn : <span th:text="${order.getOrderId()}"></span></p>
+                                                    <p>Trạng thái hiện tại:
+                                                        <span th:switch="${order.getDeliveryStatus().getStatus().toString()}">
+                                                        <span th:case="'PENDING'">Đang chờ xử lý</span>
+                                                        <span th:case="'SHIPPING'">Đang giao hàng</span>
+                                                        <span th:case="'DELIVERED'">Đã giao hàng</span>
+                                                    </span>
+                                                    </p>
+                                                    <select name="deliveryStatus" id="deliveryStatus"
+                                                            class="form-control">
+                                                        <option value="SHIPPING"
+                                                                th:selected="${order.getDeliveryStatus().getStatus().toString()} == 'SHIPPING'">
+                                                            Đang giao hàng
+                                                        </option>
+                                                        <option value="DELIVERED"
+                                                                th:selected="${order.getDeliveryStatus().getStatus().toString()} == 'DELIVERED'">
+                                                            Đã giao hàng
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                            data-dismiss="modal">
+                                                        Đóng
+                                                    </button>
+                                                    <input class="d-none" th:value="${order.getOrderId()}"
+                                                           name="orderId"
+                                                           id="orderId">
+                                                    <button type="submit" class="btn btn-primary"
+                                                            >Cập nhật
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
                                 </div>
                             </td>
                         </tr>
@@ -120,5 +193,17 @@
 
 <!-- Page level custom scripts -->
 <script th:src="@{/js/demo/datatables-demo.js}"></script>
+<!--<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var resultMessageElement = document.getElementById('resultMessage');
+        if (resultMessageElement) {
+            var resultMessage = resultMessageElement.value;
+            if (resultMessage) {
+                alert(resultMessage);
+            }
+        }
+    });
+</script>
 </body>
 </html>

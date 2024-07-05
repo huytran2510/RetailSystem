@@ -95,13 +95,20 @@ public class CustomerServiceImpl implements ICustomerService,UserDetailsService 
         Customer customer = new Customer();
         customer.setUsername(cCustomer.getUsername());
         customer.setPassword(passwordEncoder.encode(cCustomer.getPassword()));
+        customer.setFirstName(cCustomer.getFirstName());
+        customer.setLastName(cCustomer.getLastName());
         customer.setAddress(cCustomer.getAddress());
         customer.setEmail(cCustomer.getEmail());
         customer.setBirthday(cCustomer.getBirthday());
         customer.setPhone(cCustomer.getPhone());
         customer.setGender((cCustomer.getGender()));
-        emailService.sendPasswordResetEmail(cCustomer.getEmail(), "ahihi");
+        emailService.sendSuccessRegister(cCustomer.getEmail(), cCustomer.getPassword());
         customerRepository.save(customer);
         return customer;
+    }
+
+    @Override
+    public Customer findByUsername(String username){
+        return customerRepository.findByUsername(username);
     }
 }

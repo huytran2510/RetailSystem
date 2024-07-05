@@ -8,77 +8,87 @@
     <link rel="stylesheet" th:href="@{/css/header.css}">
     <script th:src="@{/js/jquery-1.11.1.min.js}"></script>
     <script th:src="@{/js/bootstrap.min.js}"></script>
+    <style>
+        .error {
+            color: red;
+        }
+    </style>
 </head>
 <body>
 <div th:replace="/layout/header :: header"></div>
 <div class="container register">
     <div class="text-center my-4 d-flex flex-column align-items-center justify-content-center">
-        <img th:src="@{/img/logo_login.png}" class="img-fluid" alt="Logo" style="max-width: 200px;">
+        <img th:src="@{/img/logo_login.png}" class="img-fluid" alt="Logo" style="max-width: 150px;">
     </div>
     <div class="h1">Đăng ký tài khoản</div>
     <div class="content">
-        <form  th:object="${customer}" class="form-signin" th:action="@{/register}" method="post">
+        <form th:action="@{/customer/register}" th:object="${customer}" class="form-signin"  method="post">
             <div class="user-details">
                 <div class="input-box">
-                    <label for="fullName" class="details">Full Name</label>
+                    <label for="fullName" class="details">Họ</label>
                     <input type="text" id="fullName" th:field="*{firstName}" class="form-control"
-                           placeholder="Enter your name" autofocus required>
-                    <div class="invalid-feedback" th:if="${#fields.hasErrors('firstName')}"
+                           placeholder="Nhập họ của bạn" autofocus required minlength="2" pattern="^[A-Za-z]+$" title="Chỉ được phép nhập chữ cái.">
+                    <div class="invalid-feedback error" th:if="${#fields.hasErrors('firstName')} ? errors"
                          th:errors="*{firstName}"></div>
                 </div>
 
                 <div class="input-box">
-                    <label for="username" class="details">Username</label>
+                    <label for="lastName" class="details">Tên</label>
+                    <input type="text" id="lastName" th:field="*{lastName}" class="form-control"
+                           placeholder="Nhập tên của bạn" required minlength="2" pattern="^[A-Za-z]+$" title="Chỉ được phép nhập chữ cái.">
+                    <div class="invalid-feedback error" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName} ? errors"></div>
+                </div>
+
+                <div class="input-box">
+                    <label for="username" class="details">Tài khoản</label>
                     <input type="text" id="username" th:field="*{username}" class="form-control"
-                           placeholder="Enter your username" required>
-                    <div class="invalid-feedback" th:if="${#fields.hasErrors('username')}"
-                         th:errors="*{username}"></div>
+                           placeholder="Nhập tên tài khoản" required minlength="6">
+                    <div class="invalid-feedback error" th:if="${#fields.hasErrors('username')} ? errors"
+                         th:errors="*{username}" th:text="${errors}"></div>
                 </div>
 
                 <div class="input-box">
                     <label for="email" class="details">Email</label>
                     <input type="email" id="email" th:field="*{email}" class="form-control"
-                           placeholder="Enter your email" required>
-                    <div class="invalid-feedback" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+                           placeholder="Nhập email" required>
+                    <div class="invalid-feedback error" th:if="${#fields.hasErrors('email')}" th:errors="*{email} ? errors" th:text="${errors}"></div>
                 </div>
 
-                <div class="input-box">
-                    <label for="phoneNumber" class="details">Phone Number</label>
-                    <input type="text" id="phoneNumber" th:field="*{phone}" class="form-control"
-                           placeholder="Enter your phone number" required>
-                    <div class="invalid-feedback" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></div>
-                </div>
+
 
                 <div class="input-box">
-                    <label for="password" class="details">Password</label>
+                    <label for="password" class="details">Mật khẩu</label>
                     <input type="password" id="password" th:field="*{password}" class="form-control"
-                           placeholder="Enter your password" required>
-                    <div class="invalid-feedback" th:if="${#fields.hasErrors('password')}"
-                         th:errors="*{password}"></div>
+                           placeholder="Nhập mật khẩu" required minlength="6">
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('password')} ? errors"
+                         th:errors="*{password}" th:text="${errors}"></div>
                 </div>
 
                 <div class="input-box">
-                    <label for="passwordConfirm" class="details">Confirm Password</label>
+                    <label for="passwordConfirm" class="details">Xác nhận mật khẩu</label>
                     <input type="password" id="passwordConfirm" th:field="*{passwordConfirm}" class="form-control"
-                           placeholder="Confirm your password" required>
-                    <div class="invalid-feedback" th:if="${#fields.hasErrors('passwordConfirm')}"
+                           placeholder="Xác nhận mật khẩu của bạn" required minlength="6">
+                    <div class="invalid-feedback error" th:if="${#fields.hasErrors('passwordConfirm')}"
                          th:errors="*{passwordConfirm}"></div>
                 </div>
             </div>
             <div class="gender-details">
                 <input type="radio" name="gender" th:field="*{gender}" value="MALE" id="dot-1">
                 <input type="radio" name="gender" th:field="*{gender}" value="FEMALE" id="dot-2">
-                <span class="gender-title">Gender</span>
+                <span class="gender-title">Giới tính</span>
                 <div class="category">
                     <label for="dot-1">
                         <span class="dot one"></span>
-                        <span class="gender">Male</span>
+                        <span class="gender">Nam</span>
                     </label>
                     <label for="dot-2">
                         <span class="dot two"></span>
-                        <span class="gender">Female</span>
+                        <span class="gender">Nữ</span>
                     </label>
                 </div>
+            </div>
+            <div>
+                <span style="color: red; font-weight: bold" th:text="${result}"></span>
             </div>
             <button class="btn-lg btn-block mt-4 btn-register" type="submit">Đăng ký</button>
         </form>

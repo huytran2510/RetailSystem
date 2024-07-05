@@ -32,11 +32,8 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
-
-    @Column(length = 400)
+    @Column(length = 600)
     private String description;
-
-
     @OneToMany(mappedBy = "product")
     private Set<OrderDetail> orderDetailSet;
 
@@ -46,18 +43,22 @@ public class Product {
     @ManyToOne
     private Discount discount;
 
-    @ManyToMany(mappedBy = "product")
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "product_product_images",  // Tên của bảng liên kết
+            joinColumns = @JoinColumn(name = "product_id"),  // Tên cột của bảng Product
+            inverseJoinColumns = @JoinColumn(name = "image_id"),  // Tên cột của bảng ProductImages
+            uniqueConstraints = @UniqueConstraint(columnNames = { "product_id", "image_id" })  // Ràng buộc duy nhất
+    )
     private Set<ProductImages> productImages;
-
 
     public String getSingleImgUrl() {
         if (productImages != null && !productImages.isEmpty()) {
             return productImages.iterator().next().getImageUrl(); // get the first image URL
         }
-        return null; // or return a default image URL
+        return null;
     }
 
-    // Alternatively, you can get all image URLs concatenated into a single string
     public String getAllImgUrls() {
         if (productImages != null && !productImages.isEmpty()) {
             return productImages.stream()

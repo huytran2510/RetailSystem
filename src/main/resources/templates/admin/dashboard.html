@@ -13,27 +13,38 @@
     <link th:href="@{/css/all.min.css}" rel="stylesheet" type="text/css">
     <link th:href="@{/css/dataTables.boostrap4.min.css}" rel="stylesheet" type="text/css">
     <link th:href="@{/css/sb-admin-2.min.css}" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"> <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.css" rel="stylesheet"
+          type="text/css"/>
+    <style>
+        h7 {
+            color: black !important;
+            font-size: 22px !important;
+            font-family: Roboto, sans-serif !important;
+        }
+    </style>
 </head>
 <body>
 <div class="d-flex flex-row ">
     <div th:replace="/layout/blank :: blank">
     </div>
-    <div class=" d-flex flex-column w-100">
+    <div class=" d-flex flex-column w-100 custom">
         <!-- DataTales Example -->
-        <div th:replace="/layout/top-bar :: top-bar"> </div>
-        <h1 class="m-4">Báo cáo doanh thu</h1>
+        <div th:replace="/layout/top-bar :: top-bar"></div>
+        <h2 class="m-4">Báo cáo doanh thu</h2>
         <div class="container">
             <div class="form-container">
                 <form th:action="@{/dashboard}" method="get">
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="month">Tháng</label>
-                            <select id="month" name="month" class="form-control" >
+                            <select id="month" name="month" class="form-control">
                                 <option th:each="m : ${#numbers.sequence(1,12)}"
                                         th:value="${m}"
                                         th:text="${m}"
-                                        th:selected="${m == selectedMonth}">Month</option>
+                                        th:selected="${m == selectedMonth}">Month
+                                </option>
                             </select>
                         </div>
                         <div class="form-group col-md-6">
@@ -42,7 +53,8 @@
                                 <option th:each="y : ${#numbers.sequence(2020, 2030)}"
                                         th:value="${y}"
                                         th:text="${y}"
-                                        th:selected="${y == selectedYear}">Year</option>
+                                        th:selected="${y == selectedYear}">Year
+                                </option>
                             </select>
                         </div>
                     </div>
@@ -54,9 +66,9 @@
         </div>
 
         <div class="custom-button">
-            <button class="btn" onclick="showOrdersToday()">Đặt hàng hôm nay</button>
-            <button class="btn" onclick="showOrdersThisMonth()">Đặt hàng tháng này</button>
-            <button  class="btn" onclick="showOrdersThisYear()">Đặt hàng trong năm</button>
+            <button class="btn" style="color: #007bff;font-weight: bold" onclick="showOrdersToday()">Đặt hàng hôm nay</button>
+            <button class="btn" style="color: #007bff;font-weight: bold" onclick="showOrdersThisMonth()">Đặt hàng tháng này</button>
+            <button class="btn" style="color: #007bff;font-weight: bold" onclick="showOrdersThisYear()">Đặt hàng trong năm</button>
         </div>
 
 
@@ -66,81 +78,65 @@
                 <h5>Số lượng đặt hàng: <span th:text="${#lists.size(ordersToday)}"></span> đơn hàng</h5>
                 <h5>Tổng tiền: <span th:text="${paymentToday}"></span></h5>
             </div>
-            <table class="table">
-                <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Mã đặt hàng</th>
-                    <th scope="col">Ngày đặt hàng</th>
-                    <th scope="col">Tổng tiền</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="order, iterStat : ${ordersToday}">
-                    <th scope="row" th:text="${iterStat.count}"></th>
-                    <td th:text="${order.orderId}"></td>
-                    <td th:text="${order.orderDate}"></td>
-                    <td th:text="${order.totalPaymentFormatted}"></td>
-                </tr>
-                </tbody>
-            </table>
         </div>
 
         <div id="ordersThisMonthTable" class="hidden">
-            <h2>Đặt hàng tháng này</h2>
+            <h2>Đặt hàng tháng <span th:text="${month}"></span>/<span th:text="${year}"></span></h2>
             <h5>Số lượng đặt hàng: <span th:text="${#lists.size(ordersThisMonth)}"></span> đơn hàng</h5>
             <h5>Tổng tiền: <span th:text="${paymentThisMonth}"></span></h5>
-            <table class="table">
-                <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Mã đặt hàng</th>
-                    <th scope="col">Ngày đặt hàng</th>
-                    <th scope="col">Tổng tiền</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="order, iterStat : ${ordersThisMonth}">
-                    <th scope="row" th:text="${iterStat.count}"></th>
-                    <td th:text="${order.orderId}"></td>
-                    <td th:text="${order.orderDate}"></td>
-                    <td th:text="${order.totalPaymentFormatted}"></td>
-                </tr>
-                </tbody>
-            </table>
         </div>
 
         <div id="ordersThisYearTable" class="hidden">
-            <h2>Đặt hàng trong năm</h2>
+            <h2>Đặt hàng trong năm <span th:text="${year}"></span></h2>
             <h5>Số lượng đặt hàng: <span th:text="${#lists.size(ordersThisYear)}"></span> đơn hàng</h5>
             <h5>Tổng tiền: <span th:text="${paymentThisYear}"></span></h5>
-            <table class="table">
-                <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Mã đặt hàng</th>
-                    <th scope="col">Ngày đặt hàng</th>
-                    <th scope="col">Tổng tiền</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="order, iterStat : ${ordersThisYear}">
-                    <th scope="row" th:text="${iterStat.count}"></th>
-                    <td th:text="${order.orderId}"></td>
-                    <td th:text="${order.orderDate}"></td>
-                    <td th:text="${order.totalPaymentFormatted}"></td>
-                </tr>
-                </tbody>
-            </table>
         </div>
 
-        <div class="ordersByDayInMonthChart">
-            <h2>Số đơn hàng trong ngày theo tháng</h2>
-            <canvas id="ordersByDayInMonthChart"></canvas>
+        <!--        <div class="ordersByDayInMonthChart">-->
+        <!--            <h2>Số đơn hàng trong ngày theo tháng</h2>-->
+        <!--        </div>-->
+        <div>
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h7 class="m-0 font-weight-bold text-primary">Số đơn hàng trong ngày theo tháng
+                        <span th:text="${month}"></span>/<span th:text="${year}"></span>
+                    </h7>
+                </div>
+                <div class="card-body">
+                    <div class="chart-bar">
+                        <canvas id="ordersByDayInMonthChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h7 class="m-0 font-weight-bold text-primary">Biểu đồ doanh thu tháng
+                        <span th:text="${month}"></span>/<span th:text="${year}"></span>
+                    </h7>
+                </div>
+                <div class="card-body">
+                    <div class="chart-bar">
+                        <canvas id="revenueChart" th:attr="data-labels=${categories}, data-values=${revenues}"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h7 class="m-0 font-weight-bold text-primary">Doanh thu hiện tại trong tuần ( từ <span th:text="${startOfWeek}"></span> đến <span th:text="${endOfWeek}"></span> )</h7>
+                </div>
+                <div class="card-body">
+                    <div class="chart-bar">
+                        <canvas id="myBarChart"></canvas>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
-
 
 <script>
     var ctx = document.getElementById('ordersByDayInMonthChart').getContext('2d');
@@ -198,6 +194,203 @@
         document.getElementById('ordersThisYearTable').classList.remove('hidden');
         document.getElementById('dateForm').classList.add('hidden');
     }
+
+    function number_format(number, decimals, dec_point, thousands_sep) {
+        // *     example: number_format(1234.56, 2, ',', ' ');
+        // *     return: '1 234,56'
+        number = (number + '').replace(',', '').replace(' ', '');
+        var n = !isFinite(+number) ? 0 : +number,
+            prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
+            sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
+            dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
+            s = '',
+            toFixedFix = function (n, prec) {
+                var k = Math.pow(10, prec);
+                return '' + Math.round(n * k) / k;
+            };
+        // Fix for IE parseFloat(0.55).toFixed(0) = 0;
+        s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
+        if (s[0].length > 3) {
+            s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
+        }
+        if ((s[1] || '').length < prec) {
+            s[1] = s[1] || '';
+            s[1] += new Array(prec - s[1].length + 1).join('0');
+        }
+        return s.join(dec);
+    }
+
+    var ctx2 = document.getElementById("myBarChart");
+
+    function getVietnameseDayName(dateString) {
+        const date = new Date(dateString);
+        const daysOfWeek = ['Chủ Nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'];
+        const dayOfWeek = daysOfWeek[date.getDay()];
+        const dayOfMonth = date.getDate();
+        const month = date.getMonth() + 1; // Months are zero-indexed
+
+        return `${dayOfWeek}, ngày ${dayOfMonth} tháng ${month}`;
+    }
+
+    async function fetchDailyReport() {
+        try {
+            const response = await fetch('/daily');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return await response.json();
+        } catch (error) {
+            console.error('Error fetching daily report:', error);
+            alert('Failed to fetch daily report. Please try again later.');
+        }
+    }
+
+    fetchDailyReport().then(data => {
+        if (data) {
+            const labels = data.map(item => getVietnameseDayName(item.date));
+            const revenues = data.map(item => item.totalRevenue);
+
+            var myBarChart = new Chart(ctx2, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: "Doanh thu",
+                        backgroundColor: "#4e73df",
+                        hoverBackgroundColor: "#2e59d9",
+                        borderColor: "#4e73df",
+                        data: revenues,
+                    }],
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    layout: {
+                        padding: {
+                            left: 10,
+                            right: 25,
+                            top: 25,
+                            bottom: 0
+                        }
+                    },
+                    scales: {
+                        xAxes: [{
+                            time: {
+                                unit: 'day'
+                            },
+                            gridLines: {
+                                display: false,
+                                drawBorder: false
+                            },
+                            ticks: {
+                                maxTicksLimit: 7
+                            },
+                            maxBarThickness: 25,
+                        }],
+                        yAxes: [{
+                            ticks: {
+                                min: 0,
+                                max: Math.max(...revenues) + 1000, // Adjust max value as needed
+                                maxTicksLimit: 5,
+                                padding: 10,
+                                callback: function (value, index, values) {
+                                    return '$' + number_format(value);
+                                }
+                            },
+                            gridLines: {
+                                color: "rgb(234, 236, 244)",
+                                zeroLineColor: "rgb(234, 236, 244)",
+                                drawBorder: false,
+                                borderDash: [2],
+                                zeroLineBorderDash: [2]
+                            }
+                        }],
+                    },
+                    legend: {
+                        display: false
+                    },
+                    tooltips: {
+                        titleMarginBottom: 10,
+                        titleFontColor: '#6e707e',
+                        titleFontSize: 14,
+                        backgroundColor: "rgb(255,255,255)",
+                        bodyFontColor: "#858796",
+                        borderColor: '#dddfeb',
+                        borderWidth: 1,
+                        xPadding: 15,
+                        yPadding: 15,
+                        displayColors: false,
+                        caretPadding: 10,
+                        callbacks: {
+                            label: function (tooltipItem, chart) {
+                                var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                                return datasetLabel + ': $' + number_format(tooltipItem.yLabel);
+                            }
+                        }
+                    },
+                }
+            });
+
+        }
+    });
+    // console.log("Revenues:", [[${revenues}]]);
 </script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var context = document.getElementById('revenueChart').getContext('2d');
+    console.log("Revenues:", /*[[${revenues}]]*/);
+
+    // Constructing labels array
+    var labels = [];
+    /*[# th:each="item : ${revenues}"]*/
+    labels.push(/*[[${item.date}]]*/);
+    /*[/]*/
+
+    // Constructing data array
+    var data = [];
+    /*[# th:each="item : ${revenues}"]*/
+    data.push(/*[[${item.totalPayment}]]*/);
+    /*[/]*/
+
+    var revenueChart = new Chart(context, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Doanh thu',
+                data: data,
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+    /*]]>*/
+</script>
+
+
+<!--<script th:src="@{/js/demo/chart-bar-demo.js}"></script>-->
+<!-- Bootstrap core JavaScript-->
+<script th:src="@{/css/jquery/jquery.min.js}"></script>
+<script th:src="@{/css/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+<!-- Core plugin JavaScript-->
+<script th:src="@{/css/jquery-easing/jquery.easing.min.js}"></script>
+
+<!-- Custom scripts for all pages-->
+<script th:src="@{/js/sb-admin-2.min.js}"></script>
+
+<!-- Page level plugins -->
+<script th:src="@{/css/datatables/jquery.dataTables.min.js}"></script>
+<script th:src="@{/css/datatables/dataTables.bootstrap4.min.js}"></script>
+
+<!-- Page level custom scripts -->
+<script th:src="@{/js/demo/datatables-demo.js}"></script>
 </body>
 </html>

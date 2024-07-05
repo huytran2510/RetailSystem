@@ -14,11 +14,7 @@
     <link rel="stylesheet" th:href="@{/css/all.min.css}">
     <link rel="stylesheet" th:href="@{/css/footer.css}">
     <link rel="preload" href="/Content/web/fonts/icon/fonts/hoangha.woff" as="font" type="font/woff" crossorigin="">
-    <style>
-        .container {
-            max-width: 1440px;
-        }
-    </style>
+
 </head>
 <body>
 <div th:replace="/layout/header :: header"></div>
@@ -27,7 +23,7 @@
     <div th:replace="/layout/slide :: slide "></div>
 
 </div>
-<div class="container">
+<div class="container custom-container">
     <div class="product-list-title d-flex flex-row " style="">
         <a href="https://cellphones.com.vn/mobile.html"
            class="title button__link"><h2>ĐIỆN THOẠI NỔI BẬT NHẤT</h2>
@@ -57,7 +53,7 @@
                     </form>
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title" th:text="${product.productName}">Product Name</h5>
+                    <h3 class="card-title" th:text="${product.productName}" style="font-size: 16px">Product Name</h3>
                     <div class="product-price">
                         <p class="card-text" th:text="${formatPriceDiscount[iterStat.index]}">
                         </p>
@@ -98,23 +94,30 @@
         }
 
         .ddv-dock img {
-            width: 140px;
+            width: 100px;
             margin-right: 50px;
+            margin-bottom: 10px;
         }
 
         @media screen and (min-width: 1024px) {
             .ddv-dock.dock1 {
                 bottom: 50%;
                 right: 10px;
+                margin-bottom: 20px;
+
             }
 
             .ddv-dock.dock2 {
                 bottom: 35%;
                 right: 10px;
+                margin-bottom: 10px;
+
             }
             .ddv-dock.dock3 {
                 bottom: 20%;
                 right: 10px;
+                margin-top: 10px;
+
             }
         }
 
@@ -151,24 +154,21 @@
 <script>
     $(document).ready(function () {
         $('.btn-add-to-cart').click(function (e) {
-            e.preventDefault(); // Ngăn chặn hành động mặc định của sự kiện click
+            e.preventDefault();
 
-            var form = $(this).closest('.add-to-cart-form'); // Tìm form bên trong nút được click
-            var formData = form.serialize(); // Chuyển đổi form thành dữ liệu chuỗi
+            var form = $(this).closest('.add-to-cart-form');
+            var formData = form.serialize();
 
-            // Perform AJAX request to add product to cart
             $.ajax({
                 type: "POST",
                 url: form.attr('action'),
                 data: formData,
                 success: function (response) {
                     console.log('Sản phẩm đã được thêm vào giỏ hàng.', response);
-                    // Redirect to the cart page after successful addition
                     window.location.href = '/cart';
                 },
                 error: function (xhr, status, error) {
                     console.error('Lỗi khi thêm sản phẩm vào giỏ hàng.', error);
-                    // Handle error case if needed
                 }
             });
         });

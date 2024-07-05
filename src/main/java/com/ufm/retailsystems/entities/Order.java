@@ -65,9 +65,6 @@ public class Order {
 
     @Transient
     private String totalPaymentFormatted;
-
-    // Getters and Setters
-
     public String getTotalPaymentFormatted() {
         return totalPaymentFormatted;
     }

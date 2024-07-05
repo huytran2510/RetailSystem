@@ -1,3 +1,6 @@
+.container-header {
+    font-size: 13px;
+}
 .product-list {
     display: flex;
     flex-wrap: wrap;
@@ -24,14 +27,14 @@
 /*}*/
 .image-container {
     max-width: 500px;
-    height: 300px;
+    height: 280px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .image-container img {
-    max-height: 250px;
+    height: 190px;
 }
 
 .product-image {
@@ -180,7 +183,7 @@
 }
 
 #navSocial {
-    margin-left: 200px
+    margin-left: 120px
 }
 
 .social {

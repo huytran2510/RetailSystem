@@ -30,6 +30,7 @@ public class SecurityServiceImpl implements ISecurityService {
     public String findLoggedInUsername() {
         Authentication userDetails = SecurityContextHolder.getContext().getAuthentication();
         System.out.println(userDetails.getName());
+        System.out.println(userDetails.getAuthorities().toString());
         return userDetails.getName();
     }
 

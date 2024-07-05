@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -18,8 +19,8 @@ public class ProductImages {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long imageId;
 
-    @ManyToMany
-    private Set<Product> product;
+    @ManyToMany(mappedBy = "productImages")
+    private Set<Product> products = new HashSet<>();
 
     private String imageUrl;
 }

@@ -5,10 +5,8 @@ body {
     font-family: Roboto, sans-serif!important;
     font-size: 13px;
 }
-b{
-
-
-
+.container-header {
+    font-size: 13px;
 }
 .row {
     display: -ms-flexbox; /* IE10 */
@@ -40,6 +38,8 @@ b{
 .col-50,
 .col-75 {
     padding: 0 16px;
+
+
 }
 
 .container {
@@ -50,7 +50,7 @@ b{
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for raised effect */
 }
 
-.col-50 input[type=text] {
+.col-50 input[type=text],.col-50 input[type=email] {
     width: 100%;
     margin-bottom: 20px;
     padding: 12px;
@@ -85,16 +85,16 @@ label {
     background-color: #45a049;
 }
 
-a {
+.row a {
     color: #2196F3;
-    font-size: 18px;
+    font-size: 16px;
 }
 
 hr {
     border: 1px solid lightgrey;
 }
 .d-flex {
-    font-size: 16px;
+    /*font-size: 16px;*/
 }
 .price {
     float: right;

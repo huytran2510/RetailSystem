@@ -24,7 +24,7 @@ public class CartController {
 
 
     @PostMapping("/add-to-cart")
-    @ResponseBody // Chú thích này cũng có thể thay thế bằng @RestController ở cấp lớp
+    @ResponseBody
     public ResponseEntity<Object> addToCart(@RequestParam("productId") Long productId, HttpSession session) {
         Optional<Product> optionalProduct = productService.findById(productId);
         if (optionalProduct.isPresent()) {
@@ -121,7 +121,6 @@ public class CartController {
             }
             session.setAttribute("cart", cart); // Cập nhật lại session cart sau khi thay đổi
 
-            // Ghi log để kiểm tra
             System.out.println("Updated quantity for productId " + productId + ": " + action);
         } else {
             System.out.println("Cart is null");
@@ -141,7 +140,6 @@ public class CartController {
             }
             session.setAttribute("cart", cart); // Cập nhật lại session cart sau khi thay đổi
 
-            // Ghi log để kiểm tra
             System.out.println("Updated quantity for productId " + productId );
         } else {
             System.out.println("Cart is null");

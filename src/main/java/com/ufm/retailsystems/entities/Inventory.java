@@ -27,7 +27,6 @@ public class Inventory {
     )
     private Set<Product> products;
 
-    private Integer quantity;
     private String location;
 
     @Column(name = "last_updated")

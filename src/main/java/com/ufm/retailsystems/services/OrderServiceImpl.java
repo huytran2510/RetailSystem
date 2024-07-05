@@ -2,7 +2,10 @@ package com.ufm.retailsystems.services;
 
 import com.ufm.retailsystems.dto.cart.CartItem;
 import com.ufm.retailsystems.dto.forcreate.COrder;
+import com.ufm.retailsystems.dto.forlist.DailyReportDTO;
+import com.ufm.retailsystems.dto.forlist.DailyRevenueDTO;
 import com.ufm.retailsystems.entities.*;
+import com.ufm.retailsystems.entities.enums.Status;
 import com.ufm.retailsystems.repositories.*;
 import com.ufm.retailsystems.services.templates.IEmailService;
 import com.ufm.retailsystems.services.templates.IOrderDetailService;
@@ -16,6 +19,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.text.NumberFormat;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -61,7 +65,7 @@ public class OrderServiceImpl implements IOrderService {
         order.setShipAddress(cOrder.getShipAddress());
         order.setShipName(cOrder.getFirstName() + "" + cOrder.getLastName());
         order.setShipPhone(cOrder.getShipPhone());
-        order.setShippedDate(cOrder.getShippedDate());
+        order.setShippedDate(LocalDate.now());
         order.setTotalPayment(totalPrice);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
@@ -153,5 +157,30 @@ public class OrderServiceImpl implements IOrderService {
 
     public Order findByIdAndPhone(String orderId, String phone) {
         return orderRepository.findByOrderIdAndShipPhone(orderId,phone);
+    }
+
+    @Override
+    public List<Object[]> generateRevenueReportData(int month, int year) {
+        return orderRepository.calculateRevenueByCategory(month,year); // Implement this method in your OrderRepository
+    }
+
+    public List<DailyReportDTO> getDailyReportForCurrentWeek() {
+        LocalDate now = LocalDate.now();
+        LocalDate startOfWeek = now.with(DayOfWeek.MONDAY);
+        LocalDate endOfWeek = now.with(DayOfWeek.SUNDAY);
+        return orderRepository.findDailyReport(startOfWeek, endOfWeek);
+    }
+
+    @Override
+    public List<DailyRevenueDTO> getMonthlyRevenue(int year, int month) {
+        return orderRepository.findMonthlyRevenue(year, month);
+    }
+
+    @Override
+    public void update(String orderId , Status status) {
+        Order order = orderRepository.findByOrderId(orderId);
+        DeliveryStatus deliveryStatus = deliveryStatusRepository.findByStatus(status);
+        order.setDeliveryStatus(deliveryStatus);
+        orderRepository.save(order);
     }
 }

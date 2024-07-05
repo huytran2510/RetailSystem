@@ -21,15 +21,15 @@ import java.time.LocalDate;
 @Setter
 public class CCustomer {
 
-    @Size(min = 6, max = 20, message = "Length of username should be from 6 to 20")
+    @Size(min = 6, max = 20, message = "length")
     @NotEmpty(message = "Please enter username")
     private String username;
 
-    @Size(min = 6, max = 20, message = "Length of password should be from 6 to 20")
+    @Size(min = 6, max = 20, message = "length")
     @NotEmpty(message = "Please enter password")
     private String password;
 
-    @Size(min = 6, max = 20, message = "Length of password confirm should be from 6 to 20")
+    @Size(min = 6, max = 20, message = "length")
     @NotEmpty(message = "Please enter password")
     private String passwordConfirm;
 

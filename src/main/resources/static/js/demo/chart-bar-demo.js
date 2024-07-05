@@ -28,17 +28,17 @@ function number_format(number, decimals, dec_point, thousands_sep) {
 }
 
 // Bar Chart Example
-var ctx = document.getElementById("myBarChart");
-var myBarChart = new Chart(ctx, {
+var ctx2 = document.getElementById("myBarChart");
+var myBarChart = new Chart(ctx2, {
   type: 'bar',
   data: {
-    labels: ["January", "February", "March", "April", "May", "June"],
+    labels: ordersByDayInMonth,
     datasets: [{
       label: "Revenue",
       backgroundColor: "#4e73df",
       hoverBackgroundColor: "#2e59d9",
       borderColor: "#4e73df",
-      data: [4215, 5312, 6251, 7841, 9821, 14984],
+      data: daysWithOrders,
     }],
   },
   options: {

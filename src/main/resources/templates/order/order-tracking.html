@@ -14,7 +14,7 @@
 <div th:replace="/layout/header :: header"></div>
 <div id="breadcrumbs">
     <div class="block-breadcrumbs affix">
-        <div class="cps-container ">
+        <div class="cps-container " style="top: 20%;">
             <ul class="d-flex flex-row align-items-center ">
                 <li>
                     <div>
@@ -25,7 +25,7 @@
                                   transform="translate(-1.471 -3.053)" fill="#d70018"></path>
                         </svg>
                     </div>
-                    <a href="/static" class="button__home nuxt-link-active">Trang chủ</a></li>
+                    <a href="/mobile" class="button__home nuxt-link-active">Trang chủ</a></li>
                 <li>
                     <div class="d-flex flex-row align-items-center text-center">
                         <div>
@@ -34,7 +34,7 @@
                             </svg>
                         </div>
                         <div>
-                            <p>
+                            <p class="ml-1">
                                 TRA CỨU TÌNH TRẠNG ĐƠN HÀNG ONLINE
                             </p>
                         </div>
@@ -55,20 +55,22 @@
     <div id="tra-cuu-don-hang">
         <div class="box-tra-cuu py-2 px-2"><p class="box-search-title">Kiểm tra thông tin đơn hàng <span><br> &amp; tình trạng vận chuyển</span>
         </p>
-            <form th:action="@{/order-tracking/load/}" method="get" class="box-search-info is-flex is-flex-direction-column is-justify-content-center is-align-items-center">
+            <form th:action="@{/order-tracking/load/}" method="get"
+                  class="box-search-info is-flex is-flex-direction-column is-justify-content-center is-align-items-center">
                 <div class="field">
-                    <div class="box-search-item">
+                    <div class="box-search-item input-container">
                         <input id="inputPhone" name="phone" type="text" maxlength="10" required="required"
                                class="box-search-item input-field">
-                        <label for="inputPhone" title="Số điện thoại (bắt buộc)" data-title="Số điện thoại" class="placeholder-label"></label>
+                        <label for="inputPhone" title="Số điện thoại (bắt buộc)" data-title="Số điện thoại"
+                               class="placeholder-label">Số điện thoại (bắt buộc)</label>
                     </div>
                 </div>
                 <div class="field">
-                    <div class="box-search-item input-field">
-                        <label
-                                for="name" title="Mã đơn hàng (bắt buộc)" data-title="Mã đơn hàng" class="placeholder-label"></label>
-                        <input id="name" name="orderId" type="text" required="required" class="box-search-item">
-
+                    <div class="box-search-item input-container">
+                        <input id="name" name="orderId" type="text" required="required"
+                               class="box-search-item input-field">
+                        <label for="name" title="Mã đơn hàng (bắt buộc)" data-title="Mã đơn hàng"
+                               class="placeholder-label">Mã đơn hàng (bắt buộc)</label>
                     </div>
                 </div>
                 <p class="text-danger" th:if="${error!= null}" th:text="${error}"></p>
@@ -91,16 +93,17 @@
                 <img class="icon icon3" th:src="@{/img/delivery-fast-svgrepo-com.svg}"></img>
                 <img class="icon icon4" th:src="@{/img/delivery-success.svg}"></img>
             </div>
-            <div class="status-progress" th:style="'width: ' + ${progressPercentage} + '%'">
-                <span th:text="${progressPercentage}">10</span>%
+            <div class="custom-status-progress">
+                <div class="status-progress" th:style="'width: ' + ${progressPercentage} + '%'">
+                </div>
             </div>
         </div>
 
         <p><strong>Mã hóa đơn:</strong> <span th:text="${order.getOrderId()}">123456</span></p>
-        <p> <strong>Trạng thái hiện tại:</strong>
-            <span th:if="${order.getDeliveryStatus().getStatus().toString() == 'PENDING'}" >Đang xử lý</span>
-            <span th:if="${order.getDeliveryStatus().getStatus().toString() == 'SHIPPED'}" >Đã giao hàng</span>
-            <span th:if="${order.getDeliveryStatus().getStatus().toString() == 'SHIPPING'}" >Đang giao hàng</span>
+        <p><strong>Trạng thái hiện tại:</strong>
+            <span th:if="${order.getDeliveryStatus().getStatus().toString() == 'PENDING'}">Đang xử lý</span>
+            <span th:if="${order.getDeliveryStatus().getStatus().toString() == 'SHIPPED'}">Đã giao hàng</span>
+            <span th:if="${order.getDeliveryStatus().getStatus().toString() == 'SHIPPING'}">Đang giao hàng</span>
         </p>
         <p><strong>Ngày đặt hàng:</strong> <span th:text="${order.getOrderDate().toString()}">2024-06-26</span></p>
         <p><strong>Tổng số tiền:</strong> <span th:text="${order.getTotalPaymentFormatted()}">2024-06-26</span></p>
@@ -113,23 +116,21 @@
                 <th>Giá tiền</th>
             </tr>
             </thead>
+
             <tbody>
             <tr th:each="item : ${order.getOrderDetails()}" class="order-item">
                 <td><span th:text="${item.getQuantity()}">1</span></td>
                 <td><span th:text="${item.getProduct().getProductName()}">Product Name</span></td>
-                <td><span class="price" th:attr="data-value=${item.getUnitPrice()}">$99.99</span></td>
+                <td><span class="price" th:attr="data-value=${item.getUnitPrice()}"></span></td>
             </tr>
             </tbody>
         </table>
     </div>
 </div>
 <script>
-    // Hàm định dạng số sử dụng toLocaleString
     function formatNumber(number) {
-        return Number(number).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+        return Number(number).toLocaleString('vi-VN', {style: 'currency', currency: 'VND'});
     }
-
-    // Hàm để định dạng tất cả các số trong bảng
     function formatPrices() {
         const prices = document.querySelectorAll('.price');
         prices.forEach(price => {
@@ -137,9 +138,22 @@
             price.textContent = formatNumber(value);
         });
     }
-
-    // Định dạng số sau khi trang được tải
     window.onload = formatPrices;
+    document.addEventListener('DOMContentLoaded', function() {
+        var inputs = document.querySelectorAll('.input-field');
+
+        inputs.forEach(function(input) {
+            input.addEventListener('focus', function() {
+                this.parentNode.querySelector('.placeholder-label').classList.add('active');
+            });
+
+            input.addEventListener('blur', function() {
+                if (this.value === '') {
+                    this.parentNode.querySelector('.placeholder-label').classList.remove('active');
+                }
+            });
+        });
+    });
 </script>
 </body>
 </html>

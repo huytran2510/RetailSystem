@@ -93,15 +93,23 @@
                 </a>
             </li>
             <li class="nav-logo m-lg-0">
-                <a href="/customer/login">
+                <a th:if="${username == 'Đăng nhập'}" th:href="@{/customer/login}">
                     <div class="logo-call d-flex flex-column">
                         <div class="position-relative cart">
-                            <img th:src="@{/img/person.svg}" class="logo-truck ">
+                            <img th:src="@{/img/person.svg}" class="logo-truck">
                         </div>
                         <div>
-                            <span th:text="${username}">
-                                Đăng nhập
-                            </span>
+                            <span th:text="${username}"></span>
+                        </div>
+                    </div>
+                </a>
+                <a th:if="${username != 'Đăng nhập'}" th:href="@{/profile}">
+                    <div class="logo-call d-flex flex-column">
+                        <div class="position-relative cart">
+                            <img th:src="@{/img/person.svg}" class="logo-truck">
+                        </div>
+                        <div>
+                            <span th:text="${username}"></span>
                         </div>
                     </div>
                 </a>

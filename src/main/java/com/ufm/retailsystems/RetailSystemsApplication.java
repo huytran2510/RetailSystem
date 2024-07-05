@@ -40,8 +40,8 @@ public class RetailSystemsApplication implements CommandLineRunner {
 //        Role roleAdmin = new Role(ERole.ADMIN);
 //        roleRepository.save(roleUser);
 //        roleRepository.save(roleAdmin);
-//        User user = new User("admin", bCryptPasswordEncoder.encode("123456"));
-//        user.setRoles(roleRepository.findByName(ERole.ADMIN));
+//        User user = new User("user", bCryptPasswordEncoder.encode("123456"),"user@email.com","Tran","Huy","0914216379");
+//        user.setRoles(roleRepository.findByName(ERole.USER));
 //        userRepository.save(user);
 //
 //        Customer customer = new Customer("huyle", bCryptPasswordEncoder.encode("123456"));

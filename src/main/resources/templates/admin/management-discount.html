@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="/css/sb-admin-2.min.css" rel="stylesheet" type="text/css">
+    <link href="/css/dataTables.boostrap4.min.css" rel="stylesheet" type="text/css">
+    <link th:href="@{https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i}"
+          rel="stylesheet">
+    <link th:href="@{/css/all.min.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{/css/management-product.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{/css/dataTables.boostrap4.min.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{/css/sb-admin-2.min.css}" rel="stylesheet" type="text/css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.css" rel="stylesheet"
+          type="text/css"/>
+    <style>
+        body table {
+            color: black !important;
+            font-size: 16px;
+            font-family: Roboto, sans-serif !important;
+        }
+    </style>
+</head>
+<body>
+<div class="d-flex flex-row ">
+    <div th:replace="/layout/blank :: blank">
+    </div>
+    <div class=" d-flex flex-column w-100">
+        <!-- DataTales Example -->
+        <div th:replace="/layout/top-bar :: top-bar"></div>
+        <div class="ml-3 card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">QUẢN LÝ KHUYẾN MÃI</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive custom-table">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th>Mã giảm giá</th>
+                            <th>Nội dung giảm giá</th>
+                            <th>Phần trăm giảm giá</th>
+                            <th>Ngày bắt đầu</th>
+                            <th>Ngày kết thúc</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tfoot>
+                        <tr>
+                            <th>Mã giảm giá</th>
+                            <th>Nội dung giảm giá</th>
+                            <th>Phần trăm giảm giá</th>
+                            <th>Ngày bắt đầu</th>
+                            <th>Ngày kết thúc</th>
+                            <th></th>
+                        </tr>
+                        </tfoot>
+                        <tbody>
+                        <tr th:each="discount, iterStat : ${discounts}">
+                            <td th:text="${discount.getDiscountId()}">Shad Decker</td>
+                            <td th:text="${discount.getDiscountDescription()}">Regional Director</td>
+                            <td th:text="${discount.getDiscountPercent()}">Edinburgh</td>
+                            <td th:text="${discount.getStartDate()}"></td>
+                            <td th:text="${discount.getEndDate()}"></td>
+                            <td class="d-flex flex-row ">
+                                <form th:action="@{/management-discount}" method="get">
+                                    <input class="d-none" th:value="${discount.getDiscountId()}" name="discountId"
+                                           id="discountId">
+                                    <button class="btn bg-white"><i class="fa-solid fa-pen-to-square m-2"></i></button>
+                                </form>
+                                <form th:action="@{/delete-discount/{discountId}(discountId=${discount.getDiscountId()})}" method="post">
+                                    <input type="hidden" th:value="${discount.getDiscountId()}" name="discountId">
+                                    <button type="submit" class="btn bg-white"><i class="fa-solid fa-trash m-2"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form th:action="@{/update-discount}" th:object="${discount}" method="post" class="overlay"
+      th:if="${discount != null}">
+    <div class=" form-container">
+        <div>
+            <a id="exit-button" type="submit" href="/management-discount">X</a>
+            <div class="form-group">
+                <label for="discountDescription">Nội dung</label>
+                <input type="text" id="discountDescription" th:field="*{discountDescription}" class="form-control"
+                       required>
+            </div>
+            <div class="form-group">
+                <label for="discountPercent">Phần trăm giảm giá</label>
+                <input type="text" id="discountPercent" th:field="*{discountPercent}" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="startDate">Start Date</label>
+                <input type="date" id="startDate" th:field="*{startDate}" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="endDate">End Date</label>
+                <input type="date" id="endDate" th:field="*{endDate}" class="form-control" required>
+            </div>
+            <input type="text"  th:field="*{discountId}" class="form-control d-none">
+            <button type="submit" class="btn btn-primary">Cập nhật</button>
+        </div>
+    </div>
+</form>
+<!-- Bootstrap core JavaScript-->
+<script th:src="@{/css/jquery/jquery.min.js}"></script>
+<script th:src="@{/css/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+<!-- Core plugin JavaScript-->
+<script th:src="@{/css/jquery-easing/jquery.easing.min.js}"></script>
+
+<!-- Custom scripts for all pages-->
+<script th:src="@{/js/sb-admin-2.min.js}"></script>
+
+<!-- Page level plugins -->
+<script th:src="@{/css/datatables/jquery.dataTables.min.js}"></script>
+<script th:src="@{/css/datatables/dataTables.bootstrap4.min.js}"></script>
+
+<!-- Page level custom scripts -->
+<script th:src="@{/js/demo/datatables-demo.js}"></script>
+</body>
+</html>

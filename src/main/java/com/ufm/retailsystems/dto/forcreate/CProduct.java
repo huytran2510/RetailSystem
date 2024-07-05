@@ -17,5 +17,5 @@ public class CProduct {
     private Boolean discontinued;
     private Long categoryId;
     private String description;
-//    private String imageUrl;
+    private Long discountId;
 }

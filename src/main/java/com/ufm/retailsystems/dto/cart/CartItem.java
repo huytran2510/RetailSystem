@@ -18,5 +18,4 @@ public class CartItem {
     private double discount;
 
     private String imgUrl;
-    // Các getters và setters
 }

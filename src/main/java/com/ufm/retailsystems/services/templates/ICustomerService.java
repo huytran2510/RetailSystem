@@ -8,4 +8,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 public interface ICustomerService {
     boolean login(String userName, String passWord);
     Customer add(CCustomer cCustomer);
+
+    Customer findByUsername(String username);
 }

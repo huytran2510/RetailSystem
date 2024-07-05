@@ -18,7 +18,7 @@ public class Shipper {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long shipperId;
 
-    private String companyName;
+    private String shipperName;
     private String phone;
 
     @OneToMany(mappedBy = "shipper")

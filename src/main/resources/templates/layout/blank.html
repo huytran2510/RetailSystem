@@ -8,10 +8,14 @@
 <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
-
+<style>
+    li a span,nav-link {
+        font-size: 22px !important;
+    }
+</style>
 <!-- Custom styles for this template-->
 <link href="/static/css/sb-admin-2.min.css" rel="stylesheet">
-<body id="page-top" >
+<body id="page-top">
 
 <!-- Page Wrapper -->
 <div id="wrapper" th:fragment="blank">
@@ -33,51 +37,29 @@
         <li class="nav-item">
             <a class="nav-link" href="/dashboard">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>Dashboard</span></a>
+                <span>Tổng hợp báo cáo</span></a>
         </li>
+        <!--         Nav Item - Pages Collapse Menu-->
 
-<!--        &lt;!&ndash; Divider &ndash;&gt;-->
-<!--        <hr class="sidebar-divider">-->
 
-<!--        &lt;!&ndash; Heading &ndash;&gt;-->
-<!--        <div class="sidebar-heading">-->
-<!--            Interface-->
-<!--        </div>-->
-
-        <!-- Nav Item - Pages Collapse Menu -->
-<!--        <li class="nav-item">-->
-<!--            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"-->
-<!--               aria-expanded="true" aria-controls="collapseTwo">-->
-<!--                <i class="fas fa-fw fa-cog"></i>-->
-<!--                <span>Components</span>-->
-<!--            </a>-->
-<!--            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">-->
-<!--                <div class="bg-white py-2 collapse-inner rounded">-->
-<!--                    <h6 class="collapse-header">Custom Components:</h6>-->
-<!--                    <a class="collapse-item" href="buttons.html">Buttons</a>-->
-<!--                    <a class="collapse-item" href="cards.html">Cards</a>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </li>-->
-
-        <!-- Nav Item - Utilities Collapse Menu -->
-<!--        <li class="nav-item">-->
-<!--            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"-->
-<!--               aria-expanded="true" aria-controls="collapseUtilities">-->
-<!--                <i class="fas fa-fw fa-wrench"></i>-->
-<!--                <span>Utilities</span>-->
-<!--            </a>-->
-<!--            <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"-->
-<!--                 data-parent="#accordionSidebar">-->
-<!--                <div class="bg-white py-2 collapse-inner rounded">-->
-<!--                    <h6 class="collapse-header">Custom Utilities:</h6>-->
-<!--                    <a class="collapse-item" href="utilities-color.html">Colors</a>-->
-<!--                    <a class="collapse-item" href="utilities-border.html">Borders</a>-->
-<!--                    <a class="collapse-item" href="utilities-animation.html">Animations</a>-->
-<!--                    <a class="collapse-item" href="utilities-other.html">Other</a>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </li>-->
+        <!--         Nav Item - Utilities Collapse Menu-->
+        <!--        <li class="nav-item">-->
+        <!--            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"-->
+        <!--               aria-expanded="true" aria-controls="collapseUtilities">-->
+        <!--                <i class="fas fa-fw fa-wrench"></i>-->
+        <!--                <span>Utilities</span>-->
+        <!--            </a>-->
+        <!--            <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"-->
+        <!--                 data-parent="#accordionSidebar">-->
+        <!--                <div class="bg-white py-2 collapse-inner rounded">-->
+        <!--                    <h6 class="collapse-header">Custom Utilities:</h6>-->
+        <!--                    <a class="collapse-item" href="utilities-color.html">Colors</a>-->
+        <!--                    <a class="collapse-item" href="utilities-border.html">Borders</a>-->
+        <!--                    <a class="collapse-item" href="utilities-animation.html">Animations</a>-->
+        <!--                    <a class="collapse-item" href="utilities-other.html">Other</a>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </li>-->
 
         <!-- Divider -->
         <hr class="sidebar-divider">
@@ -87,13 +69,35 @@
             Quản lý
         </div>
 
-
-
-        <!-- Nav Item - Charts -->
         <li class="nav-item">
-            <a class="nav-link" href="/management-product">
-                <i class="fas fa-fw fa-chart-area"></i>
-            <span>Quản lý sản phẩm</span></a>
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+               aria-expanded="true" aria-controls="collapseTwo">
+                <i class="fab fa-product-hunt"></i>
+                <span>Quản lý sản phẩm</span>
+            </a>
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Quản lý sản phẩm:</h6>
+                    <a class="collapse-item" href="/management-product">Danh sách sản phẩm</a>
+                    <a class="collapse-item" href="/product/add">Thêm sản phẩm</a>
+                </div>
+            </div>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+               aria-expanded="true" aria-controls="collapseUtilities">
+                <i class="fa fa-percent" aria-hidden="true"></i>
+                <span>Quản lý khuyến mãi</span>
+            </a>
+            <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+                 data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Quản lý khuyến mãi:</h6>
+                    <a class="collapse-item" href="/management-discount">Danh sách khuyến mãi</a>
+                    <a class="collapse-item" href="/add-discount">Thêm khuyến mãi</a>
+                </div>
+            </div>
         </li>
 
         <!-- Nav Item - Tables -->

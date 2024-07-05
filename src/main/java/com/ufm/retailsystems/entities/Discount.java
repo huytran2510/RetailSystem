@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.*;
@@ -25,6 +26,8 @@ public class Discount {
 
     private String discountDescription;
     private Double discountPercent;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate startDate;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate endDate;
 }

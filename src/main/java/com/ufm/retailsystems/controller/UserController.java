@@ -33,8 +33,6 @@ public class UserController {
         return "register";
     }
 
-
-
     @GetMapping("/login")
     public String loginPage(Model model, String error, String logout) {
         if (error != null)
@@ -61,7 +59,7 @@ public class UserController {
             return "redirect:/management-product";
         } catch (AuthenticationException e) {
             // Handle authentication failure
-            model.addAttribute("error", "Invalid username or password.");
+            model.addAttribute("error", "Sai tài khoản hoặc mật khẩu.");
             return "/admin/login-form";
         }
     }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -8,10 +8,20 @@
     <link href="/css/dataTables.boostrap4.min.css" rel="stylesheet" type="text/css">
     <link th:href="@{https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i}"
           rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link th:href="@{/css/management-product.css}" rel="stylesheet" type="text/css">
     <link th:href="@{/css/all.min.css}" rel="stylesheet" type="text/css">
     <link th:href="@{/css/dataTables.boostrap4.min.css}" rel="stylesheet" type="text/css">
     <link th:href="@{/css/sb-admin-2.min.css}" rel="stylesheet" type="text/css">
-
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.css" rel="stylesheet"
+          type="text/css"/>
+    <style>
+        body table {
+            color: black !important;
+            font-size: 16px;
+            font-family: Roboto, sans-serif !important;
+        }
+    </style>
 </head>
 <body>
 <div class="d-flex flex-row ">
@@ -19,7 +29,7 @@
     </div>
     <div class=" d-flex flex-column w-100">
         <!-- DataTales Example -->
-        <div th:replace="/layout/top-bar :: top-bar"> </div>
+        <div th:replace="/layout/top-bar :: top-bar"></div>
         <div class="ml-3 card shadow mb-4">
             <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">QUẢN LÝ SẢN PHẨM</h6>
@@ -34,6 +44,7 @@
                             <th>Giá sản phẩm</th>
                             <th>Tồn kho</th>
                             <th>Còn bán</th>
+                            <th></th>
                         </tr>
                         </thead>
                         <tfoot>
@@ -43,6 +54,7 @@
                             <th>Giá sản phẩm</th>
                             <th>Tồn kho</th>
                             <th>Còn bán</th>
+                            <th></th>
                         </tr>
                         </tfoot>
                         <tbody>
@@ -58,6 +70,18 @@
                                 <img class="icon icon-circle" th:if="${product.discontinued}"
                                      th:src="@{https://static.vecteezy.com/system/resources/previews/029/588/625/non_2x/green-check-mark-approved-true-icon-free-vector.jpg}"></img>
                             </td>
+                            <td class="d-flex flex-row ">
+                                <form th:action="@{/management-product}" method="get">
+                                    <input class="d-none"  th:value="${product.getProductId()}" name="productId"
+                                           id="productId">
+                                    <button class="btn bg-white"><i
+                                            class="fa-solid fa-pen-to-square m-2"></i></button>
+                                </form>
+                                <form th:action="@{/delete-product/{productId}(productId=${product.getProductId()})}" method="post">
+                                    <input type="hidden" th:value="${product.getProductId()}" name="productId">
+                                    <button type="submit" class="btn bg-white"><i class="fa-solid fa-trash m-2"></i></button>
+                                </form>
+                            </td>
                         </tr>
                         </tbody>
                     </table>
@@ -66,8 +90,56 @@
         </div>
     </div>
 </div>
-
-
+<form th:action="@{/update-product}" th:object="${productUpdate}" method="post" class="overlay"
+      th:if="${productUpdate != null}">
+    <div class=" form-container">
+        <div>
+            <a id="exit-button" type="submit" href="/management-product">X</a>
+                <div class="form-group">
+                    <label for="productName">Tên sản phẩm</label>
+                    <input type="text" id="productName" th:field="*{productName}" class="form-control"
+                           required/>
+                </div>
+                <div class="form-group">
+                    <label for="unitPrice">Đơn giá</label>
+                    <input type="number" step="0.01" id="unitPrice" th:field="*{unitPrice}" class="form-control"
+                           required/>
+                </div>
+                <div class="form-group">
+                    <label for="unitsInStock">Tồn kho</label>
+                    <input type="number" id="unitsInStock" th:field="*{unitsInStock}" class="form-control"
+                           required/>
+                </div>
+                <div class="form-group form-check">
+                    <input type="checkbox" id="discontinued" th:field="*{discontinued}"
+                           class="form-check-input"/>
+                    <label for="discontinued" class="form-check-label">Còn hoạt động</label>
+                </div>
+                <div class="form-group">
+                    <label for="category">Loại sản phẩm</label>
+                    <select id="category" th:field="*{categoryId}" class="form-control" required>
+                        <option th:each="category : ${categories}" th:value="${category.id}"
+                                th:text="${category.getCategoryName()}"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="discount">Giảm giá</label>
+                    <select id="discount" th:field="*{discountId}" class="form-control" required>
+                        <option th:each="discount : ${discounts}" th:value="${discount.discountId}"
+                                th:text="${discount.getDiscountDescription()}"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea id="description" th:field="*{description}" class="form-control"
+                              maxlength="400"></textarea>
+                </div>
+                <input class="d-none" th:field="*{id}"/>
+                <input type="submit" class="btn btn-primary" value="Cập nhật sản phẩm"/>
+            <div id="result"></div> <!-- Thẻ div để hiển thị kết quả từ server -->
+        </div>
+    </div>
+</form>
 <!-- Bootstrap core JavaScript-->
 <script th:src="@{/css/jquery/jquery.min.js}"></script>
 <script th:src="@{/css/bootstrap/js/bootstrap.bundle.min.js}"></script>

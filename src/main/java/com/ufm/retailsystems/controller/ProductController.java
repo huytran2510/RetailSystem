@@ -4,6 +4,7 @@ import com.ufm.retailsystems.dto.forcreate.CProduct;
 import com.ufm.retailsystems.dto.slider.Slide;
 import com.ufm.retailsystems.entities.Product;
 import com.ufm.retailsystems.services.templates.ICategoryService;
+import com.ufm.retailsystems.services.templates.IDiscountService;
 import com.ufm.retailsystems.services.templates.IFileService;
 import com.ufm.retailsystems.services.templates.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,9 @@ public class ProductController {
     @Autowired
     private IFileService fileService;
 
+    @Autowired
+    private IDiscountService discountService;
+
     private static final String UPLOAD_DIR = "src/main/resources/static/img/";
 
     @GetMapping("/mobile")
@@ -47,7 +51,7 @@ public class ProductController {
                 .collect(Collectors.toList());
         model.addAttribute("formattedPrices", formattedPrices);
         List<String> formatPriceDiscount = products.stream()
-                .map(product -> formatPriceToVND(product.getUnitPrice()-product.getUnitPrice()*product.getDiscount().getDiscountPercent()))
+                .map(product -> formatPriceToVND(product.getUnitPrice() - product.getUnitPrice() * product.getDiscount().getDiscountPercent()))
                 .collect(Collectors.toList());
         model.addAttribute("formatPriceDiscount", formatPriceDiscount);
         return "/product/list-product";
@@ -62,7 +66,7 @@ public class ProductController {
                 .collect(Collectors.toList());
         model.addAttribute("formattedPrices", formattedPrices);
         List<String> formatPriceDiscount = products.stream()
-                .map(product -> formatPriceToVND(product.getUnitPrice()-product.getUnitPrice()*product.getDiscount().getDiscountPercent()))
+                .map(product -> formatPriceToVND(product.getUnitPrice() - product.getUnitPrice() * product.getDiscount().getDiscountPercent()))
                 .collect(Collectors.toList());
         model.addAttribute("formatPriceDiscount", formatPriceDiscount);
         return "/product/list-product";
@@ -92,7 +96,7 @@ public class ProductController {
         if (optionalProduct.isPresent()) {
             Product product = optionalProduct.get();
             model.addAttribute("product", product);
-            String formattedPrices = formatPriceToVND(product.getUnitPrice()) ;
+            String formattedPrices = formatPriceToVND(product.getUnitPrice());
             model.addAttribute("formattedPrices", formattedPrices);
             return "/product/product-detail";
         } else {
@@ -102,13 +106,23 @@ public class ProductController {
     }
 
     @GetMapping("/management-product")
-    public String managementProduct(Model model) {
+    public String managementProduct(Model model, @RequestParam(value = "productId", required = false) Long productId) {
         List<Product> products = iProductService.findAll();
         List<String> formattedPrices = products.stream()
                 .map(product -> formatPriceToVND(product.getUnitPrice()))
                 .collect(Collectors.toList());
+        CProduct cProduct = new CProduct();
+        if (productId != null) {
+            cProduct = iProductService.findProductById(productId);
+            model.addAttribute("productUpdate", cProduct);
+        }
         model.addAttribute("formattedPrices", formattedPrices);
-        model.addAttribute("products" , products);
+        model.addAttribute("products", products);
+
+
+        model.addAttribute("categories", categoryService.findAll());
+        model.addAttribute("productDTO", new CProduct());
+        model.addAttribute("discounts", discountService.findAll());
         return "/admin/management-product";
     }
 
@@ -121,39 +135,44 @@ public class ProductController {
     public String showAddProductForm(Model model) {
         model.addAttribute("categories", categoryService.findAll());
         model.addAttribute("productDTO", new CProduct());
+        model.addAttribute("discounts", discountService.findAll());
         return "/product/add-product";
     }
 
-    @PostMapping(value = "/add", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<String> addProduct(@RequestParam("productName") String productName,
-                                             @RequestParam("unitPrice") double unitPrice,
-                                             @RequestParam("unitsInStock") int unitsInStock,
-                                             @RequestParam("discontinued") boolean discontinued,
-                                             @RequestParam("categoryId") Long categoryId,
-                                             @RequestParam("description") String description,
-                                             @RequestParam("imageFile") MultipartFile imageFile) {
-        CProduct productDTO = new CProduct();
-        productDTO.setProductName(productName);
-        productDTO.setUnitPrice(unitPrice);
-        productDTO.setUnitsInStock(unitsInStock);
-        productDTO.setDiscontinued(discontinued);
-        productDTO.setCategoryId(categoryId);
-        productDTO.setDescription(description);
+    @PostMapping("/add-a")
+    public String addProduct(@ModelAttribute("productDTO") CProduct productDTO,
+                             @RequestParam("file") MultipartFile imageFile) {
+        String fileName = imageFile.getOriginalFilename();
+        System.out.println(fileName);
 
         if (imageFile != null && !imageFile.isEmpty()) {
             try {
-                // Upload the file
-                fileService.uploadFile(imageFile);
-
                 // Save the product with the updated DTO
-                iProductService.save(productDTO);
+                iProductService.save(productDTO, imageFile);
 
-                return ResponseEntity.ok("Product added successfully with image: " + imageFile.getOriginalFilename());
-            } catch (IOException e) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload file: " + e.getMessage());
+                return "redirect:/product/add"; // Redirect về trang thêm sản phẩm thành công
+            } catch (Exception e) {
+                return "Failed to created: " + e.getMessage();
             }
         } else {
-            return ResponseEntity.badRequest().body("Please select a file to upload");
+            return "Please select a file to upload";
         }
+    }
+
+    @PostMapping("/update-product")
+    public String updateProduct(@ModelAttribute("productUpdate") CProduct productDTO) {
+        try {
+            // Save the product with the updated DTO
+            iProductService.update(productDTO);
+            return "redirect:/management-product"; // Redirect về trang thêm sản phẩm thành công
+        } catch (Exception e) {
+            return "Failed to update: " + e.getMessage();
+        }
+    }
+
+    @PostMapping("/delete-product/{productId}")
+    public String deleteProduct(@PathVariable("productId") Long productId) {
+        iProductService.delete(productId);
+        return "redirect:/management-product";
     }
 }

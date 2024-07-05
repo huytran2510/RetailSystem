@@ -1,6 +1,7 @@
 package com.ufm.retailsystems.configure;
 
 import com.ufm.retailsystems.configure.handle.CartQuantityInterceptor;
+import com.ufm.retailsystems.configure.handle.CustomAccessDeniedHandler;
 import com.ufm.retailsystems.configure.handle.LoginSuccessHandler;
 import com.ufm.retailsystems.entities.enums.ERole;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 
@@ -39,10 +41,6 @@ public class WebsecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-//    @Bean
-//    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-//        return new BCryptPasswordEncoder();
-//    }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
@@ -51,15 +49,24 @@ public class WebsecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/img/**", "/icon/**");
     }
 
+    @Bean
+    public AccessDeniedHandler accessDeniedHandler() {
+        return new CustomAccessDeniedHandler();
+    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/add-to-cart","/quantity-product", "/add-quantity","/payment").permitAll()
-                .antMatchers("/management-order","/management-product","/add-product","/dashboard").hasAnyAuthority(ERole.USER.toString(), ERole.ADMIN.toString())
-                .antMatchers("/resources/**", "/register","/customer/login","/login",("/mobile/**"),"/slider","/add-to-cart","/quantity-product","/cart",
-                        "/remove-item", "/order-page/**", "/save-order","/order-tracking/**","/dashboard/**","/product/**","/product/add").permitAll().anyRequest().authenticated().and()
-                .exceptionHandling().accessDeniedPage("/login?error=access-denied")
-                .and()
+                .antMatchers("/add-to-cart","/quantity-product", "/add-quantity","/payment",
+                        "/register","/customer/register","/update-order").permitAll()
+                .antMatchers("/management-order/**").hasAnyAuthority(ERole.USER.toString())
+                .antMatchers("/management-order/**","/management-product","/management-discount",
+                        "/dashboard","/add-discount").hasAnyAuthority(ERole.ADMIN.toString())
+                .antMatchers("/resources/**", "/register","/customer/login","/login",("/mobile/**"),"/slider","/add-to-cart",
+                        "/quantity-product","/cart","/daily",
+                        "/add-product","/customer/register","/update-order",
+                        "/remove-item", "/order-page/**", "/save-order","/order-tracking/**","/dashboard/**",
+                        "/product/**","/product/add","/add","/add-a").permitAll().anyRequest().authenticated().and()
                 .formLogin()
                 .loginPage("/login")
                 .defaultSuccessUrl("/products")
@@ -72,15 +79,12 @@ public class WebsecurityConfig extends WebSecurityConfigurerAdapter {
                 .defaultSuccessUrl("/products")
                 .loginProcessingUrl("/customer/process-login")
                 .permitAll()
-                .successHandler(new LoginSuccessHandler()).and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).permitAll();
+                .successHandler(new LoginSuccessHandler()).and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).permitAll()
+                .and()
+                .exceptionHandling()
+                .accessDeniedHandler(accessDeniedHandler());
 
     }
-
-
-//    @Bean
-//    public AuthenticationManager customAuthenticationManager() throws Exception {
-//        return authenticationManager();
-//    }
 
     @Bean
     @Override
@@ -88,9 +92,4 @@ public class WebsecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-//    @Autowired
-//    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.userDetailsService(myUserDetailsService).passwordEncoder(bCryptPasswordEncoder());
-//        auth.userDetailsService(myUserDetailsService).passwordEncoder(bCryptPasswordEncoder());
-//    }
 }
