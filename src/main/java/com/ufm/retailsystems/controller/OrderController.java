@@ -10,9 +10,11 @@ import com.ufm.retailsystems.entities.OrderDetail;
 import com.ufm.retailsystems.entities.enums.Status;
 import com.ufm.retailsystems.services.templates.IOrderDetailService;
 import com.ufm.retailsystems.services.templates.IOrderService;
+import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -30,6 +32,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
+@RequestMapping("/api")
 public class OrderController {
 
     private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
@@ -142,21 +145,52 @@ public class OrderController {
         return decimalFormat.format(price) + "đ";
     }
 
+    @Getter
+    @Value("${PAY_URL}")
+    private String vnp_PayUrl;
+
     @PostMapping("/save-order")
     public String saveOrder(@ModelAttribute("order") COrder cOrder, BindingResult bindingResult, HttpSession session, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             return "/order/order-page";
         }
+
         List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
         Order order = orderService.saveOrder(cOrder, cart);
+
         if (order != null) {
             redirectAttributes.addFlashAttribute("orderSuccess", true);
             session.removeAttribute("cart");
-            return "redirect:/order-page/" + order.getOrderId();
+            session.setAttribute("orderId", order.getOrderId().toString());
+
+            if ("vnpay".equals(cOrder.getPaymentMethod())) {
+                // Redirect to VNPay payment page with order details
+                DecimalFormat decimalFormat = new DecimalFormat("#");
+                decimalFormat.setMaximumFractionDigits(0);
+                String amount = decimalFormat.format(order.getTotalPayment());
+                String bankCode = "NCB"; // You can make this dynamic if needed
+
+                return "redirect:/payment-vnpay?amount=" + amount + "&bankCode=" + bankCode;
+            } else if ("cash".equals(cOrder.getPaymentMethod())) {
+                // Redirect to order page with orderId for cash on delivery
+                return "redirect:/order-page/" + order.getOrderId();
+            }
         }
+
         return "redirect:/order-page";
     }
 
+    @GetMapping("/payment-vnpay")
+    public String showPaymentPage(@RequestParam("amount") String amount,
+                                  @RequestParam("bankCode") String bankCode,
+                                  Model model) {
+        // Add amount and bankCode to the model to use in Thymeleaf template
+        model.addAttribute("amount", amount);
+        model.addAttribute("bankCode", bankCode);
+
+        // Return Thymeleaf template name
+        return "/order/payment";
+    }
     @GetMapping("/management-order")
     public String managementProduct(Model model) {
         List<Order> orders = orderService.findAll();
@@ -166,6 +200,17 @@ public class OrderController {
         model.addAttribute("formattedPrices", formattedPrices);
         model.addAttribute("orders", orders);
         return "/admin/management-order";
+    }
+
+    @GetMapping("/management-order-detail")
+    public String managementOrderDetail(Model model) {
+        List<OrderDetail> orders = orderDetailService.findAll();
+        List<String> formattedPrices = orders.stream()
+                .map(product -> formatPriceToVND(product.getUnitPrice()))
+                .collect(Collectors.toList());
+        model.addAttribute("formattedPrices", formattedPrices);
+        model.addAttribute("orderDetails", orders);
+        return "/admin/management-order-details";
     }
 
     @GetMapping("/dashboard")
@@ -242,15 +287,6 @@ public class OrderController {
         }
     }
 
-    //    @GetMapping("/dashboard/orders")
-//    public String showOrdersToday(@RequestParam(defaultValue = "0") int page,
-//                                  @RequestParam(defaultValue = "10") int size,
-//                                  Model model) {
-//        Pageable pageable = PageRequest.of(page, size);
-//        Page<Order> ordersToday = orderService.getOrdersToday(pageable);
-//        model.addAttribute("ordersToday", ordersToday);
-//        return "dashboard";
-//    }
     private List<Order> formatOrders(List<Order> orders) {
         return orders.stream().map(order -> {
             order.setTotalPaymentFormatted(orderService.formatCurrency(order.getTotalPayment()));

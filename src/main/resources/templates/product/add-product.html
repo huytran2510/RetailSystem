@@ -19,6 +19,19 @@
             font-weight:600 ;
             font-family: Roboto, sans-serif !important;
         }
+        .form-group .invalid-feedback {
+            display: none;
+            color: red;
+        }
+
+        .form-control:invalid + .invalid-feedback {
+            display: block;
+        }
+
+        .form-control:not(:focus):invalid + .invalid-feedback {
+            display: none;
+        }
+
     </style>
 </head>
 <body>
@@ -39,10 +52,12 @@
                     <label for="unitPrice">Đơn giá</label>
                     <input type="number" step="0.01" id="unitPrice" th:field="*{unitPrice}" class="form-control"
                            required min="0"/>
+                    <div class="invalid-feedback">Đơn giá phải là một số dương.</div>
                 </div>
                 <div class="form-group">
                     <label for="unitsInStock">Tồn kho</label>
                     <input type="number" id="unitsInStock" th:field="*{unitsInStock}" class="form-control" required min="0"/>
+                    <div class="invalid-feedback">Tồn kho phải là một số dương.</div>
                 </div>
 <!--                <div class="form-group form-check">-->
 <!--                    <input type="checkbox" id="discontinued" th:field="*{discontinued}" class="form-check-input"/>-->
@@ -109,6 +124,34 @@
                 }
             });
         });
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const unitPriceInput = document.getElementById('unitPrice');
+        const unitsInStockInput = document.getElementById('unitsInStock');
+
+        unitPriceInput.addEventListener('input', function () {
+            validateInput(unitPriceInput);
+        });
+
+        unitsInStockInput.addEventListener('input', function () {
+            validateInput(unitsInStockInput);
+        });
+
+        function validateInput(input) {
+            const value = input.value;
+            if (value === '') {
+                input.classList.remove('is-invalid');
+                input.setCustomValidity('');
+            } else if (value < 0 || isNaN(value)) {
+                input.classList.add('is-invalid');
+                input.setCustomValidity('Invalid');
+            } else {
+                input.classList.remove('is-invalid');
+                input.setCustomValidity('');
+            }
+        }
     });
 </script>
 <script th:src="@{/css/jquery/jquery.min.js}"></script>

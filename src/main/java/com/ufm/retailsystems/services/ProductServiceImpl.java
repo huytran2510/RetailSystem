@@ -106,17 +106,27 @@ public class ProductServiceImpl implements IProductService {
 
 
     public void update(CProduct productDTO) {
-        Product product = new Product();
-        product.setProductId(productDTO.getId());
-        product.setProductName(productDTO.getProductName());
-        product.setUnitPrice(productDTO.getUnitPrice());
-        product.setUnitsInStock(productDTO.getUnitsInStock());
-        product.setDiscontinued(productDTO.getDiscontinued());
-        product.setDescription(productDTO.getDescription());
-        product.setCategory(categoryRepository.findById(productDTO.getCategoryId()).orElse(null));
-        product.setDiscount(discountRepository.findById(productDTO.getDiscountId()).orElse(null));
-        productRepository.save(product);
+        // Load the existing product from the database
+        Product existingProduct = productRepository.findById(productDTO.getId()).orElse(null);
+
+        if (existingProduct != null) {
+            // Update the necessary fields
+            existingProduct.setProductName(productDTO.getProductName());
+            existingProduct.setUnitPrice(productDTO.getUnitPrice());
+            existingProduct.setUnitsInStock(productDTO.getUnitsInStock());
+            existingProduct.setDiscontinued(productDTO.getDiscontinued());
+            existingProduct.setDescription(productDTO.getDescription());
+            existingProduct.setCategory(categoryRepository.findById(productDTO.getCategoryId()).orElse(null));
+            existingProduct.setDiscount(discountRepository.findById(productDTO.getDiscountId()).orElse(null));
+
+            // Preserve the existing product images
+            existingProduct.setProductImages(existingProduct.getProductImages());
+
+            // Save the updated product
+            productRepository.save(existingProduct);
+        }
     }
+
 
     public CProduct findProductById(Long id) {
         Optional<Product> productOptional = productRepository.findById(id);
@@ -141,5 +151,11 @@ public class ProductServiceImpl implements IProductService {
     public void delete(Long productId) {
         productRepository.deleteById(productId);
     }
+
+    public boolean checkUnitInStock(int quantity, Long productId) {
+        Product product = productRepository.findProductByProductId(productId);
+        return product != null && product.getUnitsInStock() >= quantity;
+    }
+
 
 }

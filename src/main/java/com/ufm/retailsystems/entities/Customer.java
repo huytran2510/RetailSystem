@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Entity;
 import javax.persistence.*;
@@ -41,6 +42,8 @@ public class Customer {
     private String phone;
     @Column(nullable = false)
     private String address;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthday;
 
     @Column(name = "created_at")

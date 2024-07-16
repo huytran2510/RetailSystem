@@ -57,15 +57,16 @@ public class WebsecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/add-to-cart","/quantity-product", "/add-quantity","/payment",
-                        "/register","/customer/register","/update-order").permitAll()
+                .antMatchers("/add-to-cart","/quantity-product","/vn-pay-callback", "/add-quantity","/payment","/add-quantity","/management-order-detail/**","/change-password","/payment-vnpay",
+                        "/register","/customer/register","/update-order","remove-item","/add-quantity","/update-profile", "/vn-pay/**").permitAll()
                 .antMatchers("/management-order/**").hasAnyAuthority(ERole.USER.toString())
                 .antMatchers("/management-order/**","/management-product","/management-discount",
                         "/dashboard","/add-discount").hasAnyAuthority(ERole.ADMIN.toString())
                 .antMatchers("/resources/**", "/register","/customer/login","/login",("/mobile/**"),"/slider","/add-to-cart",
-                        "/quantity-product","/cart","/daily",
-                        "/add-product","/customer/register","/update-order",
+                        "/quantity-product","/cart","/daily","/add-quantity","/add-quantity",
+                        "/add-product","/customer/register","/update-order","/change-password",
                         "/remove-item", "/order-page/**", "/save-order","/order-tracking/**","/dashboard/**",
+                        "/update-profile","/vn-pay/**","/payment/vn-pay-callback","/payment-vnpay","/payment",
                         "/product/**","/product/add","/add","/add-a").permitAll().anyRequest().authenticated().and()
                 .formLogin()
                 .loginPage("/login")

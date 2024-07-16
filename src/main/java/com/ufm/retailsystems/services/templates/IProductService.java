@@ -27,4 +27,6 @@ public interface IProductService {
     void update(CProduct productDTO);
 
     void delete(Long productId);
+
+    boolean checkUnitInStock(int quantity, Long productId);
 }

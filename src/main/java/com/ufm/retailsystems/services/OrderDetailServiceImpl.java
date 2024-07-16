@@ -45,4 +45,8 @@ public class OrderDetailServiceImpl implements IOrderDetailService {
     public List<OrderDetail> findAllByOrderId(String orderId){
         return orderDetailRepository.findAllByOrderId(orderId);
     }
+
+    public List<OrderDetail> findAll() {
+        return orderDetailRepository.findAll();
+    }
 }

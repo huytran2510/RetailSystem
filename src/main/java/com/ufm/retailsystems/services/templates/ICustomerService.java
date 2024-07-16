@@ -10,4 +10,6 @@ public interface ICustomerService {
     Customer add(CCustomer cCustomer);
 
     Customer findByUsername(String username);
+    void updateProfile(Customer updatedCustomer);
+    boolean changePassword(String username, String currentPassword, String newPassword, String confirmPassword);
 }

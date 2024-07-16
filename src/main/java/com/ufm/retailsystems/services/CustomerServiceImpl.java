@@ -111,4 +111,28 @@ public class CustomerServiceImpl implements ICustomerService,UserDetailsService 
     public Customer findByUsername(String username){
         return customerRepository.findByUsername(username);
     }
+
+    public boolean changePassword(String username, String currentPassword, String newPassword, String confirmPassword) {
+        Customer customer = customerRepository.findByUsername(username);
+        if (customer != null && passwordEncoder.matches(currentPassword, customer.getPassword()) && newPassword.equals(confirmPassword)) {
+            customer.setPassword(passwordEncoder.encode(newPassword));
+            customerRepository.save(customer);
+            return true; // Thành công
+        }
+        return false; // Thất bại
+    }
+
+    public void updateProfile(Customer updatedCustomer) {
+        Customer existingCustomer = customerRepository.findByUsername(updatedCustomer.getUsername());
+        if (existingCustomer != null) {
+            existingCustomer.setFirstName(updatedCustomer.getFirstName());
+            existingCustomer.setLastName(updatedCustomer.getLastName());
+            existingCustomer.setEmail(updatedCustomer.getEmail());
+            existingCustomer.setPhone(updatedCustomer.getPhone());
+            existingCustomer.setAddress(updatedCustomer.getAddress());
+            existingCustomer.setBirthday(updatedCustomer.getBirthday());
+            // Cập nhật thêm các thông tin khác nếu cần thiết
+            customerRepository.save(existingCustomer);
+        }
+    }
 }

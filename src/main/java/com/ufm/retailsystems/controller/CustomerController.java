@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Controller
+@RequestMapping("/api")
 public class CustomerController {
     @Autowired
     private ICustomerService customerService;
@@ -91,10 +92,39 @@ public class CustomerController {
         }
     }
 
-    @PostMapping("/profile")
-    public String submitForm(UCustomer profile, Model model) {
-        // Handle the submitted form data
-        model.addAttribute("profile", profile);
-        return "profileResult";
+
+
+    @PostMapping("/update-profile")
+    public String updateProfile(@ModelAttribute("profile") Customer customer, RedirectAttributes redirectAttributes) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUsername = authentication.getName();
+
+        // Update profile for the current user
+        customer.setUsername(currentUsername); // Ensure username remains unchanged
+        customerService.updateProfile(customer);
+
+        redirectAttributes.addFlashAttribute("message", "Cập nhật thông tin thành công");
+        return "redirect:/profile";
+    }
+
+    @PostMapping("/change-password")
+    public String changePassword(@RequestParam String currentPassword,
+                                 @RequestParam String newPassword,
+                                 @RequestParam String confirmPassword,
+                                 RedirectAttributes redirectAttributes) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUsername = authentication.getName();
+        System.out.println(currentUsername);
+        System.out.println("change-password");
+        // Change password for the current user
+        boolean passwordChanged = customerService.changePassword(currentUsername, currentPassword, newPassword, confirmPassword);
+        System.out.println(passwordChanged);
+        if (passwordChanged) {
+            redirectAttributes.addFlashAttribute("message", "Đổi mật khẩu thành công!");
+        } else {
+            redirectAttributes.addFlashAttribute("message", "Đổi mật khẩu không thành công. Vui lòng kiểm tra lại mật khẩu hiện tại");
+        }
+
+        return "redirect:/profile";
     }
 }

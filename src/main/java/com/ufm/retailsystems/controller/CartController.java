@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.text.DecimalFormat;
@@ -17,7 +18,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
-@CrossOrigin(origins = "http://localhost:9091")
+@RequestMapping("/api")
 public class CartController {
     @Autowired
     private IProductService productService;
@@ -51,7 +52,7 @@ public class CartController {
                 cartItem.setProductName(product.getProductName());
                 cartItem.setQuantity(1);
                 cartItem.setDiscount(product.getDiscount().getDiscountPercent());
-                cartItem.setPriceDiscount(product.getUnitPrice()-product.getDiscount().getDiscountPercent()*product.getUnitPrice());
+                cartItem.setPriceDiscount(product.getUnitPrice() - product.getDiscount().getDiscountPercent() * product.getUnitPrice());
                 cartItem.setImgUrl(product.getSingleImgUrl());
                 cart.add(cartItem);
             }
@@ -82,7 +83,7 @@ public class CartController {
             List<String> formattedPricesDiscount = cart.stream()
                     .map(product -> formatPriceToVND(product.getPriceDiscount()))
                     .collect(Collectors.toList());
-            for(CartItem cartItem : cart) {
+            for (CartItem cartItem : cart) {
                 payment += (cartItem.getPriceDiscount() * cartItem.getQuantity());
             }
             model.addAttribute("payment", formatPriceToVND(payment));
@@ -104,28 +105,56 @@ public class CartController {
         return decimalFormat.format(price) + "đ";
     }
 
+//    @PostMapping("/add-quantity")
     @PostMapping("/add-quantity")
-    public String updateQuantityCart(@RequestParam Long productId, @RequestParam String action, HttpSession session) {
+    public String updateQuantityCart(@RequestParam Long productId, @RequestParam String action, HttpSession session, RedirectAttributes redirectAttributes) {
         List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
         if (cart != null) {
             for (CartItem item : cart) {
                 if (Objects.equals(item.getProductId(), productId)) {
                     int currentQuantity = item.getQuantity();
+
                     if ("increase".equals(action)) {
-                        item.setQuantity(currentQuantity + 1);
+                        // Check if the new quantity is in stock
+                        if (productService.checkUnitInStock(currentQuantity + 1, productId)) {
+                            item.setQuantity(currentQuantity + 1);
+                        } else {
+                            redirectAttributes.addFlashAttribute("error", "Không đủ hàng trong kho."); // Add error to RedirectAttributes
+                        }
                     } else if ("decrease".equals(action) && currentQuantity > 1) {
                         item.setQuantity(currentQuantity - 1);
                     }
                     break; // Exit the loop once the product is found and updated
                 }
             }
-            session.setAttribute("cart", cart); // Cập nhật lại session cart sau khi thay đổi
+            session.setAttribute("cart", cart); // Update session cart after changes
 
             System.out.println("Updated quantity for productId " + productId + ": " + action);
         } else {
             System.out.println("Cart is null");
         }
         return "redirect:/cart";
+    }
+
+    @PostMapping("/add-quantity1")
+    public ResponseEntity<String> updateQuantityCart(@RequestParam Long productId, @RequestParam int quantity, HttpSession session) {
+        System.out.println("add-success");
+        List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
+        if (cart != null) {
+            for (CartItem item : cart) {
+                if (Objects.equals(item.getProductId(), productId)) {
+                    item.setQuantity(quantity);
+                    break; // Exit the loop once the product is found and updated
+                }
+            }
+            session.setAttribute("cart", cart); // Update the session cart after the change
+
+            System.out.println("Updated quantity for productId " + productId + ": " + quantity);
+            return ResponseEntity.ok("Quantity updated successfully");
+        } else {
+            System.out.println("Cart is null");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cart is null");
+        }
     }
 
     @PostMapping("/remove-item")
@@ -140,14 +169,12 @@ public class CartController {
             }
             session.setAttribute("cart", cart); // Cập nhật lại session cart sau khi thay đổi
 
-            System.out.println("Updated quantity for productId " + productId );
+            System.out.println("Updated quantity for productId " + productId);
         } else {
             System.out.println("Cart is null");
         }
         return "redirect:/cart";
     }
-
-
 
 
 }

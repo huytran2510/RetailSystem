@@ -36,38 +36,85 @@
 .container {
     background-color: #ffffff;
     border-radius: 10px;
-    padding: 20px;
+    /*padding: 20px;*/
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .container-profile {
     font-size: 20px;
+    display: none;
 }
 
-h2 {
-    color: #343a40;
+.container-profile.active {
+    display: block; /* Hiển thị form khi có lớp active */
+}
+/*h2 {*/
+/*    color: #343a40;*/
+/*}*/
+
+/*.btn-primary {*/
+/*    background-color: #007bff;*/
+/*    border-color: #007bff;*/
+/*}*/
+
+/*.btn-primary:hover {*/
+/*    background-color: #0056b3;*/
+/*    border-color: #0056b3;*/
+/*}*/
+
+/*.btn-danger {*/
+/*    background-color: #dc3545;*/
+/*    border-color: #dc3545;*/
+/*}*/
+
+/*.btn-danger:hover {*/
+/*    background-color: #c82333;*/
+/*    border-color: #bd2130;*/
+/*}*/
+
+/*.table-borderless td, .table-borderless th {*/
+/*    border: 0;*/
+/*}*/
+
+nav {
+    height: 100%;
+    background-color: #ffffff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Để làm nổi bật background */
 }
 
-.btn-primary {
-    background-color: #007bff;
-    border-color: #007bff;
+.nav-link {
+    display: block;
+    padding: 10px 15px;
+    text-decoration: none;
+    color: #333;
 }
 
-.btn-primary:hover {
-    background-color: #0056b3;
-    border-color: #0056b3;
+.nav-link:focus,
+.nav-link:active {
+    border-radius: 5px;
+    border: 1px solid #ff0000;
+    outline: none; /* Loại bỏ viền xung quanh khi focus */
 }
 
-.btn-danger {
-    background-color: #dc3545;
-    border-color: #dc3545;
+ul li a {
+    font-size: 16px;
+    font-weight: bold;
 }
 
-.btn-danger:hover {
-    background-color: #c82333;
-    border-color: #bd2130;
+.profile{
+    margin: 20px;
+    overflow: hidden;
+    overflow-x: hidden;
+}
+body {
+    overflow-x: hidden;
+    overflow: hidden;
+    overflow-y: auto;
 }
 
-.table-borderless td, .table-borderless th {
-    border: 0;
+.full-height {
+    height: 80vh;
+    /*position: fixed;*/
+    top: 0;
+    left: 0;
 }

@@ -2,6 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>Title</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link th:href="@{/css/cart.css}" type="text/css" rel="stylesheet">
@@ -79,28 +81,52 @@
                     <div class="d-flex justify-content-between align-items-center">
                         <a th:href="@{'/mobile/detail/' + ${cart.productId}}" class="product-name"
                            th:text="${cart.getProductName()}"></a>
-                        <form th:action="@{/remove-item}" method="post">
-                            <input type="hidden" name="productId" th:value="${cart.productId}">
-                            <button class="remove-item" type="submit">
-                                <svg width="60" height="60" viewBox="0 0 16 16" fill="none"
-                                     xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M13.9999 4H10.6666V2.88666C10.6509 2.45988 10.4667 2.0567 10.1543 1.76553C9.84188 1.47435 9.42675 1.31893 8.99992 1.33333H6.99992C6.57309 1.31893 6.15796 1.47435 5.84554 1.76553C5.53312 2.0567 5.34889 2.45988 5.33325 2.88666V4H1.99992C1.82311 4 1.65354 4.07024 1.52851 4.19526C1.40349 4.32028 1.33325 4.48985 1.33325 4.66666C1.33325 4.84348 1.40349 5.01305 1.52851 5.13807C1.65354 5.26309 1.82311 5.33333 1.99992 5.33333H2.66659V12.6667C2.66659 13.1971 2.8773 13.7058 3.25237 14.0809C3.62744 14.456 4.13615 14.6667 4.66659 14.6667H11.3333C11.8637 14.6667 12.3724 14.456 12.7475 14.0809C13.1225 13.7058 13.3333 13.1971 13.3333 12.6667V5.33333H13.9999C14.1767 5.33333 14.3463 5.26309 14.4713 5.13807C14.5963 5.01305 14.6666 4.84348 14.6666 4.66666C14.6666 4.48985 14.5963 4.32028 14.4713 4.19526C14.3463 4.07024 14.1767 4 13.9999 4ZM6.66659 2.88666C6.66659 2.78 6.80659 2.66666 6.99992 2.66666H8.99992C9.19325 2.66666 9.33325 2.78 9.33325 2.88666V4H6.66659V2.88666ZM11.9999 12.6667C11.9999 12.8435 11.9297 13.013 11.8047 13.1381C11.6796 13.2631 11.5101 13.3333 11.3333 13.3333H4.66659C4.48977 13.3333 4.32021 13.2631 4.19518 13.1381C4.07016 13.013 3.99992 12.8435 3.99992 12.6667V5.33333H11.9999V12.6667Z"
-                                          fill="#212B36"></path>
-                                    <path d="M5.99992 11.3333C6.17673 11.3333 6.3463 11.2631 6.47132 11.1381C6.59635 11.013 6.66658 10.8435 6.66658 10.6667V8C6.66658 7.82319 6.59635 7.65362 6.47132 7.5286C6.3463 7.40357 6.17673 7.33334 5.99992 7.33334C5.82311 7.33334 5.65354 7.40357 5.52851 7.5286C5.40349 7.65362 5.33325 7.82319 5.33325 8V10.6667C5.33325 10.8435 5.40349 11.013 5.52851 11.1381C5.65354 11.2631 5.82311 11.3333 5.99992 11.3333Z"
-                                          fill="#212B36"></path>
-                                    <path d="M9.99992 11.3333C10.1767 11.3333 10.3463 11.2631 10.4713 11.1381C10.5963 11.013 10.6666 10.8435 10.6666 10.6667V8C10.6666 7.82319 10.5963 7.65362 10.4713 7.5286C10.3463 7.40357 10.1767 7.33334 9.99992 7.33334C9.82311 7.33334 9.65354 7.40357 9.52851 7.5286C9.40349 7.65362 9.33325 7.82319 9.33325 8V10.6667C9.33325 10.8435 9.40349 11.013 9.52851 11.1381C9.65354 11.2631 9.82311 11.3333 9.99992 11.3333Z"
-                                          fill="#212B36"></path>
-                                </svg>
-                            </button>
-                        </form>
+                        <button type="button" class="btn btn-primary remove-item" data-toggle="modal"
+                                th:attr="data-target='#exampleModal' + ${cart.getProductId()}">
+                            <svg width="60" height="60" viewBox="0 0 16 16" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path d="M13.9999 4H10.6666V2.88666C10.6509 2.45988 10.4667 2.0567 10.1543 1.76553C9.84188 1.47435 9.42675 1.31893 8.99992 1.33333H6.99992C6.57309 1.31893 6.15796 1.47435 5.84554 1.76553C5.53312 2.0567 5.34889 2.45988 5.33325 2.88666V4H1.99992C1.82311 4 1.65354 4.07024 1.52851 4.19526C1.40349 4.32028 1.33325 4.48985 1.33325 4.66666C1.33325 4.84348 1.40349 5.01305 1.52851 5.13807C1.65354 5.26309 1.82311 5.33333 1.99992 5.33333H2.66659V12.6667C2.66659 13.1971 2.8773 13.7058 3.25237 14.0809C3.62744 14.456 4.13615 14.6667 4.66659 14.6667H11.3333C11.8637 14.6667 12.3724 14.456 12.7475 14.0809C13.1225 13.7058 13.3333 13.1971 13.3333 12.6667V5.33333H13.9999C14.1767 5.33333 14.3463 5.26309 14.4713 5.13807C14.5963 5.01305 14.6666 4.84348 14.6666 4.66666C14.6666 4.48985 14.5963 4.32028 14.4713 4.19526C14.3463 4.07024 14.1767 4 13.9999 4ZM6.66659 2.88666C6.66659 2.78 6.80659 2.66666 6.99992 2.66666H8.99992C9.19325 2.66666 9.33325 2.78 9.33325 2.88666V4H6.66659V2.88666ZM11.9999 12.6667C11.9999 12.8435 11.9297 13.013 11.8047 13.1381C11.6796 13.2631 11.5101 13.3333 11.3333 13.3333H4.66659C4.48977 13.3333 4.32021 13.2631 4.19518 13.1381C4.07016 13.013 3.99992 12.8435 3.99992 12.6667V5.33333H11.9999V12.6667Z"
+                                      fill="#212B36"></path>
+                                <path d="M5.99992 11.3333C6.17673 11.3333 6.3463 11.2631 6.47132 11.1381C6.59635 11.013 6.66658 10.8435 6.66658 10.6667V8C6.66658 7.82319 6.59635 7.65362 6.47132 7.5286C6.3463 7.40357 6.17673 7.33334 5.99992 7.33334C5.82311 7.33334 5.65354 7.40357 5.52851 7.5286C5.40349 7.65362 5.33325 7.82319 5.33325 8V10.6667C5.33325 10.8435 5.40349 11.013 5.52851 11.1381C5.65354 11.2631 5.82311 11.3333 5.99992 11.3333Z"
+                                      fill="#212B36"></path>
+                                <path d="M9.99992 11.3333C10.1767 11.3333 10.3463 11.2631 10.4713 11.1381C10.5963 11.013 10.6666 10.8435 10.6666 10.6667V8C10.6666 7.82319 10.5963 7.65362 10.4713 7.5286C10.3463 7.40357 10.1767 7.33334 9.99992 7.33334C9.82311 7.33334 9.65354 7.40357 9.52851 7.5286C9.40349 7.65362 9.33325 7.82319 9.33325 8V10.6667C9.33325 10.8435 9.40349 11.013 9.52851 11.1381C9.65354 11.2631 9.82311 11.3333 9.99992 11.3333Z"
+                                      fill="#212B36"></path>
+                            </svg>
+                        </button>
+                        <div class="modal fade" th:id="'exampleModal' + ${cart.getProductId()}" tabindex="-1"
+                             role="dialog"
+                             aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Bạn có muốn xóa sản phẩm này không ?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng
+                                        </button>
+                                        <form th:action="@{/remove-item}" method="post">
+                                            <input type="hidden" name="productId" th:value="${cart.productId}">
+                                            <button type="submit" class="btn btn-primary">Đồng ý</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="d-flex justify-content-between align-items-end"><!---->
                         <div class="block-box-price">
                             <span class="title-price" style="display: none;">:</span>
                             <div class="box-info__box-price">
-                                <p class="product__price--show m-0" th:text="${formattedPricesDiscount[iterStat.index]}"></p>
-                                <p class=" price-old m-0" th:text="${formattedPrices[iterStat.index]}" ></p>
+                                <p class="product__price--show m-0"
+                                   th:text="${formattedPricesDiscount[iterStat.index]}"></p>
+                                <p class=" price-old m-0" th:text="${formattedPrices[iterStat.index]}"></p>
                             </div>
                         </div>
                         <div class="action d-flex justify-content-between align-items-center">
@@ -110,7 +136,11 @@
                                 <button type="submit" class="minus d-flex justify-content-center align-items-center">-
                                 </button>
                             </form>
-                            <input type="text" readonly="readonly" name="quantity" th:value="${cart.quantity}">
+                            <form id="quantityForm" action="/add-quantity1" method="post">
+                                <input type="number" name="quantity" id="quantityInput" class="quantity-input" th:value="${cart.quantity}" th:data-product-id="${cart.productId}" required>
+                                <input type="hidden" name="productId" id="productIdInput" value="${cart.productId}">
+                                <button type="submit" style="display:none;">Submit</button>
+                            </form>
                             <form th:action="@{/add-quantity}" method="post">
                                 <input type="hidden" name="productId" th:value="${cart.productId}">
                                 <input type="hidden" name="action" value="increase">
@@ -149,13 +179,13 @@
                 <div id="extendedWarranty">
                     <button class="btn custom-btn">
                         <span class="d-flex align-items-center title"><svg width="20" height="20"
-                                                                                           viewBox="0 0 12 12"
-                                                                                           fill="none"
-                                                                                           xmlns="http://www.w3.org/2000/svg"><path
-                            d="M10.5393 3C10.5797 3.74567 10.5952 5.25039 10.25 7C9.89414 8.80379 7.8391 10.087 6.7221 10.6618C6.26626 10.8964 5.73292 10.8964 5.27708 10.6618C4.16019 10.0869 2.10544 8.80375 1.7496 7C1.40441 5.2502 1.42015 3.74534 1.46069 2.99975C1.47785 2.68408 1.66168 2.40754 1.94333 2.26397C2.77208 1.84155 4.59885 0.999999 5.99928 1C7.39968 1 9.22724 1.84153 10.0564 2.26396C10.3382 2.40752 10.5221 2.68419 10.5393 3Z"
-                            stroke="#121219"></path> <path
-                            d="M4.5 5.83203L5.26968 6.71167C5.47592 6.94737 5.84563 6.9376 6.03913 6.69132L7.5 4.83203"
-                            stroke="#121219" stroke-linecap="round" stroke-linejoin="round"></path></svg> <span>Bảo vệ toàn diện với Bảo hành mở rộng</span></span>
+                                                                           viewBox="0 0 12 12"
+                                                                           fill="none"
+                                                                           xmlns="http://www.w3.org/2000/svg"><path
+                                d="M10.5393 3C10.5797 3.74567 10.5952 5.25039 10.25 7C9.89414 8.80379 7.8391 10.087 6.7221 10.6618C6.26626 10.8964 5.73292 10.8964 5.27708 10.6618C4.16019 10.0869 2.10544 8.80375 1.7496 7C1.40441 5.2502 1.42015 3.74534 1.46069 2.99975C1.47785 2.68408 1.66168 2.40754 1.94333 2.26397C2.77208 1.84155 4.59885 0.999999 5.99928 1C7.39968 1 9.22724 1.84153 10.0564 2.26396C10.3382 2.40752 10.5221 2.68419 10.5393 3Z"
+                                stroke="#121219"></path> <path
+                                d="M4.5 5.83203L5.26968 6.71167C5.47592 6.94737 5.84563 6.9376 6.03913 6.69132L7.5 4.83203"
+                                stroke="#121219" stroke-linecap="round" stroke-linejoin="round"></path></svg> <span>Bảo vệ toàn diện với Bảo hành mở rộng</span></span>
                         <span class="d-flex align-items-center action"><span>chọn gói</span> <svg width="20" height="20"
                                                                                                   viewBox="0 0 12 12"
                                                                                                   fill="none"
@@ -202,9 +232,44 @@
             Mua ngay (<span th:text="${quantity}"></span>)
         </button>
     </div>
-    <div id="orderSuccessMessage" style="display:none; color:green;">
-        Đặt hàng thành công!
+    <div id="orderSuccessMessageContainer" class="message-container">
+        <div id="orderSuccessMessage" th:if="${error}" th:text="${error}" class="success-message">
+        </div>
     </div>
+
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script th:src="@{/css/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+        var successMessageContainer = document.getElementById("orderSuccessMessageContainer");
+        var successMessage = document.getElementById("orderSuccessMessage");
+        if (successMessage.textContent.trim() !== "") {
+            successMessageContainer.style.display = "block";
+            setTimeout(function () {
+                successMessageContainer.style.display = "none";
+            }, 2000); // 3000ms = 3 giây
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const quantityInput = document.getElementById('quantityInput');
+
+        quantityInput.addEventListener('keypress', function (event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                submitForm();
+            }
+        });
+
+        function submitForm() {
+            const form = document.getElementById('quantityForm');
+            form.submit();
+        }
+    });
+</script>
+
 </body>
 </html>

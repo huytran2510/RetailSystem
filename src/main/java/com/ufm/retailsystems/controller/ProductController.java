@@ -24,6 +24,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
+@RequestMapping("/api")
 public class ProductController {
     @Autowired
     private HttpSession httpSession;

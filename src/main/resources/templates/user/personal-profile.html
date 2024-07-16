@@ -6,83 +6,193 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <script th:src="@{/js/jquery-1.11.1.min.js}"></script>
     <link rel="stylesheet" th:href="@{/css/header.css}">
-    <link rel="stylesheet" th:href="@{/css/personal-profile.css.css}">
+    <link rel="stylesheet" th:href="@{/css/personal-profile.css}">
+    <style>
+        /* Khung thông báo */
+        .message-container {
+            position: fixed;
+            top: 35%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50%;
+            padding: 20px;
+            background-color: #f0f0f0;
+            border-radius: 20px;
+            /*border: 2px solid green;*/
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: none; /* Ẩn ban đầu */
+            z-index: 1000;
+            text-align: center;
+            height: 100vh;
+        }
+
+        /* Văn bản thông báo */
+        .success-message {
+            color: red;
+            font-weight: bold;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+    </style>
 </head>
 <body>
 <div th:replace="/layout/header :: header"></div>
-<div class="container-profile" style="font-size: 20px">
-    <div class="container ">
-        <div class="d-flex justify-content-between align-items-center mt-5">
-            <h2>Thông tin cá nhân</h2>
-            <form th:action="@{/logout}" method="post">
-                <button type="submit" class="btn btn-danger">Đăng xuất</button>
-            </form>
-        </div>
-        <div class="mt-4">
-            <table class="table table-borderless">
-                <tbody>
-                <tr>
-                    <td>Họ</td>
-                    <td th:text="${profile.firstName}">John</td>
-                </tr>
-                <tr>
-                    <td>Tên</td>
-                    <td th:text="${profile.lastName}">Doe</td>
-                </tr>
-                <tr>
-                    <td>Email</td>
-                    <td th:text="${profile.email}">john.doe@example.com</td>
-                </tr>
-                <tr>
-                    <td>Ngày sinh</td>
-                    <td th:text="${profile.birthday}">1990-01-01</td>
-                </tr>
-                <tr>
-                    <td>Địa chỉ</td>
-                    <td th:text="${profile.address}">123 Main St, Springfield</td>
-                </tr>
-                <tr>
-                    <td> Số điện thoại</td>
-                    <td th:text="${profile.phone}">(555) 123-4567</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-<!--        <form th:action="@{/profile}" th:object="${profile}" method="post" class="mt-4">-->
-<!--            <div class="form-group">-->
-<!--                <label for="firstName">Họ</label>-->
-<!--                <input type="text" id="firstName" th:field="*{firstName}" class="form-control"-->
-<!--                       placeholder="Enter your first name" required>-->
-<!--            </div>-->
-<!--            <div class="form-group">-->
-<!--                <label for="lastName">Tên</label>-->
-<!--                <input type="text" id="lastName" th:field="*{lastName}" class="form-control"-->
-<!--                       placeholder="Enter your last name" required>-->
-<!--            </div>-->
-<!--            <div class="form-group">-->
-<!--                <label for="email">Email</label>-->
-<!--                <input type="email" id="email" th:field="*{email}" class="form-control"-->
-<!--                       placeholder="Enter your email address" required>-->
-<!--            </div>-->
-<!--            <div class="form-group">-->
-<!--                <label for="birthDate">Ngày sinh</label>-->
-<!--                <input type="date" id="birthDate" th:field="*{birthday}" class="form-control" required>-->
-<!--            </div>-->
-<!--            <div class="form-group">-->
-<!--                <label for="address">Address</label>-->
-<!--                <input type="text" id="address" th:field="*{address}" class="form-control"-->
-<!--                       placeholder="Enter your address"-->
-<!--                       required>-->
-<!--            </div>-->
-<!--            <div class="form-group">-->
-<!--                <label for="phone">Phone Number</label>-->
-<!--                <input type="tel" id="phone" th:field="*{phone}" class="form-control"-->
-<!--                       placeholder="Enter your phone number"-->
-<!--                       required>-->
-<!--            </div>-->
-<!--            <button type="submit" class="btn btn-primary">Submit</button>-->
-<!--        </form>-->
+
+<div class="container-fluid profile">
+    <div class="d-flex flex-row ">
+        <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar full-height">
+            <div class="sidebar-sticky">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" type="button" th:data-target="profile">Thông tin cá nhân</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" type="button" th:data-target="update-profile">Cập nhật thông tin cá nhân</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" type="button" th:data-target="change-password">Đổi mật khẩu</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+            <div id="profile" class="container-profile active" style="font-size: 20px">
+                <div class="d-flex justify-content-between align-items-center mt-5">
+                    <h2>Thông tin cá nhân</h2>
+                    <form th:action="@{/logout}" method="post">
+                        <button type="submit" class="btn btn-danger">Đăng xuất</button>
+                    </form>
+                </div>
+                <div class="mt-4">
+                    <table class="table table-borderless">
+                        <tbody>
+                        <tr>
+                            <td>Họ</td>
+                            <td th:if="${profile.firstName}" th:text="${profile.firstName}">John</td>
+                            <td th:unless="${profile.firstName}">Không có thông tin</td>
+                        </tr>
+                        <tr>
+                            <td>Tên</td>
+                            <td th:if="${profile.lastName}" th:text="${profile.lastName}">Doe</td>
+                            <td th:unless="${profile.lastName}">Không có thông tin</td>
+                        </tr>
+                        <tr>
+                            <td>Email</td>
+                            <td th:if="${profile.email}" th:text="${profile.email}">john.doe@example.com</td>
+                            <td th:unless="${profile.email}">Không có thông tin</td>
+                        </tr>
+                        <tr>
+                            <td>Ngày sinh</td>
+                            <td th:if="${profile.birthday}" th:text="${profile.birthday}">1990-01-01</td>
+                            <td th:unless="${profile.birthday}">Không có thông tin</td>
+                        </tr>
+                        <tr>
+                            <td>Địa chỉ</td>
+                            <td th:if="${profile.address}" th:text="${profile.address}">123 Main St, Springfield</td>
+                            <td th:unless="${profile.address}">Không có thông tin</td>
+                        </tr>
+                        <tr>
+                            <td>Số điện thoại</td>
+                            <td th:if="${profile.phone}" th:text="${profile.phone}">(555) 123-4567</td>
+                            <td th:unless="${profile.phone}">Không có thông tin</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="orderSuccessMessageContainer" class="message-container">
+                    <div id="orderSuccessMessage" th:if="${message}" th:text="${message}" class="success-message">
+                    </div>
+                </div>
+            </div>
+            <div id="update-profile" class="container-profile container" style="font-size: 20px">
+                <h2>Cập nhật thông tin</h2>
+                <form th:action="@{/update-profile}" th:object="${profile}" method="post">
+                    <div class="form-group">
+                        <label for="firstName">Họ</label>
+                        <input type="text" id="firstName" th:field="*{firstName}" class="form-control"
+                               placeholder="Enter your first name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Tên</label>
+                        <input type="text" id="lastName" th:field="*{lastName}" class="form-control"
+                               placeholder="Enter your last name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" th:field="*{email}" class="form-control"
+                               placeholder="Enter your email address" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="birthDate">Ngày sinh</label>
+                        <input type="date" id="birthDate" th:field="*{birthday}" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Địa chỉ</label>
+                        <input type="text" id="address" th:field="*{address}" class="form-control"
+                               placeholder="Enter your address"
+                               required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Số điện thoại</label>
+                        <input type="tel" id="phone" th:field="*{phone}" class="form-control"
+                               placeholder="Enter your phone number"
+                               required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Cập nhật</button>
+                </form>
+            </div>
+            <div id="change-password" class="container-profile container" style="font-size: 20px">
+                <h2>Đổi mật khẩu</h2>
+                <div th:replace="/user/change-password :: change-password"></div>
+            </div>
+        </main>
+        <!--        <div id="orderSuccessMessage" th:if="${message}" style="color:green;">-->
+        <!--        </div>-->
+
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        navLinks.forEach(function (link) {
+            link.addEventListener('click', function (event) {
+                event.preventDefault();
+                console.log('Clicked on:', link.textContent); // Kiểm tra xem sự kiện click có được kích hoạt hay không
+
+                const target = link.getAttribute('data-target');
+                showForm(target);
+            });
+        });
+
+        function showForm(target) {
+            const forms = document.querySelectorAll('.container-profile');
+
+            forms.forEach(function (form) {
+                form.classList.remove('active');
+            });
+
+            const selectedForm = document.getElementById(target);
+            if (selectedForm) {
+                selectedForm.classList.add('active');
+            }
+        }
+    });
+</script>
+<script>
+    // Hàm để ẩn thông báo sau một khoảng thời gian
+    function hideSuccessMessage() {
+        var successMessage = document.getElementById("orderSuccessMessage");
+        if (successMessage) {
+            setTimeout(function () {
+                successMessage.style.display = "none";
+            }, 3000); // 3000ms = 3 giây
+        }
+    }
+
+    window.onload = hideSuccessMessage;
+</script>
 </body>
 </html>

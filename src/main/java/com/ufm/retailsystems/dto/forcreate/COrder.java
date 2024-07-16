@@ -19,4 +19,5 @@ public class COrder {
     private LocalDate shippedDate;
     private String email;
     private Long customerId;
+    private String paymentMethod;
 }

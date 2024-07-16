@@ -8,13 +8,38 @@
   <link rel="stylesheet" th:href="@{/css/payment.css}">
   <link rel="stylesheet" th:href="@{/css/all.min.css}" type="text/css">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.css" rel="stylesheet" type="text/css" />
+  <style>
+    .payment-option {
+      display: inline-block;
+      cursor: pointer;
+      text-align: center;
+      margin-bottom: 20px; /* Khoảng cách giữa các tùy chọn */
+      width: 200px; /* Độ rộng của từng tùy chọn */
+      border: 2px solid transparent; /* Viền màu trong suốt ban đầu */
+      transition: border-color 0.3s ease; /* Hiệu ứng chuyển đổi màu viền */
+      background-color: #D8D8D8;
+      border-radius: 20px;
+      font-weight: bold;
+    }
+
+    .payment-option.active {
+      border-color: red; /* Màu viền khi được chọn */
+      border-radius: 20px;
+    }
+
+    .payment-option label {
+      display: block;
+      margin-top: 5px;
+      font-size: 14px; /* Kích thước chữ */
+    }
+  </style>
 </head>
 <body>
 <div th:replace="/layout/header :: header"></div>
 <div class="row">
   <div class="col-75">
     <div class="container">
-      <form th:object="${order}" th:action="@{/save-order}" method="post">
+      <form id="orderForm" th:object="${order}" th:action="@{/save-order}" method="post">
         <div class="row">
           <div class="col-50">
             <h3>Đơn đặt hàng</h3>
@@ -36,10 +61,30 @@
               <i class="fa-brands fa-cc-mastercard" style="color:red;"></i>
               <i class="fa-brands fa-cc-discover" style="color:orange;"></i>
             </div>
-            <label for="cname">Name on Card</label>
-            <input type="text" id="cname" name="cardname" placeholder="">
-            <label for="ccnum">Credit card number</label>
-            <input type="text" id="ccnum" name="cardnumber" placeholder="1111-2222-3333-4444">
+            <div class="form-group row">
+              <div class="d-flex flex-column">
+                <!-- VNPay -->
+                <div class="payment-option">
+                  <input type="radio" id="vnpay" name="paymentMethod" value="vnpay" style="display: none;">
+                  <label for="vnpay">
+                    <img style="height: 40px;width: 100px" src="https://cdn2.cellphones.com.vn/x/media/logo/gw2/vnpay.png" alt="VNPay" class="bg-image">
+                    <p>VnPay</p>
+                  </label>
+                </div>
+
+                <!-- Thanh toán khi nhận hàng -->
+                <div class="payment-option">
+                  <input type="radio" id="cash" name="paymentMethod" value="cash" style="display: none;">
+                  <label for="cash">
+                    <img style="height: 50px;width: 50px" src="https://cdn2.cellphones.com.vn/x400,webp,q100/media/payment-logo/COS.png" alt="Thanh toán khi nhận hàng">
+
+                    <p>Thanh toán khi nhận hàng</p>
+                  </label>
+
+                </div>
+              </div>
+            </div>
+
             <label for="expmonth"><i class="fa-solid fa-phone"></i> Số điện thoại</label>
             <input type="text" id="expmonth" name="shipPhone" placeholder="0914999999" required>
           </div>
@@ -73,17 +118,69 @@
 <script th:src="@{/fontawesome-free-6.5.2-web/js/all.min.js}"></script>
 <script>
   // Hàm để ẩn thông báo sau một khoảng thời gian
-  function hideSuccessMessage() {
-    var successMessage = document.getElementById("orderSuccessMessage");
-    if (successMessage) {
-      setTimeout(function() {
-        successMessage.style.display = "none";
-      }, 3000); // 3000ms = 3 giây
-    }
-  }
+  // function hideSuccessMessage() {
+  //   var successMessage = document.getElementById("orderSuccessMessage");
+  //   if (successMessage) {
+  //     setTimeout(function() {
+  //       successMessage.style.display = "none";
+  //     }, 3000); // 3000ms = 3 giây
+  //   }
+  // }
+  //
+  // // Gọi hàm hideSuccessMessage khi trang được tải
+  // window.onload = hideSuccessMessage;
 
-  // Gọi hàm hideSuccessMessage khi trang được tải
-  window.onload = hideSuccessMessage;
+  document.addEventListener("DOMContentLoaded", function () {
+    var successMessageContainer = document.getElementById("orderSuccessMessageContainer");
+    var successMessage = document.getElementById("orderSuccessMessage");
+    if (successMessage.textContent.trim() !== "") {
+      successMessageContainer.style.display = "block";
+      setTimeout(function () {
+        successMessageContainer.style.display = "none";
+      }, 2000); // 3000ms = 3 giây
+    }
+  });
+  document.addEventListener("DOMContentLoaded", function() {
+    const paymentOptions = document.querySelectorAll('.payment-option');
+
+    paymentOptions.forEach(option => {
+      option.addEventListener('click', function() {
+        // Bỏ chọn tất cả các tùy chọn khác
+        paymentOptions.forEach(opt => opt.classList.remove('active'));
+
+        // Đánh dấu tùy chọn đang được chọn
+        option.classList.add('active');
+
+        // Bỏ chọn radio button ẩn đi (nếu cần thiết)
+        option.querySelector('input[type="radio"]').checked = true;
+      });
+    });
+  });
 </script>
+<!--<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
+<!--<script>-->
+<!--  $(document).ready(function() {-->
+<!--    $('#orderForm').on('submit', function(event) {-->
+<!--      event.preventDefault(); // Prevent the form from submitting via the browser-->
+
+<!--      $.ajax({-->
+<!--        url: '/save-order',-->
+<!--        method: 'POST',-->
+<!--        data: $(this).serialize(),-->
+<!--        success: function(response) {-->
+<!--          if (response.code === 200 && response.data) {-->
+<!--            // Redirect to the VNPay payment URL-->
+<!--            window.location.href = response.data.paymentUrl;-->
+<!--          } else {-->
+<!--            alert('Order creation failed: ' + response.message);-->
+<!--          }-->
+<!--        },-->
+<!--        error: function(xhr, status, error) {-->
+<!--          alert('An error occurred: ' + error);-->
+<!--        }-->
+<!--      });-->
+<!--    });-->
+<!--  });-->
+<!--</script>-->
 </body>
 </html>

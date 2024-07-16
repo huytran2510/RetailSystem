@@ -9,4 +9,5 @@ import java.util.List;
 public interface IOrderDetailService {
     void save(CartItem item, Order order);
     List<OrderDetail> findAllByOrderId(String orderId);
+    List<OrderDetail> findAll();
 }
